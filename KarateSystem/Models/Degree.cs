@@ -1,5 +1,4 @@
-﻿using KarateSystemMVC.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace KarateSystem.Models
 {
