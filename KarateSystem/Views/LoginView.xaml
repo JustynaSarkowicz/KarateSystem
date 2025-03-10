@@ -124,7 +124,7 @@
                     <StackPanel Width="250"
                                 Grid.Row="2"
                                 Orientation="Vertical"
-                                Margin="0,35,0,0">
+                                Margin="0,60,0,0">
                         <TextBlock Text="Karate System"
                                    FontSize="25"
                                    Foreground="White"
@@ -198,12 +198,12 @@
                                 BorderThickness="0"
                                 Grid.Column="2"
                                 Cursor="Hand"
-                                Margin="0,70,0,0"
+                                Margin="0,80,0,0"
                                 Click="btnLogIn_Click">
 
                             <Button.Style>
                                 <Style TargetType="Button">
-                                    <Setter Property="Background" Value="#0C468B"/>
+                                    <Setter Property="Background" Value="#050E33"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Background" Value="#5D83B1"/>
@@ -215,7 +215,9 @@
 
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border CornerRadius="0, 10, 0, 0" 
+                                    <Border CornerRadius="10" 
+                                            Width="150"
+                                            Height="40"
                                             Background="{TemplateBinding Background}">
                                         <ContentPresenter VerticalAlignment="Center"
                                                           HorizontalAlignment="Center"/>
