@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KarateSystem"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1300"
         WindowStartupLocation="CenterScreen"
@@ -40,7 +41,7 @@
 
                     <!--Logo-->
                     <Border Height="80"
-                            Margin="10, 10, 10, 10">
+                            Margin="10, 10, 10, 50">
                         <Border.Background>
                             <ImageBrush ImageSource="/Images/kanji_kan.png" Stretch="Uniform"/>
                         </Border.Background>
@@ -53,12 +54,44 @@
                                    VerticalAlignment="Center"
                                    TextWrapping="Wrap"/>
                     </Border>
-                    
-                    <StackPanel Orientation="Horizontal"
-                                Margin="15, 15, 15, 15"
-                                HorizontalAlignment="Center">
-                        
-                    </StackPanel>
+
+                    <!--Menu buttons-->
+                    <RadioButton Style="{StaticResource menuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Strona główna" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Trophy" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Turnieje" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="User" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Zawodnicy" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Navicon" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Kategorie i walki" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="PieChart" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Wyniki i analiza" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Cog" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Ustawienia" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
 
                 </StackPanel>
             </Border>
@@ -72,6 +105,28 @@
                         <GradientStop Color="#050E33" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!--Control bar-->
+                        <RowDefinition Height="25"/>
+                        <!--Header / Caption-->
+                        <RowDefinition Height="35"/>
+                        <!--Content Secion / Child Views-->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!--Control bar-->
+                    <StackPanel x:Name="pnlControlBar"
+                                Grid.Row="0"
+                                Orientation="Horizontal"
+                                FlowDirection="RightToLeft"
+                                Background="Transparent"
+                                Margin="0,5,0,0"
+                                MouseLeftButtonDown="pnlControlBar_MouseLeftButtonDown"
+                                MouseEnter="pnlControlBar_MouseEnter">
+
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </Border>

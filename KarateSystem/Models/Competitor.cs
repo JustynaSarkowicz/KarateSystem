@@ -6,7 +6,6 @@ namespace KarateSystem.Models
 {
     public class Competitor
     {
-        [Key]
         public int CompetitorId { get; set; }
         public string CompetitorFirstName { get; set; }
         public string CompetitorLastName { get; set; }
@@ -37,6 +36,7 @@ namespace KarateSystem.Models
         public KataCategory? CompetitorKataCategory { get; set; }
         public int? CompetitorKumiteCategoryId { get; set; }
         public KumiteCategory? CompetitorKumiteCategory { get; set; }
+        public ICollection<Tournament> TournamentList { get; set; }
     }
     public enum Gender
     {

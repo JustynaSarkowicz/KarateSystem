@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:KarateSystem"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="/Styles/ButtonStyle.xaml"/>
     </Application.Resources>
 </Application>
