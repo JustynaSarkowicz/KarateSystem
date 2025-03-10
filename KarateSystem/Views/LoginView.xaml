@@ -29,10 +29,10 @@
         <Border CornerRadius="12"
                 Opacity="0.75">
             <Border.Background>
-                <ImageBrush ImageSource="/Images/kanku_kan.png" Stretch="None" AlignmentX="Center" AlignmentY="Center">
+                <ImageBrush ImageSource="/Images/kanji_kan.png" Stretch="Uniform" AlignmentX="Center" AlignmentY="Center">
                     <ImageBrush.RelativeTransform>
                         <TransformGroup>
-                            <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="1.5" ScaleY="1.5"/>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="1" ScaleY="1"/>
                             <TranslateTransform/>
                         </TransformGroup>
                     </ImageBrush.RelativeTransform>

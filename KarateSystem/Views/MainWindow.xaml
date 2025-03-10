@@ -1,0 +1,78 @@
+﻿<Window x:Class="KarateSystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KarateSystem"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+    <Border CornerRadius="10"
+        BorderThickness="1">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                <GradientStop Color="#050e33" Offset="0.25"/>
+                <GradientStop Color="#0A3875" Offset="0.75"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <!--NavigationBar-->
+                <ColumnDefinition Width="250"/>
+                <!--Main Section-->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!--NavigationBar-->
+            <Border Grid.Column="0"
+                    CornerRadius="10,0,0,10">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                        <GradientStop Color="#5D83B1" Offset="0"/>
+                        <GradientStop Color="#061D4A" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <StackPanel>
+
+                    <!--Logo-->
+                    <Border Height="80"
+                            Margin="10, 10, 10, 10">
+                        <Border.Background>
+                            <ImageBrush ImageSource="/Images/kanji_kan.png" Stretch="Uniform"/>
+                        </Border.Background>
+                        <TextBlock Text="Karate System"
+                                   FontSize="20"
+                                   Foreground="White"
+                                   FontWeight="Medium"
+                                   FontFamily="Montserrat"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"/>
+                    </Border>
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Margin="15, 15, 15, 15"
+                                HorizontalAlignment="Center">
+                        
+                    </StackPanel>
+
+                </StackPanel>
+            </Border>
+
+            <!--Main Section-->
+            <Border Grid.Column="1"
+                    CornerRadius="0,10,10,0">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#061D4A" Offset="0"/>
+                        <GradientStop Color="#050E33" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
