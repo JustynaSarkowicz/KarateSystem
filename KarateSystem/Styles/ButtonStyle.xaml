@@ -122,4 +122,6 @@
         <Setter Property="Height" Value="16"/>
     </Style>
 
+    <!--Scroll Viewer style-->
+    
 </ResourceDictionary>
