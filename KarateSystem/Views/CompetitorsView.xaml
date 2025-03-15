@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KarateSystem.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="800">
     <ScrollViewer Margin="0,0,0,-15"
                   Style="{StaticResource CustomScrollViewer}">
     <Grid Margin="0,0,10,0"
@@ -14,7 +14,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="370"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -28,48 +28,68 @@
                         Grid.Column="0">
                 <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
 
-                    <TextBox Text="Szukaj..."   
-                    FontSize="13"
+                <TextBox x:Name="tbSearchCompetitor"
+                         Text="Szukaj..."   
+                         FontSize="13"
                          Height="24"
-                           Width="300"
-                           Background="Transparent"
-                             FontWeight="Medium"
-                             FontFamily="Montserrat"                            
-                             Foreground="White"
-                             CaretBrush="White"
-                             BorderBrush="White"
-                             BorderThickness="0,0,0,1"                             
-                             VerticalContentAlignment="Center"
-                             Margin="5,5,0,0"/>
-                </StackPanel>
+                         Width="300"
+                         Background="Transparent"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="White"
+                         BorderBrush="White"
+                         BorderThickness="0,0,0,1"                             
+                         VerticalContentAlignment="Center"
+                         Margin="5,5,0,0"
+                         LostFocus="tbSearchCompetitor_LostFocus"
+                         GotFocus="tbSearchCompetitor_GotFocus"/>
+            </StackPanel>
 
-                <Button Grid.Column="1"
-                        Command="{Binding LoginCommand}"                            
-                        Content="Wyszukaj"                            
-                        FontSize="12"
-                        FontFamily="Montserrat"
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Foreground="White"
-                        VerticalAlignment="Top"
-                        Style="{StaticResource contentButton}">
-                </Button>
+            <Button x:Name="btnSearchCompetitor" 
+                    Grid.Column="1"
+                    Click="btnSearchCompetitor_Click"
+                    Command="{Binding LoginCommand}"                            
+                    Content="Wyszukaj"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top"
+                    Style="{StaticResource contentButton}">
+            </Button>
         </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="120"/>
                 </Grid.ColumnDefinitions>
-
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Top"
                             Grid.Column="0">
-                    <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
-                    <ComboBox Width="200"
+                    <TextBlock Text="Kategoria"
+                               FontSize="16"
+                               FontFamily="Montserrat"
+                               Foreground="White"/>
+                    <ComboBox x:Name="cbFilterCategories"
+                              Width="150"
                               Style="{StaticResource comboboxStyle}"
                               Margin="5, 0,0 ,0">
-                        <ComboBoxItem>Test</ComboBoxItem>
-                        <ComboBoxItem>Test2</ComboBoxItem>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox x:Name="cbCategoriesDetails"
+                              Width="150"
+                              Style="{StaticResource comboboxStyle}"
+                              Margin="5, 0,0 ,0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -82,7 +102,9 @@
                     </ComboBox>
                 </StackPanel>
 
-                <Button Grid.Column="1"
+                <Button x:Name="btnFilterCompetitor"
+                        Click="btnFilterCompetitor_Click"
+                        Grid.Column="1"
                         Command="{Binding LoginCommand}"                            
                         Content="Filtruj"                            
                         FontSize="12"
@@ -117,9 +139,333 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
-        <Border Grid.Row="2"
-                Background="Transparent">
-                
+        <Border Grid.Row="3"
+                Background="Transparent"
+                Margin="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"
+                                Orientation="Vertical">
+                        <TextBlock Text="ZAWODNIK"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="20"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,20"/>
+                        <TextBlock Text="Imię"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Nazwisko"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Data Urodzenia"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Wiek"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Waga"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Płeć"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Stopień"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Klub"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="230"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <Button x:Name="btnEditCompetitor"
+                                Width="80"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Edytuj"
+                                Margin="0,0,10,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Click="btnEditCompetitor_Click"
+                                Style="{StaticResource contentButton}">
+                            </Button>
+                            <Button x:Name="btnAddNewCompetitor"
+                                Width="80"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Dodaj"
+                                Margin="0,0,10,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Click="btnAddNewCompetitor_Click"
+                                Style="{StaticResource contentButton}">
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <TextBox x:Name="tbCompetitorName"
+                                     Background="Transparent"
+                                     Width="150"
+                                     Height="19"
+                                     Margin="0,0,0,10"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <TextBox x:Name="tbCompetitorSurname"
+                                     Background="Transparent"
+                                     Width="150"
+                                     Height="19"
+                                     Margin="0,0,0,10"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <TextBox x:Name="tbCompetitorDateOfBirth"
+                                     Background="Transparent"
+                                     Width="150"
+                                     Height="19"
+                                     Margin="0,0,0,10"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     TextChanged="tbCompetitorDateOfBirth_TextChanged"
+                                     Style="{StaticResource textBoxEnabled}"
+                                     PreviewTextInput="tbCompetitorDateOfBirth_PreviewTextInput"/>
+                            <TextBox x:Name="tbCompetitorAge"
+                                     Background="Transparent"
+                                     Width="150"
+                                     Height="19"
+                                     Margin="0,0,0,10"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <TextBox x:Name="tbCompetitorWeight"
+                                     Background="Transparent"
+                                     Width="150"
+                                     Height="19"
+                                     Margin="0,0,0,10"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <ComboBox x:Name="cbCompetitorGender"
+                                  Width="150"
+                                  Style="{StaticResource comboboxStyle}"
+                                  Margin="5, 0,0,8"
+                                  IsEnabled="False">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" />
+                                            <TextBlock Text="{Binding Name}" />
+                                            <TextBlock Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ComboBox x:Name="cbCompetitorDegree"
+                                  Width="150"
+                                  Style="{StaticResource comboboxStyle}"
+                                  Margin="5, 0,0,8"
+                                  IsEnabled="False">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" />
+                                            <TextBlock Text="{Binding Name}" />
+                                            <TextBlock Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ComboBox x:Name="cbCompetitorClub"
+                                  Width="150"
+                                  Style="{StaticResource comboboxStyle}"
+                                  Margin="5, 0,0 ,0"
+                                  IsEnabled="False">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" />
+                                            <TextBlock Text="{Binding Name}" />
+                                            <TextBlock Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                                <Button x:Name="btnSaveCompetitor"
+                                        Width="80"
+                                        Command="{Binding LoginCommand}"                            
+                                        Content="Zapisz"
+                                        Click="btnSaveCompetitor_Click"
+                                        Margin="0,5,0,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Style="{StaticResource contentButton}">
+                                </Button>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="170"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Turnieje zawodnika"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="18"
+                                   FontWeight="Medium"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center"/>
+                        <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                                  CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                  Style="{DynamicResource DataGridStyle1}"
+                                  Width="300"
+                                  Height="150"
+                                  VerticalAlignment="Top"
+                                  Grid.Row="1">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Grid Grid.Row="2"
+                              HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Kategoria Kata"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,15"
+                                   HorizontalAlignment="Center"/>
+                            <TextBlock Text="Kategoria Kumite"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   FontWeight="Medium"
+                                   Margin="0,0,0,10"
+                                   HorizontalAlignment="Center"/>
+                        </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBox x:Name="tbComTourCatKata"
+                                         Background="Transparent"
+                                         Width="150"
+                                         Height="19"
+                                         Margin="0,0,0,10"
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         HorizontalAlignment="Left"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource textBoxEnabled}"/>
+                                <TextBox x:Name="tbComTourCatKumite"
+                                         Background="Transparent"
+                                         Width="150"
+                                         Height="19"
+                                         Margin="0,0,0,5"
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                                   
+                                         HorizontalAlignment="Left"
+                                         IsReadOnly="True"
+                                         Style="{StaticResource textBoxEnabled}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
         </Border>
     </Grid>
     </ScrollViewer>

@@ -29,14 +29,7 @@ namespace KarateSystem.Models
         [Column(TypeName = "decimal(5, 2)")]
         public decimal CompetitorWeight { get; set; }
         public int CompetitorDegreeId { get; set; }
-        public Degree CompetitorDegree { get; set; }
         public int CompetitorClubId { get; set; }
-        public Club CompetitorClub { get; set; }
-        public int? CompetitorKataCategoryId { get; set; }
-        public KataCategory? CompetitorKataCategory { get; set; }
-        public int? CompetitorKumiteCategoryId { get; set; }
-        public KumiteCategory? CompetitorKumiteCategory { get; set; }
-        public ICollection<Tournament> TournamentList { get; set; }
     }
     public enum Gender
     {

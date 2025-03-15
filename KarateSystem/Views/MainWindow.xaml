@@ -91,6 +91,12 @@
                     </RadioButton>
                     <RadioButton Style="{StaticResource menuButton}">
                         <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Pen" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Kluby, Stopnie, Maty" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}">
+                        <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Navicon" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Kategorie i walki" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>

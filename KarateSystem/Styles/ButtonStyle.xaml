@@ -311,4 +311,12 @@
         </Setter>
     </Style>
 
+    <!--TextBox enabled-->
+    <Style x:Key="textBoxEnabled" TargetType="TextBox">
+        <Style.Triggers>
+            <Trigger Property="IsReadOnly" Value="True">
+                <Setter Property="Cursor" Value="Arrow"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
