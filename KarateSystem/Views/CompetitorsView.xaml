@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:KarateSystem.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ScrollViewer Margin="0,0,0,-15">
+    <ScrollViewer Margin="0,0,0,-15"
+                  Style="{StaticResource CustomScrollViewer}">
     <Grid Margin="0,0,10,0"
           Height="800">
         <Grid.RowDefinitions>
