@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KarateSystem.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1050">
     <ScrollViewer Margin="0,0,0,-15"
                   Style="{StaticResource CustomScrollViewer}">
     <Grid Margin="0,0,10,0"
@@ -138,18 +138,18 @@
                     <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Klub"/>
                 </DataGrid.Columns>
             </DataGrid>
-        </Border>
+            </Border>
         <Border Grid.Row="3"
-                Background="Transparent"
-                Margin="20">
+                Background="Transparent">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120"/>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="250"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0"
-                                Orientation="Vertical">
+                                Orientation="Vertical"
+                                Margin="20">
                         <TextBlock Text="ZAWODNIK"
                                    Foreground="White"
                                    FontFamily="Montserrat"
@@ -213,7 +213,8 @@
                                    Margin="0,0,0,10"
                                    HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="1"
+                          Margin="20,20,20,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="230"/>
@@ -252,7 +253,7 @@
                         <StackPanel Grid.Row="1">
                             <TextBox x:Name="tbCompetitorName"
                                      Background="Transparent"
-                                     Width="150"
+                                     Width="180"
                                      Height="19"
                                      Margin="0,0,0,10"
                                      FontWeight="Medium"
@@ -266,7 +267,7 @@
                                      Style="{StaticResource textBoxEnabled}"/>
                             <TextBox x:Name="tbCompetitorSurname"
                                      Background="Transparent"
-                                     Width="150"
+                                     Width="180"
                                      Height="19"
                                      Margin="0,0,0,10"
                                      FontWeight="Medium"
@@ -280,7 +281,7 @@
                                      Style="{StaticResource textBoxEnabled}"/>
                             <TextBox x:Name="tbCompetitorDateOfBirth"
                                      Background="Transparent"
-                                     Width="150"
+                                     Width="180"
                                      Height="19"
                                      Margin="0,0,0,10"
                                      FontWeight="Medium"
@@ -296,7 +297,7 @@
                                      PreviewTextInput="tbCompetitorDateOfBirth_PreviewTextInput"/>
                             <TextBox x:Name="tbCompetitorAge"
                                      Background="Transparent"
-                                     Width="150"
+                                     Width="180"
                                      Height="19"
                                      Margin="0,0,0,10"
                                      FontWeight="Medium"
@@ -310,7 +311,7 @@
                                      Style="{StaticResource textBoxEnabled}"/>
                             <TextBox x:Name="tbCompetitorWeight"
                                      Background="Transparent"
-                                     Width="150"
+                                     Width="180"
                                      Height="19"
                                      Margin="0,0,0,10"
                                      FontWeight="Medium"
@@ -323,7 +324,7 @@
                                      IsReadOnly="True"
                                      Style="{StaticResource textBoxEnabled}"/>
                             <ComboBox x:Name="cbCompetitorGender"
-                                  Width="150"
+                                  Width="180"
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="5, 0,0,8"
                                   IsEnabled="False">
@@ -338,7 +339,7 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                             <ComboBox x:Name="cbCompetitorDegree"
-                                  Width="150"
+                                  Width="180"
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="5, 0,0,8"
                                   IsEnabled="False">
@@ -353,7 +354,7 @@
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
                             <ComboBox x:Name="cbCompetitorClub"
-                                  Width="150"
+                                  Width="180"
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="5, 0,0 ,0"
                                   IsEnabled="False">
@@ -388,7 +389,7 @@
                     </Grid>
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="50"/>
                             <RowDefinition Height="170"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
@@ -399,25 +400,27 @@
                                    FontSize="18"
                                    FontWeight="Medium"
                                    Grid.Row="0"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                         <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
                                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                                   CellStyle="{DynamicResource DataGridCellStyle1}" 
                                   Style="{DynamicResource DataGridStyle1}"
-                                  Width="300"
+                                  Width="400"
                                   Height="150"
                                   VerticalAlignment="Top"
                                   Grid.Row="1">
 
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Miejsce"/>
                             </DataGrid.Columns>
                         </DataGrid>
                         <Grid Grid.Row="2"
                               HorizontalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="130"/>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Kategoria Kata"
@@ -438,7 +441,7 @@
                             <StackPanel Grid.Column="1">
                                 <TextBox x:Name="tbComTourCatKata"
                                          Background="Transparent"
-                                         Width="150"
+                                         Width="180"
                                          Height="19"
                                          Margin="0,0,0,10"
                                          FontWeight="Medium"
@@ -451,7 +454,7 @@
                                          Style="{StaticResource textBoxEnabled}"/>
                                 <TextBox x:Name="tbComTourCatKumite"
                                          Background="Transparent"
-                                         Width="150"
+                                         Width="180"
                                          Height="19"
                                          Margin="0,0,0,5"
                                          FontWeight="Medium"

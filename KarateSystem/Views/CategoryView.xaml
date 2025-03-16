@@ -1,0 +1,533 @@
+﻿<UserControl x:Class="KarateSystem.Views.CategoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:local="clr-namespace:KarateSystem.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="750" d:DesignWidth="1050">
+    <ScrollViewer Margin="0,0,0,-15"
+              Style="{StaticResource CustomScrollViewer}">
+        <Grid Margin="0,0,10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="350"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                VerticalAlignment="Top"
+                Grid.Column="0">
+                <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
+
+                <TextBox x:Name="tbSearchCatKata"
+                         Text="Szukaj..."   
+                         FontSize="13"
+                         Height="24"
+                         Width="300"
+                         Background="Transparent"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="White"
+                         BorderBrush="White"
+                         BorderThickness="0,0,0,1"                             
+                         VerticalContentAlignment="Center"
+                         Margin="5,5,0,0"
+                         LostFocus="tbSearchCatKata_LostFocus"
+                         GotFocus="tbSearchCatKata_GotFocus"/>
+            </StackPanel>
+
+            <Button x:Name="btnSearchCatKata" 
+                    Grid.Column="1"
+                    Click="btnSearchCatKata_Click"
+                    Command="{Binding LoginCommand}"                            
+                    Content="Wyszukaj"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top"
+                    Style="{StaticResource contentButton}">
+            </Button>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="650"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Kategoria Kata"
+                       Foreground="White"
+                       FontFamily="Montserrat"
+                       FontSize="16"
+                       FontWeight="Medium"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Grid.Row="0"/>
+            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                      CellStyle="{DynamicResource DataGridCellStyle1}" 
+                      Style="{DynamicResource DataGridStyle1}"
+                      Grid.Row="1">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
+                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
+                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
+                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
+                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopnie"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <TextBlock Text="Szczegóły"
+                       Foreground="White"
+                       FontFamily="Montserrat"
+                       FontSize="16"
+                       FontWeight="Medium"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Grid.Row="0"
+                       Grid.Column="1"/>
+
+            <Grid Grid.Row="1"
+                  Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            Margin="5,0,0,0">
+                    
+                <TextBlock Text="Nazwa"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,30,0,20"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Płeć"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Wiek Min"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Wiek Max"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Stopnie"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+
+                </StackPanel>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="210"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                    <TextBox x:Name="tbCatKataName"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,27,0,20"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                    <TextBox x:Name="tbCatKataGender"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,18"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                    <TextBox x:Name="tbCatKataAgeMin"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,20"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                    <TextBox x:Name="tbCatKataAgeMax"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,15"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                    <TextBox x:Name="tbCatKataDegree"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,15"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <Button x:Name="btnSaveCatKata"
+                                Width="70"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Zapisz"
+                                Click="btnSaveCatKata_Click"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}">
+                        </Button>
+                        <Button x:Name="btnEditCatKata"
+                                Width="70"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Edytuj"
+                                Click="btnEditCatKata_Click"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}">
+                        </Button>
+                        <Button x:Name="btnAddNewCatKata"
+                                Width="70"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Dodaj"
+                                Click="btnAddNewCatKata_Click"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}">
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2"
+              Margin="0,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="120"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal"
+                VerticalAlignment="Top"
+                Grid.Column="0">
+                <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
+
+                <TextBox x:Name="tbSearchCatKumite"
+                         Text="Szukaj..."   
+                         FontSize="13"
+                         Height="24"
+                         Width="300"
+                         Background="Transparent"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="White"
+                         CaretBrush="White"
+                         BorderBrush="White"
+                         BorderThickness="0,0,0,1"                             
+                         VerticalContentAlignment="Center"
+                         Margin="5,5,0,0"
+                         LostFocus="tbSearchCatKumite_LostFocus"
+                         GotFocus="tbSearchCatKumite_GotFocus"/>
+            </StackPanel>
+
+            <Button x:Name="btnSearchCatKumite" 
+                    Grid.Column="1"
+                    Click="btnSearchCatKumite_Click"
+                    Command="{Binding LoginCommand}"                            
+                    Content="Wyszukaj"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top"
+                    Style="{StaticResource contentButton}">
+            </Button>
+        </Grid>
+            <Grid Grid.Row="3"
+                  Margin="0,0,0,50">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="650"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Kategoria Kumite"
+                       Foreground="White"
+                       FontFamily="Montserrat"
+                       FontSize="16"
+                       FontWeight="Medium"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Grid.Row="0"/>
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                      CellStyle="{DynamicResource DataGridCellStyle1}" 
+                      Style="{DynamicResource DataGridStyle1}"
+                      Grid.Row="1">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopnie"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <TextBlock Text="Szczegóły"
+                       Foreground="White"
+                       FontFamily="Montserrat"
+                       FontSize="16"
+                       FontWeight="Medium"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Grid.Row="0"
+                       Grid.Column="1"/>
+
+                <Grid Grid.Row="1"
+                  Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"
+                            Margin="5,0,0,0">
+
+                        <TextBlock Text="Nazwa"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,30,0,20"
+                           HorizontalAlignment="Center"/>
+                        <TextBlock Text="Płeć"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+                        <TextBlock Text="Wiek Min"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+                        <TextBlock Text="Wiek Max"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+                        <TextBlock Text="Stopnie"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+
+                    </StackPanel>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="210"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0">
+                            <TextBox x:Name="tbCatKumiteName"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,27,0,20"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <TextBox x:Name="tbCatKumiteGender"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,18"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <TextBox x:Name="tbCatKumiteAgeMin"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,20"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <TextBox x:Name="tbCatKumiteAgeMax"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,15"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <TextBox x:Name="tbCatKumiteDegree"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,15"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                            <Button x:Name="btnSaveCatKumite"
+                                Width="70"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Zapisz"
+                                Click="btnSaveCatKumite_Click"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}">
+                            </Button>
+                            <Button x:Name="btnEditCatKumite"
+                                Width="70"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Edytuj"
+                                Click="btnEditCatKumite_Click"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}">
+                            </Button>
+                            <Button x:Name="btnAddNewCatKumite"
+                                Width="70"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Dodaj"
+                                Click="btnAddNewCatKumite_Click"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}">
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

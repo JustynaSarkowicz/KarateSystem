@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using KarateSystem.Misc;
 
 namespace KarateSystem.Views
 {
@@ -59,21 +49,9 @@ namespace KarateSystem.Views
 
         }
 
-        private void tbSearchCompetitor_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(tbSearchCompetitor.Text))
-            {
-                tbSearchCompetitor.Text = "Szukaj...";
-            }
-        }
+        private void tbSearchCompetitor_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchCompetitor, "Szukaj...");
 
-        private void tbSearchCompetitor_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (tbSearchCompetitor.Text == "Szukaj...")
-            {
-                tbSearchCompetitor.Text = "";
-            }
-        }
+        private void tbSearchCompetitor_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchCompetitor, "Szukaj...");
 
         private void tbCompetitorDateOfBirth_TextChanged(object sender, TextChangedEventArgs e)
         {

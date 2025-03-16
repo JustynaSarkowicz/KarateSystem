@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace KarateSystem.ViewModel
 {
-    public class ClubsDegreesMatsViewModel : ViewModelBase
+    public class CategoryViewModel : ViewModelBase
     {
-
     }
 }

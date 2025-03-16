@@ -19,9 +19,14 @@
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <local:HomeView/>
         </DataTemplate>
-        
         <DataTemplate DataType="{x:Type viewModel:CompetitorsViewModel}">
             <local:CompetitorsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:ClubsDegreesMatsViewModel}">
+            <local:ClubsDegreesMatsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:CategoryViewModel}">
+            <local:CategoryView/>
         </DataTemplate>
     </Window.Resources>
     <Border CornerRadius="10"
@@ -89,16 +94,18 @@
                             <TextBlock Text="Zawodnicy" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource menuButton}">
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Command="{Binding ShowClubDegreesMatsViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Pen" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Kluby, Stopnie, Maty" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource menuButton}">
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Command="{Binding ShowCategoryViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Navicon" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Kategorie i walki" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="Kategorie" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource menuButton}">

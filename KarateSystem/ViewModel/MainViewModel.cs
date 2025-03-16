@@ -62,12 +62,16 @@ namespace KarateSystem.ViewModel
         //--> Commands
         public ICommand ShowHomeViewCommand { get; }
         public ICommand ShowCustomerViewCommand { get; }
+        public ICommand ShowClubDegreesMatsViewCommand { get; }
+        public ICommand ShowCategoryViewCommand { get; }
 
         public MainViewModel()
         {
             //Initialize commands
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowCustomerViewCommand = new ViewModelCommand(ExecuteShowCustomerViewCommand);
+            ShowClubDegreesMatsViewCommand = new ViewModelCommand(ExecuteShowClubDegreesMatsViewCommand);
+            ShowCategoryViewCommand = new ViewModelCommand(ExecuteShowCategoryViewCommand);
 
             //Default view
             ExecuteShowHomeViewCommand(null);
@@ -85,6 +89,19 @@ namespace KarateSystem.ViewModel
             CurrentChildView = new HomeViewModel();
             Caption = "Strona Główna";
             Icon = IconChar.Home;
+        }
+        
+        private void ExecuteShowClubDegreesMatsViewCommand(object obj)
+        {
+            CurrentChildView = new ClubsDegreesMatsViewModel();
+            Caption = "Kluby, Stopnie, Maty";
+            Icon = IconChar.Pen;
+        }
+        private void ExecuteShowCategoryViewCommand(object obj)
+        {
+            CurrentChildView = new CategoryViewModel();
+            Caption = "Kategorie";
+            Icon = IconChar.Navicon;
         }
     }
 }
