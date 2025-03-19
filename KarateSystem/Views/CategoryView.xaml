@@ -316,7 +316,7 @@
             </Button>
         </Grid>
             <Grid Grid.Row="3"
-                  Margin="0,0,0,50">
+                  Margin="0,0,0,30">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
@@ -345,7 +345,8 @@
                         <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
                         <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
                         <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopnie"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga Min"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga Max"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -396,7 +397,14 @@
                            FontWeight="Medium"
                            Margin="0,0,0,20"
                            HorizontalAlignment="Center"/>
-                        <TextBlock Text="Stopnie"
+                        <TextBlock Text="Waga Min"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="0,0,0,20"
+                           HorizontalAlignment="Center"/>
+                        <TextBlock Text="Waga Max"
                            Foreground="White"
                            FontFamily="Montserrat"
                            FontSize="14"
@@ -407,7 +415,7 @@
                     </StackPanel>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="210"/>
+                            <RowDefinition Height="240"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0">
@@ -467,7 +475,21 @@
                                      VerticalContentAlignment="Center"
                                      IsReadOnly="True"
                                      Style="{StaticResource textBoxEnabled}"/>
-                            <TextBox x:Name="tbCatKumiteDegree"
+                            <TextBox x:Name="tbCatKumiteWeightMin"
+                                     Background="Transparent"
+                                     Width="180"
+                                     Height="19"
+                                     Margin="0,0,0,15"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"
+                                     Style="{StaticResource textBoxEnabled}"/>
+                            <TextBox x:Name="tbCatKumiteWeightMax"
                                      Background="Transparent"
                                      Width="180"
                                      Height="19"

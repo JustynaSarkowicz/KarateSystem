@@ -19,9 +19,9 @@ namespace KarateSystem.Views
 
         }
 
-        private void tbSearchCatKata_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchCatKata, "Szukaj...");
+        private void tbSearchCatKata_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchCatKata);
 
-        private void tbSearchCatKata_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchCatKata, "Szukaj...");
+        private void tbSearchCatKata_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchCatKata);
 
         private void btnSaveCatKata_Click(object sender, RoutedEventArgs e)
         {
@@ -58,9 +58,9 @@ namespace KarateSystem.Views
 
         }
 
-        private void tbSearchCatKumite_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchCatKumite, "Szukaj...");
+        private void tbSearchCatKumite_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchCatKumite);
 
-        private void tbSearchCatKumite_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchCatKumite, "Szukaj...");
+        private void tbSearchCatKumite_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchCatKumite);
 
 
     }

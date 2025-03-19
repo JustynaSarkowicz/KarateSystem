@@ -49,9 +49,9 @@ namespace KarateSystem.Views
 
         }
 
-        private void tbSearchCompetitor_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchCompetitor, "Szukaj...");
+        private void tbSearchCompetitor_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchCompetitor);
 
-        private void tbSearchCompetitor_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchCompetitor, "Szukaj...");
+        private void tbSearchCompetitor_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchCompetitor);
 
         private void tbCompetitorDateOfBirth_TextChanged(object sender, TextChangedEventArgs e)
         {

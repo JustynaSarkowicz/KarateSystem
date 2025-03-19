@@ -87,7 +87,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <ComboBox x:Name="cbCategoriesDetails"
-                              Width="150"
+                              Width="250"
                               Style="{StaticResource comboboxStyle}"
                               Margin="5, 0,0 ,0">
                         <ComboBox.ItemTemplate>
@@ -116,31 +116,26 @@
                         Style="{StaticResource contentButton}">
                 </Button>
             </Grid>
-            <Border Grid.Row="2"
-                Background="#1B3663"
-                CornerRadius="10" 
-                Padding="5">
-        
-            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                      CellStyle="{DynamicResource DataGridCellStyle1}" 
-                      Style="{DynamicResource DataGridStyle1}">
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                          CellStyle="{DynamicResource DataGridCellStyle1}" 
+                          Style="{DynamicResource DataGridStyle1}"
+                          Grid.Row="2">
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopień"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Klub"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            </Border>
-        <Border Grid.Row="3"
-                Background="Transparent">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopień"/>
+                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Klub"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Border Grid.Row="3"
+                        Background="Transparent">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150"/>
@@ -406,7 +401,7 @@
                                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                                   CellStyle="{DynamicResource DataGridCellStyle1}" 
                                   Style="{DynamicResource DataGridStyle1}"
-                                  Width="400"
+                                  Width="500"
                                   Height="150"
                                   VerticalAlignment="Top"
                                   Grid.Row="1">
@@ -414,6 +409,8 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
                                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Miejsce"/>
+                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Data"/>
+                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stan"/>
                             </DataGrid.Columns>
                         </DataGrid>
                         <Grid Grid.Row="2"

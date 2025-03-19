@@ -48,8 +48,8 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="25"/>
-                            <ColumnDefinition Width="25"/>
-                        </Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25"/>
+                </Grid.ColumnDefinitions>
                 <TextBlock Text="LOG IN"
                            Foreground="#050E33"
                            FontSize="17"
