@@ -1,11 +1,7 @@
 ﻿using KarateSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
 
 namespace KarateSystem.Configurations
 {
@@ -13,7 +9,21 @@ namespace KarateSystem.Configurations
     {
         public void Configure(EntityTypeBuilder<Kata> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(t => t.KataId);
+            builder.Property(t => t.KataRate1).HasColumnType("decimal(5,1)");
+            builder.Property(t => t.KataRate2).HasColumnType("decimal(5,1)");
+            builder.Property(t => t.KataRate3).HasColumnType("decimal(5,1)");
+            builder.Property(t => t.KataRate4).HasColumnType("decimal(5,1)");
+            builder.Property(t => t.KataRate5).HasColumnType("decimal(5,1)");
+            builder.Property(t => t.KataScore).HasColumnType("decimal(5,2)");
+
+            // Relacja: mata jest przypiasana do wielu kata
+            //          kata jest przypisane do jednej maty (1:N)
+            builder.HasOne(t => t.Mat)
+                   .WithMany(t => t.Katas)
+                   .HasForeignKey(t => t.KataMatId)
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

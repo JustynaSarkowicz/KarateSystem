@@ -6,6 +6,7 @@ namespace KarateSystem.Models
     {
         public int ClubId { get; set; }
         public string ClubName { get; set; }
-        public string ClubCity { get; set; }
+        public string ClubPlace { get; set; }
+        public ICollection<Competitor> Competitors { get; set; } = new List<Competitor>();
     }
 }

@@ -20,5 +20,10 @@ namespace KarateSystem.Misc
             RejestracjaZamknięta,
             Zakończony
         }
+        public enum Role
+        {
+            Admin,
+            Obsługa
+        }
     }
 }

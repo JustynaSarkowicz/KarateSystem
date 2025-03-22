@@ -6,23 +6,26 @@ namespace KarateSystem.Models
 {
     public class Competitor
     {
-        public int CompetitorId { get; set; }
-        public string CompetitorFirstName { get; set; }
-        public string CompetitorLastName { get; set; }
-        public DateTime CompetitorDateOfBirth { get; set; }
-        public int CompetitorAge
+        public int CompId { get; set; }
+        public string CompFirstName { get; set; }
+        public string CompLastName { get; set; }
+        public DateTime CompDateOfBirth { get; set; }
+        public int CompAge
         {
-            set
+            get
             {
                 var today = DateTime.Today;
-                var age = today.Year - CompetitorDateOfBirth.Year;
-                if (CompetitorDateOfBirth.Date > today.AddYears(-age)) age--;
-                ;
+                var age = today.Year - CompDateOfBirth.Year;
+                if (CompDateOfBirth.Date > today.AddYears(-age)) age--;
+                return age;
             }
         }
-        public string CompetitorGender { get; set; }
-        public decimal CompetitorWeight { get; set; }
-        public int CompetitorDegreeId { get; set; }
-        public int CompetitorClubId { get; set; }
+        public string CompGender { get; set; }
+        public decimal CompWeight { get; set; }
+        public int CompDegreeId { get; set; }
+        public Degree Degree { get; set; }
+        public int CompClubId { get; set; }
+        public Club Club { get; set; }
+        public ICollection<TourCompetitor> TourCompetitors { get; set; } = new List<TourCompetitor>();
     }
 }

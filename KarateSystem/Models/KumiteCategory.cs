@@ -6,14 +6,13 @@ namespace KarateSystem.Models
 {
     public class KumiteCategory
     {
-        [Key]
-        public int KumiteCategoryId { get; set; }
-        public string KumiteCategoryName{ get; set; }
-        public string KumiteCategoryGender { get; set; }
-        public int KumiteCategoryAgeMin { get; set; }
-        public int KumiteCategoryAgeMax { get; set; }
-        public decimal KumiteCategoryWeightMin { get; set; }
-        public decimal KumiteCategoryWeightMax { get; set; }
+        public int KumiteCatId { get; set; }
+        public string KumiteCatName{ get; set; }
+        public string KumiteCatGender { get; set; }
+        public int KumiteCatAgeMin { get; set; }
+        public int KumiteCatAgeMax { get; set; }
+        public decimal KumiteCatWeightMin { get; set; }
+        public decimal KumiteCatWeightMax { get; set; }
     }
 
 }

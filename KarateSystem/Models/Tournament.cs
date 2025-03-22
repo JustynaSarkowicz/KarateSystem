@@ -6,11 +6,11 @@ namespace KarateSystem.Models
 {
     public class Tournament
     {
-        [Key]
         public int TourId { get; set; }
         public string TourName{ get; set; }
         public string TourPlace { get; set; }
         public DateTime TourDate{  get; set; }
         public string Status{  get; set; }
+        public ICollection<TourCompetitor> TourCompetitors { get; set; } = new List<TourCompetitor>();
     }
 }

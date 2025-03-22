@@ -13,7 +13,17 @@ namespace KarateSystem.Configurations
     {
         public void Configure(EntityTypeBuilder<Fight> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(t => t.FightId);
+            builder.Property(t => t.FightScoreA).HasColumnType("decimal(5,1)");
+            builder.Property(t => t.FightScoreB).HasColumnType("decimal(5,1)");
+
+            // Relacja: mata jest przypiasana do wielu kata
+            //          kata jest przypisane do jednej maty (1:N)
+            builder.HasOne(t => t.Mat)
+                   .WithMany(t => t.Fights)
+                   .HasForeignKey(t => t.FightMatId)
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

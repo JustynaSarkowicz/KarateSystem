@@ -8,10 +8,11 @@ namespace KarateSystem.Models
         [Key]
         public int FightId { get; set; }
         public int FightMatId { get; set; }
-        public decimal FightScoreA { get; set; }
-        public decimal FightScoreB { get; set; }
-        public int FightWinner { get; set; }
-        public TimeSpan FightTime { get; set; }
+        public Mat Mat { get; set; }
+        public decimal? FightScoreA { get; set; }
+        public decimal? FightScoreB { get; set; }
+        public int? FightWinner { get; set; }
+        public int? FightTime { get; set; }
         public int? FightNumOverTime { get; set; }
     }
 }

@@ -5,11 +5,13 @@ namespace KarateSystem.Models
 {
     public class KataCategory
     {
-        [Key]
-        public int KataCategoryId { get; set; }
-        public string KataCategoryName { get; set; } 
-        public string? KataCategoryGender { get; set; }
-        public int KataCategoryAgeMin { get; set; }
-        public int KataCategoryAgeMax { get; set; }
+        public int KataCatId { get; set; }
+        public string KataCatName { get; set; } 
+        public string KataCatGender { get; set; }
+        public int KataCatAgeMin { get; set; }
+        public int KataCatAgeMax { get; set; }
+        public int KataCatDegreeId { get; set; }
+        public Degree Degree { get; set; }
+
     }
 }

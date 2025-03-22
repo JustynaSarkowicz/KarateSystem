@@ -13,7 +13,19 @@ namespace KarateSystem.Configurations
     {
         public void Configure(EntityTypeBuilder<KataCategory> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(t => t.KataCatId);
+            builder.Property(t => t.KataCatName).IsRequired();
+            builder.Property(t => t.KataCatGender).IsRequired();
+            builder.Property(t => t.KataCatAgeMin).IsRequired();
+            builder.Property(t => t.KataCatAgeMax).IsRequired();
+
+            // Relacja: jeden stopień należy do wielu kategorii kata
+            //          kategoria kata ma jeden stopień
+            builder.HasOne(c => c.Degree)
+                   .WithMany(c => c.KataCategories)
+                   .HasForeignKey(c => c.KataCatDegreeId)
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.Cascade); // ?
         }
     }
 }

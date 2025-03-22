@@ -13,7 +13,13 @@ namespace KarateSystem.Configurations
     {
         public void Configure(EntityTypeBuilder<KumiteCategory> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(t => t.KumiteCatId);
+            builder.Property(t => t.KumiteCatName).IsRequired();
+            builder.Property(t => t.KumiteCatGender).IsRequired();
+            builder.Property(t => t.KumiteCatAgeMin).IsRequired();
+            builder.Property(t => t.KumiteCatAgeMax).IsRequired();
+            builder.Property(t => t.KumiteCatWeightMin).IsRequired().HasColumnType("decimal(5,2)");
+            builder.Property(t => t.KumiteCatWeightMax).IsRequired().HasColumnType("decimal(5,2)");
         }
     }
 }
