@@ -72,7 +72,11 @@ namespace KarateSystem.Views
 
         private void btnTourDeleteComp_Click(object sender, RoutedEventArgs e)
         {
-
+            if (MessageBox.Show("Usunięcie zawodnika spowoduje wykluczenie go z turnieju.\nCzy na pewno chcesz go usunąć?",
+                "Usunięcie zawodnika", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            {
+                return;
+            }
         }
 
         private void btnTourAddCatKata_Click(object sender, RoutedEventArgs e)
@@ -87,7 +91,30 @@ namespace KarateSystem.Views
 
         private void btnTourDeleteCatKumite_Click(object sender, RoutedEventArgs e)
         {
+            if (MessageBox.Show("Usunięcie kategorii spowoduje usunięcie listy walk.\nCzy na pewno chcesz ją usunąć?",
+                "Usunięcie kategorii", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            {
+                return;
+            }
+        }
 
+        private void btnTourDetailsKata_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnTourDetailsKumite_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnTourDeleteCatKata_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Usunięcie kategorii spowoduje usunięcie listy kata.\nCzy na pewno chcesz ją usunąć?",
+                "Usunięcie kategorii", MessageBoxButton.YesNo) == MessageBoxResult.No)
+            {
+                return;
+            }
         }
     }
 }

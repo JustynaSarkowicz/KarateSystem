@@ -8,17 +8,18 @@
              d:DesignHeight="625" d:DesignWidth="1050">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="410"/>
+            <ColumnDefinition Width="310"/>
+            <ColumnDefinition Width="310"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="260"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="260"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Grid.Column="1"
-              Grid.Row="0">
+        <Grid Grid.Column="2"
+              Grid.Row="0"
+              Margin="10,0,20,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="160"/>
@@ -37,7 +38,6 @@
                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                       CellStyle="{DynamicResource DataGridCellStyle1}" 
                       Style="{DynamicResource DataGridStyle1}"
-                      Width="470"
                       Height="150"
                       VerticalAlignment="Top"
                       Grid.Row="1">
@@ -50,7 +50,6 @@
             </DataGrid>
 
             <Border Grid.Row="2"
-                    Width="470"
                     CornerRadius="10"
                     BorderBrush="#1B3663"
                     Background="#1B3663">
@@ -59,44 +58,48 @@
                         <RowDefinition Height="16"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal"
-                                Grid.Row="0">
-                        <TextBlock Text="Nazwa"
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Nazwa"
                                    Foreground="#BCBEE0"
                                    FontFamily="Montserrat"
                                    FontSize="14"
-                                   Width="250"
-                                   Margin="10,0,5,0"/>
-                        <TextBlock Text="Miejsce"
-                                   Foreground="#BCBEE0"
-                                   FontFamily="Montserrat"
-                                   FontSize="14"/>
-                        <TextBlock/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1"
-                                Orientation="Horizontal">
-                        <Border Margin="10,3,0,3"
-                                CornerRadius="10"
-                                Background="#5D83B1"
-                                Width="250">
+                                   Margin="10,0,5,0"
+                                   Grid.Column="0"
+                                   Grid.Row="0"/>
+                    <Border Margin="10,3,0,3"
+                            CornerRadius="10"
+                            Background="#5D83B1"
+                            Grid.Row="1"
+                            Grid.Column="0">
                         <TextBox x:Name="tbClubName"  Padding="3"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource textBoxEnabled}"/>
-                        </Border>
-                        <Border Margin="5,3,0,3"
-                                CornerRadius="10"
-                                Background="#5D83B1"
-                                Width="195">
+                             Background="Transparent"
+                             BorderThickness="0"
+                             IsReadOnly="True"
+                             Style="{StaticResource textBoxEnabled}"/>
+                    </Border>
+                    <TextBlock Text="Miejsce"
+                               Foreground="#BCBEE0"
+                               FontFamily="Montserrat"
+                               FontSize="14"
+                               Grid.Column="1"
+                               Grid.Row="0"
+                               Margin="5,0,5,0"/>
+                    <TextBlock/>
+                    <Border Margin="5,3,0,3"
+                            CornerRadius="10"
+                            Background="#5D83B1"
+                            Grid.Row="1"
+                            Grid.Column="1">
                         <TextBox x:Name="tbClubPlace"
-                                 Padding="3"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 IsReadOnly="True"
-                                 Style="{StaticResource textBoxEnabled}"/>
-                        </Border>
-                    </StackPanel>
+                             Padding="3"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             IsReadOnly="True"
+                             Style="{StaticResource textBoxEnabled}"/>
+                    </Border>
                 </Grid>
             </Border>
         </Grid>
@@ -151,7 +154,8 @@
             </Button>
         </StackPanel>
         <Grid Grid.Column="0"
-              Grid.Row="0">
+              Grid.Row="0"
+              Margin="10,0,10,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="160"/>
@@ -170,7 +174,6 @@
                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                       CellStyle="{DynamicResource DataGridCellStyle1}" 
                       Style="{DynamicResource DataGridStyle1}"
-                      Width="250"
                       Height="150"
                       VerticalAlignment="Top"
                       Grid.Row="1">
@@ -182,7 +185,6 @@
             </DataGrid>
 
             <Border Grid.Row="2"
-                    Width="250"
                     CornerRadius="10"
                     BorderBrush="#1B3663"
                     Background="#1B3663">
@@ -206,7 +208,7 @@
                         <Border Margin="10,3,0,3"
                                 CornerRadius="10"
                                 Background="#5D83B1"
-                                Width="230">
+                                Width="270">
                             <TextBox x:Name="tbDegreeName"
                                      Padding="3"
                                      Background="Transparent"
@@ -264,8 +266,9 @@
                     Style="{StaticResource contentButton}">
             </Button>
         </StackPanel>
-        <Grid Grid.Column="0"
-              Grid.Row="2">
+        <Grid Grid.Column="1"
+              Grid.Row="0"
+              Margin="10,0,10,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="160"/>
@@ -284,7 +287,6 @@
                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                       CellStyle="{DynamicResource DataGridCellStyle1}" 
                       Style="{DynamicResource DataGridStyle1}"
-                      Width="250"
                       Height="150"
                       VerticalAlignment="Top"
                       Grid.Row="1">
@@ -296,7 +298,6 @@
             </DataGrid>
 
             <Border Grid.Row="2"
-                    Width="250"
                     CornerRadius="10"
                     BorderBrush="#1B3663"
                     Background="#1B3663">
@@ -320,7 +321,7 @@
                         <Border Margin="10,3,0,3"
                                 CornerRadius="10"
                                 Background="#5D83B1"
-                                Width="230">
+                                Width="270">
                             <TextBox x:Name="tbMatName"
                                      Padding="3"
                                      Background="Transparent"
@@ -332,8 +333,8 @@
                 </Grid>
             </Border>
         </Grid>
-        <StackPanel Grid.Row="3"
-                    Grid.Column="0"
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
                     Orientation="Horizontal"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Center"
@@ -378,5 +379,10 @@
                     Style="{StaticResource contentButton}">
             </Button>
         </StackPanel>
+        <Border Grid.Row="2"
+                Grid.ColumnSpan="3"
+                BorderThickness="0,1,0,0"
+                BorderBrush="#5D83B1"
+                Margin="0,0,10,0"/>
     </Grid>
 </UserControl>

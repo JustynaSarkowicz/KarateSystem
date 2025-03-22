@@ -385,8 +385,8 @@
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50"/>
-                            <RowDefinition Height="170"/>
-                            <RowDefinition/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="80"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Turnieje zawodnika"
@@ -401,8 +401,7 @@
                                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                                   CellStyle="{DynamicResource DataGridCellStyle1}" 
                                   Style="{DynamicResource DataGridStyle1}"
-                                  Width="500"
-                                  Height="150"
+                                  Height="200"
                                   VerticalAlignment="Top"
                                   Grid.Row="1">
 

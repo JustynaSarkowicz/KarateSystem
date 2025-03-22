@@ -65,8 +65,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="650"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Kategoria Kata"
                        Foreground="White"
@@ -106,7 +106,7 @@
                   Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="270"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0"
                             Margin="5,0,0,0">
@@ -322,8 +322,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="650"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="350"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Kategoria Kumite"
                        Foreground="White"
