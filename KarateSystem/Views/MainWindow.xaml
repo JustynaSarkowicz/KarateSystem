@@ -31,6 +31,9 @@
         <DataTemplate DataType="{x:Type viewModel:TournamentViewModel}">
             <local:TournamentView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:KataKumiteViewModel}">
+            <local:KataKumiteView/>
+        </DataTemplate>
     </Window.Resources>
     <Border CornerRadius="10"
         BorderThickness="1">
@@ -110,6 +113,13 @@
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Navicon" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Kategorie" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Command="{Binding ShowKataKumiteViewCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="Medal" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Kata i Kumite" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource menuButton}">

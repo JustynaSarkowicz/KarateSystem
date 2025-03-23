@@ -1,0 +1,156 @@
+﻿<UserControl x:Class="KarateSystem.Views.KataKumiteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KarateSystem.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="950" d:DesignWidth="1050">
+    <Grid>
+        <ScrollViewer Margin="0,0,0,-15"
+              Style="{StaticResource CustomScrollViewer}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="400"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left">
+                    <TextBlock Text="Turniej:"
+                               FontSize="16"
+                               FontFamily="Montserrat"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cbTour"
+                              Width="400"
+                              Style="{StaticResource comboboxStyle}"
+                              Margin="10,0,0,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Grid.Row="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left">
+                    <TextBlock Text="Kategoria Kata:"
+                               FontSize="16"
+                               FontFamily="Montserrat"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                    <ComboBox x:Name="cbTourCatKata"
+                              Width="350"
+                              Style="{StaticResource comboboxStyle}"
+                              Margin="10,0,0,0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <Grid Grid.Row="2"
+                      VerticalAlignment="Top"
+                      Margin="20,0,20,0">
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              Height="390">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Ocena 1"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Ocena 2"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Ocena 3"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Ocena 4"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Ocena 5"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Średnia z ocen"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                <Grid Grid.Row="3"
+                      Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border>
+                        <StackPanel Grid.Row="0"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+
+                            <TextBlock Text="Imię" 
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   Width="160"
+                                   TextAlignment="Center"/>
+                            <TextBlock Text="Nazwisko" 
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   Width="180"
+                                   TextAlignment="Center"/>
+                            <TextBlock Text="Ocena 1" 
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   Width="90"
+                                   TextAlignment="Center"/>
+                            <TextBlock Text="Ocena 2" 
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   Width="90"
+                                   TextAlignment="Center"/>
+                            <TextBlock Text="Ocena 3" 
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   Width="90"
+                                   TextAlignment="Center"/>
+                            <TextBlock Text="Ocena 4" 
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   Width="90"
+                                   TextAlignment="Center"/>
+                            <TextBlock Text="Ocena 5" 
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   Width="90"
+                                   TextAlignment="Center"/>
+                            <TextBlock Text="Średnia ocen" 
+                                   FontSize="20"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   Width="130"
+                                   TextAlignment="Center"/>
+
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

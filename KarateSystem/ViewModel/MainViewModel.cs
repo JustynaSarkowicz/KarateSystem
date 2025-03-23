@@ -65,6 +65,7 @@ namespace KarateSystem.ViewModel
         public ICommand ShowClubDegreesMatsViewCommand { get; }
         public ICommand ShowCategoryViewCommand { get; }
         public ICommand ShowTournamentViewCommand { get; }
+        public ICommand ShowKataKumiteViewCommand { get; }
 
         public MainViewModel()
         {
@@ -74,6 +75,7 @@ namespace KarateSystem.ViewModel
             ShowClubDegreesMatsViewCommand = new ViewModelCommand(ExecuteShowClubDegreesMatsViewCommand);
             ShowCategoryViewCommand = new ViewModelCommand(ExecuteShowCategoryViewCommand);
             ShowTournamentViewCommand = new ViewModelCommand(ExecuteShowTournamentViewCommand);
+            ShowKataKumiteViewCommand = new ViewModelCommand(ExecuteShowKataKumiteViewCommand);
 
             //Default view
             ExecuteShowHomeViewCommand(null);
@@ -110,6 +112,12 @@ namespace KarateSystem.ViewModel
             CurrentChildView = new TournamentViewModel();
             Caption = "Turnieje";
             Icon = IconChar.Trophy;
+        }
+        private void ExecuteShowKataKumiteViewCommand(object obj)
+        {
+            CurrentChildView = new KataKumiteViewModel();
+            Caption = "Kata i Kumite";
+            Icon = IconChar.Medal;
         }
     }
 }

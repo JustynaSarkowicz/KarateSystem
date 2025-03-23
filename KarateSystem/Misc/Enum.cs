@@ -15,9 +15,9 @@ namespace KarateSystem.Misc
         }
         public enum Status
         {
-            Otwarty,
             RejestracjaOtwarta,
             RejestracjaZamknięta,
+            Otwarty,
             Zakończony
         }
         public enum Role
