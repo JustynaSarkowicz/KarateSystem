@@ -775,7 +775,7 @@
                             Orientation="Horizontal"
                             VerticalAlignment="Center">
 
-                        <TextBlock Text="Kategorie Kata:"
+                        <TextBlock Text="Kategorie Kumite:"
                                FontSize="16"
                                FontFamily="Montserrat"
                                Foreground="White"
@@ -801,7 +801,7 @@
                             <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Lista zawodników kata"
+                            <TextBlock Text="Lista zawodników Kumite"
                                FontFamily="Montserrat"
                                FontSize="20"
                                Foreground="White"

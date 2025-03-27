@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KarateSystem.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="950" d:DesignWidth="1050">
+             d:DesignHeight="1250" d:DesignWidth="1050">
     <Grid>
         <ScrollViewer Margin="0,0,0,-15"
               Style="{StaticResource CustomScrollViewer}">
@@ -14,8 +14,11 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="400"/>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="120"/>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="400"/>
+                    <RowDefinition Height="120"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
@@ -64,6 +67,23 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+
+                    <TextBlock Text="Mata: "
+                               FontSize="16"
+                               Margin="20,0,5,0"
+                               FontFamily="Montserrat"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                    <TextBox  Width="70" 
+                              Background="Transparent"                                   
+                              FontWeight="Medium"
+                              FontFamily="Montserrat"                            
+                              Foreground="White"
+                              CaretBrush="White"
+                              BorderBrush="White"
+                              BorderThickness="1"                             
+                              VerticalContentAlignment="Center"
+                              IsReadOnly="True"/>
                 </StackPanel>
 
                 <Grid Grid.Row="2"
@@ -76,6 +96,7 @@
                               Height="390">
 
                         <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nr"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Ocena 1"/>
@@ -84,71 +105,307 @@
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Ocena 4"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Ocena 5"/>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Średnia z ocen"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Dogrywka"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
-                <Grid Grid.Row="3"
-                      Margin="0,10,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Border>
+                <Border Background="#1B3663"
+                        CornerRadius="10"
+                        Grid.Row="3"                        
+                        Margin="20,10,20,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Height="90">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        
                         <StackPanel Grid.Row="0"
-                                Orientation="Horizontal"
-                                VerticalAlignment="Center">
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Margin="10,0,10,0">
 
+                            <TextBlock Text="Nr" 
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="60"
+                                       TextAlignment="Center"/>
                             <TextBlock Text="Imię" 
-                                   FontSize="20"
-                                   FontFamily="Montserrat"
-                                   Foreground="White"
-                                   Width="160"
-                                   TextAlignment="Center"/>
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="160"
+                                       TextAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock Text="Nazwisko" 
-                                   FontSize="20"
-                                   FontFamily="Montserrat"
-                                   Foreground="White"
-                                   Width="180"
-                                   TextAlignment="Center"/>
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="180"
+                                       TextAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock Text="Ocena 1" 
-                                   FontSize="20"
-                                   FontFamily="Montserrat"
-                                   Foreground="White"
-                                   Width="90"
-                                   TextAlignment="Center"/>
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="80"
+                                       TextAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock Text="Ocena 2" 
-                                   FontSize="20"
-                                   FontFamily="Montserrat"
-                                   Foreground="White"
-                                   Width="90"
-                                   TextAlignment="Center"/>
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="80"
+                                       TextAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock Text="Ocena 3" 
-                                   FontSize="20"
-                                   FontFamily="Montserrat"
-                                   Foreground="White"
-                                   Width="90"
-                                   TextAlignment="Center"/>
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="80"
+                                       TextAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock Text="Ocena 4" 
-                                   FontSize="20"
-                                   FontFamily="Montserrat"
-                                   Foreground="White"
-                                   Width="90"
-                                   TextAlignment="Center"/>
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="80"
+                                       TextAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock Text="Ocena 5" 
-                                   FontSize="20"
-                                   FontFamily="Montserrat"
-                                   Foreground="White"
-                                   Width="90"
-                                   TextAlignment="Center"/>
-                            <TextBlock Text="Średnia ocen" 
-                                   FontSize="20"
-                                   FontFamily="Montserrat"
-                                   Foreground="White"
-                                   Width="130"
-                                   TextAlignment="Center"/>
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="80"
+                                       TextAlignment="Center"
+                                       Margin="10,0,0,0"/>
+                            <TextBlock Text="Średnia" 
+                                       FontSize="20"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"
+                                       Width="80"
+                                       TextAlignment="Center"
+                                       Margin="10,0,0,0"/>
 
                         </StackPanel>
-                    </Border>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="1"
+                                    Margin="0,5,0,5">
+                            <TextBox Width="60" 
+                                     Margin="10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                            <TextBox Width="160" 
+                                     Margin="0,5,10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                            <TextBox Width="180" 
+                                     Margin="0,5,10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                            <TextBox Width="80" 
+                                     Margin="0,5,10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                            <TextBox Width="80" 
+                                     Margin="0,5,10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                            <TextBox Width="80" 
+                                     Margin="0,5,10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                            <TextBox Width="80" 
+                                     Margin="0,5,10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                            <TextBox Width="80" 
+                                     Margin="0,5,10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                            <TextBox Width="80" 
+                                     Margin="0,5,10,5"
+                                     Background="Transparent"                                   
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="White"
+                                     BorderBrush="White"
+                                     BorderThickness="0,0,0,1"                             
+                                     VerticalContentAlignment="Center"
+                                     IsReadOnly="True"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="160"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Vertical"
+                                Grid.Column="0">
+
+                        <TextBlock Text="Dogrywki:"
+                               FontSize="20"
+                               Margin="30,0,5,10"
+                               FontFamily="Montserrat"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                        <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                                  CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                  Style="{DynamicResource DataGridStyle1}"
+                                  Height="110"
+                                  Margin="30,0,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nr"/>
+                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Zawodnik"/>
+                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Czy dogrywka?"/>
+                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Czy wygrany?"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                <Button Grid.Column="2"
+                        x:Name="btnSetRates" 
+                        Command="{Binding LoginCommand}"                            
+                        Content="Zapisz"                            
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Width="120"
+                        Margin="0,5,20,0"
+                        Style="{StaticResource contentButton}">
+                    
+                </Button>
+                </Grid>
+                <Border Grid.Row="5"
+                        BorderBrush="#5D83B1"
+                        BorderThickness="0,1,0,0">
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left">
+                    <TextBlock Text="Kategoria Kumite:"
+                               FontSize="16"
+                               FontFamily="Montserrat"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbTourCatKumite"
+                              Width="350"
+                              Style="{StaticResource comboboxStyle}"
+                              Margin="10,0,0,0">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" />
+                                        <TextBlock Text="{Binding Name}" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="Mata: "
+                               FontSize="16"
+                               Margin="20,0,5,0"
+                               FontFamily="Montserrat"
+                               Foreground="White"
+                               VerticalAlignment="Center"/>
+                        <TextBox  Width="70" 
+                              Background="Transparent"                                   
+                              FontWeight="Medium"
+                              FontFamily="Montserrat"                            
+                              Foreground="White"
+                              CaretBrush="White"
+                              BorderBrush="White"
+                              BorderThickness="1"                             
+                              VerticalContentAlignment="Center"
+                              IsReadOnly="True"/>
+                    </StackPanel>
+                </Border>
+                <Grid Grid.Row="6"
+                      VerticalAlignment="Top"
+                      Margin="20,0,20,0">
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              Height="390">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nr"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Zawodnik A"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Punkty A"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Zawodnik B"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Liczba dogrywek"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Czas trwania"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Walkower"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wygrany"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
             </Grid>
         </ScrollViewer>

@@ -159,7 +159,7 @@
             <Border x:Name="BorderArrow" Grid.Column="1"
                     CornerRadius="0,10,10,0"
                     Margin="1" 
-                    Background="#1B3663" />
+                    Background="#1B3663"/>
             <Path x:Name="Arrow"
                   Grid.Column="0"     
                   Fill="White"

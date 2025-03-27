@@ -11,7 +11,8 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent">
+        Background="Transparent"
+        Icon="pack://application:,,,/Images/programIcon.ico">
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
@@ -33,6 +34,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:KataKumiteViewModel}">
             <local:KataKumiteView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+            <local:SettingsView/>
         </DataTemplate>
     </Window.Resources>
     <Border CornerRadius="10"
@@ -128,7 +132,8 @@
                             <TextBlock Text="Wyniki i analiza" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
-                    <RadioButton Style="{StaticResource menuButton}">
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Command="{Binding ShowSettingsViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Cog" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Ustawienia" Style="{StaticResource menuButtonText}"/>

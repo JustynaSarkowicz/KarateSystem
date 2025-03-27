@@ -66,6 +66,7 @@ namespace KarateSystem.ViewModel
         public ICommand ShowCategoryViewCommand { get; }
         public ICommand ShowTournamentViewCommand { get; }
         public ICommand ShowKataKumiteViewCommand { get; }
+        public ICommand ShowSettingsViewCommand { get; }
 
         public MainViewModel()
         {
@@ -76,6 +77,7 @@ namespace KarateSystem.ViewModel
             ShowCategoryViewCommand = new ViewModelCommand(ExecuteShowCategoryViewCommand);
             ShowTournamentViewCommand = new ViewModelCommand(ExecuteShowTournamentViewCommand);
             ShowKataKumiteViewCommand = new ViewModelCommand(ExecuteShowKataKumiteViewCommand);
+            ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
 
             //Default view
             ExecuteShowHomeViewCommand(null);
@@ -118,6 +120,12 @@ namespace KarateSystem.ViewModel
             CurrentChildView = new KataKumiteViewModel();
             Caption = "Kata i Kumite";
             Icon = IconChar.Medal;
+        }
+        private void ExecuteShowSettingsViewCommand(object obj)
+        {
+            CurrentChildView = new SettingsViewModel();
+            Caption = "Ustawienia";
+            Icon = IconChar.Cog;
         }
     }
 }

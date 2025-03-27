@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="Images\kanji_kan.png" />
     <None Remove="Images\kanku_kan.png" />
+    <None Remove="Images\programIcon.ico" />
     <None Remove="Images\user-icon.png" />
   </ItemGroup>
 
@@ -30,6 +31,7 @@
     <Resource Include="Images\kanku_kan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\programIcon.ico" />
     <Content Include="Images\password-icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
