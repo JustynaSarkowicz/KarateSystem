@@ -16,7 +16,7 @@ namespace KarateSystem.Models
             {
                 var today = DateTime.Today;
                 var age = today.Year - CompDateOfBirth.Year;
-                if (CompDateOfBirth.Date > today.AddYears(-age)) age--;
+                if (CompDateOfBirth.Date > today.AddYears(-age)) age--; 
                 return age;
             }
         }

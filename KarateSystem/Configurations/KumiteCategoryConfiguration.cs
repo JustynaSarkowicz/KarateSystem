@@ -20,6 +20,10 @@ namespace KarateSystem.Configurations
             builder.Property(t => t.KumiteCatAgeMax).IsRequired();
             builder.Property(t => t.KumiteCatWeightMin).IsRequired().HasColumnType("decimal(5,2)");
             builder.Property(t => t.KumiteCatWeightMax).IsRequired().HasColumnType("decimal(5,2)");
+
+            builder.HasMany(kc => kc.TourCatKumites)
+               .WithOne(tck => tck.KumiteCategory)
+               .HasForeignKey(tck => tck.KumiteCatId);
         }
     }
 }

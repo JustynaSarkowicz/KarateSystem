@@ -25,7 +25,11 @@ namespace KarateSystem.Configurations
                    .WithMany(c => c.KataCategories)
                    .HasForeignKey(c => c.KataCatDegreeId)
                    .IsRequired()
-                   .OnDelete(DeleteBehavior.Cascade); // ?
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(kc => kc.TourCatKatas)
+               .WithOne(tck => tck.KataCategory)
+               .HasForeignKey(tck => tck.KataCatId);
         }
     }
 }

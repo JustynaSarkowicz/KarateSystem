@@ -13,6 +13,7 @@ namespace KarateSystem.Models
         public int KumiteCatAgeMax { get; set; }
         public decimal KumiteCatWeightMin { get; set; }
         public decimal KumiteCatWeightMax { get; set; }
+        public ICollection<TourCatKumite> TourCatKumites { get; set; } = new List<TourCatKumite>();
     }
 
 }

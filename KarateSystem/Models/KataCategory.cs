@@ -12,6 +12,7 @@ namespace KarateSystem.Models
         public int KataCatAgeMax { get; set; }
         public int KataCatDegreeId { get; set; }
         public Degree Degree { get; set; }
+        public ICollection<TourCatKata> TourCatKatas { get; set; } = new List<TourCatKata>();
 
     }
 }

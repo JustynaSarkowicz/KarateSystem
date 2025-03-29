@@ -10,7 +10,9 @@ namespace KarateSystem.Models
         public string TourName{ get; set; }
         public string TourPlace { get; set; }
         public DateTime TourDate{  get; set; }
-        public string Status{  get; set; }
+        public int Status{  get; set; }
         public ICollection<TourCompetitor> TourCompetitors { get; set; } = new List<TourCompetitor>();
+        public ICollection<TourCatKata> TourCatKatas { get; set; } = new List<TourCatKata>();
+        public ICollection<TourCatKumite> TourCatKumites { get; set; } = new List<TourCatKumite>();
     }
 }

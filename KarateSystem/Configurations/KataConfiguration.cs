@@ -16,14 +16,12 @@ namespace KarateSystem.Configurations
             builder.Property(t => t.KataRate4).HasColumnType("decimal(5,1)");
             builder.Property(t => t.KataRate5).HasColumnType("decimal(5,1)");
             builder.Property(t => t.KataScore).HasColumnType("decimal(5,2)");
+            builder.Property(t => t.Overtime);
 
-            // Relacja: mata jest przypiasana do wielu kata
-            //          kata jest przypisane do jednej maty (1:N)
-            builder.HasOne(t => t.Mat)
-                   .WithMany(t => t.Katas)
-                   .HasForeignKey(t => t.KataMatId)
-                   .IsRequired()
-                   .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(k => k.TourCompetitor)
+               .WithOne(tc => tc.Kata)
+               .HasForeignKey<Kata>(k => k.TourCompId)
+               .IsRequired();
         }
     }
 }

@@ -11,19 +11,15 @@ namespace KarateSystem.Configurations
             builder.HasKey(t => t.MatId);
             builder.Property(t => t.MatName).IsRequired();
 
-            // Relacja: mata może być przypiasana do wielu kata
-            //          kata jest przypisane do jednej maty (1:N)
-            builder.HasMany(c => c.Katas)
-                   .WithOne(c => c.Mat)
-                   .HasForeignKey(c => c.KataMatId)
-                   .OnDelete(DeleteBehavior.Cascade); // ?
+            // Relacja: mata może być przypiasana do wielu kategorii kata
+            //          kategoria kata jest przypisane do jednej maty (1:N)
+            builder.HasMany(m => m.TourCatKatas)
+               .WithOne(tck => tck.Mat)
+               .HasForeignKey(tck => tck.MatId);
 
-            // Relacja: jedna mata może być przypisana do wielu walk
-            //          walka jest przypisana do jednej maty (1:N)
-            builder.HasMany(c => c.Fights)
-                   .WithOne(c => c.Mat)
-                   .HasForeignKey(c => c.FightMatId)
-                   .OnDelete(DeleteBehavior.Cascade); // ?
+            builder.HasMany(m => m.TourCatKumites)
+               .WithOne(tck => tck.Mat)
+               .HasForeignKey(tck => tck.MatId);
         }
     }
 }

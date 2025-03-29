@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:KarateSystem.Views"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
-             d:DesignHeight="950" d:DesignWidth="1050">
+             d:DesignHeight="1200" d:DesignWidth="1050">
     <TabControl Background="Transparent"
                 Margin="-15,0,0,-15"
                 BorderThickness="0,5,0,0"
@@ -16,14 +16,14 @@
     <ScrollViewer Margin="0,0,0,0"
               Style="{StaticResource CustomScrollViewer}">
         <Grid Margin="10,10,10,0"
-              Height="950">
+              Height="1150">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="220"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="40"/>
-                <RowDefinition Height="220"/>
                 <RowDefinition Height="320"/>
+                <RowDefinition Height="420"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -432,7 +432,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"/>
-                        <RowDefinition Height="220"/>
+                        <RowDefinition Height="320"/>
                         <RowDefinition />
                     </Grid.RowDefinitions>
 

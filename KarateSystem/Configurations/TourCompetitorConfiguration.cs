@@ -18,12 +18,28 @@ namespace KarateSystem.Configurations
             builder.HasOne(t => t.Tournament)
                    .WithMany(t => t.TourCompetitors)
                    .HasForeignKey(t => t.TourId)
-                   .OnDelete(DeleteBehavior.Cascade); // ??
+                   .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(t => t.Competitor)
                    .WithMany(c => c.TourCompetitors)
                    .HasForeignKey(t => t.CompId)
-                   .OnDelete(DeleteBehavior.Cascade);  // ??
+                   .OnDelete(DeleteBehavior.Restrict); 
+
+            builder.HasOne(t => t.TourCatKata)
+                   .WithMany(c => c.TourCompetitors)
+                   .HasForeignKey(t => t.TourCatKataId)
+                   .OnDelete(DeleteBehavior.Restrict); 
+
+            builder.HasOne(t => t.TourCatKumite)
+                   .WithMany(c => c.TourCompetitors)
+                   .HasForeignKey(t => t.TourCatKumiteId)
+                   .OnDelete(DeleteBehavior.Restrict);  
+
+            builder.HasOne(tc => tc.Kata)
+               .WithOne(k => k.TourCompetitor)
+               .HasForeignKey<Kata>(k => k.TourCompId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);  
         }
     }
 }

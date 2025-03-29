@@ -18,13 +18,11 @@ namespace KarateSystem.Configurations
             builder.Property(t => t.ClubName).IsRequired();
             builder.Property(t => t.ClubPlace).IsRequired();
 
-
             // Relacja: jeden klub ma wielu zawodników
             //          zawodnik należy do jednego klubu (1:N)
             builder.HasMany(c => c.Competitors)
               .WithOne(c => c.Club)
-              .HasForeignKey(c => c.CompClubId) 
-              .OnDelete(DeleteBehavior.Cascade); //??
+              .HasForeignKey(c => c.CompClubId);
         }
     }
 }

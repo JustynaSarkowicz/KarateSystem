@@ -16,20 +16,17 @@ namespace KarateSystem.Configurations
             builder.HasKey(t => t.DegreeId);
             builder.Property(c => c.DegreeName).IsRequired();
 
-
             // Relacja: jeden stopień ma wielu zawodników
             //          zawodnik ma jeden stopień (1:N)
             builder.HasMany(c => c.Competitors)
                    .WithOne(c => c.Degree)
-                   .HasForeignKey(c => c.CompDegreeId)
-                   .OnDelete(DeleteBehavior.Cascade); // ?
+                   .HasForeignKey(c => c.CompDegreeId);
 
             // Relacja: jeden stopień należy do wielu kategorii kata
             //          kategoria kata ma jeden stopień (1:N)
             builder.HasMany(c => c.KataCategories)
                    .WithOne(c => c.Degree)
-                   .HasForeignKey(c => c.KataCatDegreeId)
-                   .OnDelete(DeleteBehavior.Cascade); // ?
+                   .HasForeignKey(c => c.KataCatDegreeId);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace KarateSystem.Models
     {
         public int MatId { get; set; }
         public string MatName { get; set; }
-        public ICollection<Kata> Katas { get; set; } = new List<Kata>();
-        public ICollection<Fight> Fights { get; set; } = new List<Fight>();
+        public ICollection<TourCatKata> TourCatKatas { get; set; } = new List<TourCatKata>();
+        public ICollection<TourCatKumite> TourCatKumites { get; set; } = new List<TourCatKumite>();
     }
 }
