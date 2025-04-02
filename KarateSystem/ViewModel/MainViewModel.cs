@@ -11,7 +11,8 @@ public class MainViewModel : ViewModelBase
     private string _caption;
     private IconChar _icon;
 
-    //private readonly IServiceProvider _serviceProvider;
+    private readonly CompetitorsViewModel _competitorsViewModel;
+    private readonly ClubsDegreesMatsViewModel _clubsDegreesMatsViewModel;
     private readonly ICompetitorRepository _competitorRepository;
 
     //Properties
@@ -66,11 +67,12 @@ public class MainViewModel : ViewModelBase
     public ICommand ShowKataKumiteViewCommand { get; }
     public ICommand ShowSettingsViewCommand { get; }
 
-    public MainViewModel(ICompetitorRepository competitorRepository, IServiceProvider serviceProvider)
+    public MainViewModel(CompetitorsViewModel competitorsViewModel,
+        ClubsDegreesMatsViewModel clubsDegreesMatsViewModel)
     {
-        _competitorRepository = competitorRepository;
+        _competitorsViewModel = competitorsViewModel;
+        _clubsDegreesMatsViewModel = clubsDegreesMatsViewModel;
 
-        //Initialize commands
         ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
         ShowCompetitorViewCommand = new ViewModelCommand(ExecuteShowCompetitorViewCommand);
         ShowClubDegreesMatsViewCommand = new ViewModelCommand(ExecuteShowClubDegreesMatsViewCommand);
@@ -79,13 +81,12 @@ public class MainViewModel : ViewModelBase
         ShowKataKumiteViewCommand = new ViewModelCommand(ExecuteShowKataKumiteViewCommand);
         ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
 
-        //Default view
         ExecuteShowHomeViewCommand(null);
     }
 
     private void ExecuteShowCompetitorViewCommand(object obj)
     {
-        CurrentChildView = new CompetitorsViewModel(_competitorRepository);
+        CurrentChildView = _competitorsViewModel;
         Caption = "Zawodnicy";
         Icon = IconChar.UserGroup;
     }
@@ -99,7 +100,7 @@ public class MainViewModel : ViewModelBase
 
     private void ExecuteShowClubDegreesMatsViewCommand(object obj)
     {
-        CurrentChildView = new ClubsDegreesMatsViewModel();
+        CurrentChildView = _clubsDegreesMatsViewModel;
         Caption = "Kluby, Stopnie, Maty";
         Icon = IconChar.Pen;
     }

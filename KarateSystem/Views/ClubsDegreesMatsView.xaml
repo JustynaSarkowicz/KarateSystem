@@ -40,12 +40,14 @@
                       Style="{DynamicResource DataGridStyle1}"
                       Height="290"
                       VerticalAlignment="Top"
-                      Grid.Row="1">
+                      Grid.Row="1"
+                      ItemsSource="{Binding Clubs}"
+                      SelectedItem="{Binding SelectedClub, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Miejsce"/>
+                    <DataGridTextColumn Binding="{Binding ClubId}" ClipboardContentBinding="{x:Null}" Header="Id" Width="50"/>
+                    <DataGridTextColumn Binding="{Binding ClubPlace}" ClipboardContentBinding="{x:Null}" Header="Miejsce" Width="200"/>
+                    <DataGridTextColumn Binding="{Binding ClubName}" ClipboardContentBinding="{x:Null}" Header="Nazwa" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -62,7 +64,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Nazwa"
+                    <TextBlock Text="Miejsce"
                                    Foreground="#BCBEE0"
                                    FontFamily="Montserrat"
                                    FontSize="14"
@@ -74,31 +76,33 @@
                             Background="#5D83B1"
                             Grid.Row="1"
                             Grid.Column="0">
-                        <TextBox x:Name="tbClubName"  Padding="3"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             IsReadOnly="True"
-                             Style="{StaticResource textBoxEnabled}"/>
+                        <TextBox x:Name="tbClubPlace" 
+                                 Text="{Binding SelectedClub.ClubPlace, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="3"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource textBoxEnabled}"/>
                     </Border>
-                    <TextBlock Text="Miejsce"
+                    <TextBlock Text="Nazwa"
                                Foreground="#BCBEE0"
                                FontFamily="Montserrat"
                                FontSize="14"
                                Grid.Column="1"
                                Grid.Row="0"
                                Margin="5,0,5,0"/>
-                    <TextBlock/>
                     <Border Margin="5,3,10,3"
                             CornerRadius="10"
                             Background="#5D83B1"
                             Grid.Row="1"
                             Grid.Column="1">
-                        <TextBox x:Name="tbClubPlace"
-                             Padding="3"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             IsReadOnly="True"
-                             Style="{StaticResource textBoxEnabled}"/>
+                        <TextBox x:Name="tbClubName"
+                                 Text="{Binding SelectedClub.ClubName, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="3"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource textBoxEnabled}"/>
                     </Border>
                 </Grid>
             </Border>
@@ -112,8 +116,8 @@
                     Margin="3">
 
             <Button x:Name="btnSaveClub"
-                    Width="80"
-                    Command="{Binding LoginCommand}"                            
+                    Width="80"    
+                    Command="{Binding EditClubCommand}"                            
                     Content="Zapisz"
                     Click="btnSaveClub_Click"
                     Margin="0,0,5,0"

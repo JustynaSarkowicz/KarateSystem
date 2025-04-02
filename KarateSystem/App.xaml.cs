@@ -30,24 +30,27 @@ namespace KarateSystem
 
         private void ConfigureServices(ServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                     options.UseSqlServer(JsonConfiguration.GetSqlConnectionString()),
+                     ServiceLifetime.Transient);
 
             services.AddScoped<ICompetitorRepository, CompetitorRepository>();
+            services.AddScoped<IClubRepository, ClubRepository>();
+            services.AddScoped<CompetitorsViewModel>();
+            services.AddScoped<ClubsDegreesMatsViewModel>();
             services.AddScoped<MainViewModel>();
 
-            services.AddSingleton<MainWindow>(provider =>
+            services.AddScoped<MainWindow>(provider => new MainWindow()
             {
-                var window = new MainWindow();
-                window.DataContext = provider.GetRequiredService<MainViewModel>(); // Ustawienie ViewModel
-                return window;
+                DataContext = provider.GetRequiredService<MainViewModel>() // Ustawienie ViewModel
             });
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var mainWindow = serviceProvider.GetService<MainWindow>();
-            mainWindow.Show();
+            MainWindow = serviceProvider.GetRequiredService<MainWindow>();
+            MainWindow.Show();
         }
     }
 }

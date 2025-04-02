@@ -7,39 +7,39 @@ namespace KarateSystem.ViewModel
 {
     public class CompetitorsViewModel : ViewModelBase
     {
-        private Competitor _selectedComp;
-        private ObservableCollection<Competitor> _competitors;
-        private ObservableCollection<Tournament> _tournaments;
+        private Competitor selectedComp;
+        private ObservableCollection<Competitor> competitors;
+        private ObservableCollection<Tournament> tournaments;
 
         private readonly ICompetitorRepository _competitorRepository;
 
         public List<Gender> Genders => Enum.GetValues(typeof(Gender)).Cast<Gender>().ToList();
         public ObservableCollection<Competitor> Competitors
         {
-            get => _competitors;
+            get => competitors;
             set
             {
-                _competitors = value;
+                competitors = value;
                 OnPropertyChanged(nameof(Competitors));
             }
         }
         public ObservableCollection<Tournament> Tournaments
         {
-            get => _tournaments;
+            get => tournaments;
             set
             {
-                _tournaments = value;
+                tournaments = value;
                 OnPropertyChanged(nameof(Tournaments));
             }
         }
         public Competitor SelectedCompetitor
         {
-            get => _selectedComp;
+            get => selectedComp;
             set
             {
-                if (_selectedComp != value)
+                if (selectedComp != value)
                 {
-                    _selectedComp = value;
+                    selectedComp = value;
                     OnPropertyChanged(nameof(SelectedCompetitor)); 
                 }
             }
@@ -47,8 +47,12 @@ namespace KarateSystem.ViewModel
         public CompetitorsViewModel(ICompetitorRepository competitorRepository)
         {
             _competitorRepository = competitorRepository;
-            _competitors = new ObservableCollection<Competitor>(competitorRepository.GetAllCompetitors());
-            _tournaments = new ObservableCollection<Tournament>();
+            LoadCompetitorsAsync();
+        }
+        private async void LoadCompetitorsAsync()
+        {
+            var allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
+            Competitors = new ObservableCollection<Competitor>(allCompetitors);
         }
     }
 }

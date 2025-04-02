@@ -4,9 +4,9 @@ namespace KarateSystem.Repository.Interfaces;
 
 public interface ICompetitorRepository
 {
-    List<Competitor> GetAllCompetitors();
-    Competitor? GetCompetitor(int compId);
-    List<Tournament> GetCompetiorTournament(int compId);
-    string GetCompeitorTourCatKata(int compId, int tourId);
-    string GetCompeitorTourCatKumite(int compId, int tourId);
+    Task<List<Competitor>> GetAllCompetitorsAsync();
+    Task<Competitor?> GetCompetitorAsync(int compId);
+    Task<List<Tournament>> GetCompetitorTournamentAsync(int compId);
+    Task<string> GetCompetitorTourCatKataAsync(int compId, int tourId);
+    Task<string> GetCompetitorTourCatKumiteAsync(int compId, int tourId);
 }

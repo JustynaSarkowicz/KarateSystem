@@ -25,11 +25,6 @@ namespace KarateSystem.Views
             InitializeComponent();
         }
 
-        private void btnSaveClub_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btnEditClub_Click(object sender, RoutedEventArgs e)
         {
             tbClubName.IsReadOnly = false;
@@ -38,7 +33,8 @@ namespace KarateSystem.Views
 
         private void btnAddNewClub_Click(object sender, RoutedEventArgs e)
         {
-
+            tbClubName.Text = "";
+            tbClubPlace.Text = "";
         }
 
         private void btnSaveDegree_Click(object sender, RoutedEventArgs e)

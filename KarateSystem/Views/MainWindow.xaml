@@ -20,6 +20,9 @@
         <DataTemplate DataType="{x:Type viewModel:ClubsDegreesMatsViewModel}">
             <local:ClubsDegreesMatsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:CompetitorsViewModel}">
+            <local:CompetitorsView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:CategoryViewModel}">
             <local:CategoryView/>
         </DataTemplate>
@@ -33,7 +36,6 @@
             <local:SettingsView/>
         </DataTemplate>
     </Window.Resources>
-    
     <Border CornerRadius="10"
         BorderThickness="1">
         <Border.BorderBrush>
@@ -94,7 +96,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Command="{Binding ShowCompetitorViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="User" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Zawodnicy" Style="{StaticResource menuButtonText}"/>

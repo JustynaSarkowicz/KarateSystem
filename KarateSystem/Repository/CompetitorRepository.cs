@@ -8,48 +8,54 @@ namespace KarateSystem.Repository
     public class CompetitorRepository : ICompetitorRepository
     {
         private readonly ApplicationDbContext _dbContext;
+
         public CompetitorRepository(ApplicationDbContext context)
         {
             _dbContext = context;
         }
-
-        public List<Competitor> GetAllCompetitors()
+        public async Task<List<Competitor>> GetAllCompetitorsAsync()
         {
-            var competitors = _dbContext.Competitors
+            var competitors = await _dbContext.Competitors
                 .Include(c => c.Degree)
                 .Include(c => c.Club)
-                .ToList();
+                .ToListAsync();  
             return competitors;
         }
-        public Competitor? GetCompetitor(int compId)
+        public async Task<Competitor?> GetCompetitorAsync(int compId)
         {
-            var competitor = _dbContext.Competitors.Where(c => c.CompId == compId).FirstOrDefault();
-            if (competitor == null) return null;
+            var competitor = await _dbContext.Competitors
+                .Where(c => c.CompId == compId)
+                .FirstOrDefaultAsync();  
             return competitor;
         }
-        public List<Tournament> GetCompetiorTournament(int compId)
+        public async Task<List<Tournament>> GetCompetitorTournamentAsync(int compId)
         {
-            var tournaments = _dbContext.TourCompetitors
-                                        .Where(tc => tc.CompId == compId)
-                                        .Select(tc => tc.Tournament)
-                                        .ToList();
+            var tournaments = await _dbContext.TourCompetitors
+                .Where(tc => tc.CompId == compId)
+                .Select(tc => tc.Tournament)
+                .ToListAsync();  
             return tournaments;
         }
-        public string GetCompeitorTourCatKata(int compId, int tourId)
+        public async Task<string> GetCompetitorTourCatKataAsync(int compId, int tourId)
         {
-            var kataCategory = _dbContext.TourCompetitors
-                                        .Where(tc => tc.CompId == compId && tc.TourId == tourId)
-                                        .Select(tc => tc.TourCatKata.KataCategory.KataCatName).ToString();
+            var kataCategory = await _dbContext.TourCompetitors
+                .Where(tc => tc.CompId == compId && tc.TourId == tourId)
+                .Select(tc => tc.TourCatKata.KataCategory.KataCatName)
+                .FirstOrDefaultAsync();  
+
             if (string.IsNullOrEmpty(kataCategory)) return "";
             return kataCategory;
         }
-        public string GetCompeitorTourCatKumite(int compId, int tourId)
+        public async Task<string> GetCompetitorTourCatKumiteAsync(int compId, int tourId)
         {
-            var kumiteCategory = _dbContext.TourCompetitors
-                                        .Where(tc => tc.CompId == compId && tc.TourId == tourId)
-                                        .Select(tc => tc.TourCatKumite.KumiteCategory.KumiteCatName).ToString();
+            var kumiteCategory = await _dbContext.TourCompetitors
+                .Where(tc => tc.CompId == compId && tc.TourId == tourId)
+                .Select(tc => tc.TourCatKumite.KumiteCategory.KumiteCatName)
+                .FirstOrDefaultAsync(); 
+
             if (string.IsNullOrEmpty(kumiteCategory)) return "";
             return kumiteCategory;
         }
     }
+
 }

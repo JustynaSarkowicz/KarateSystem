@@ -20,7 +20,8 @@ namespace KarateSystem.Configurations
         public DbSet<TourCatKata> TourCatKatas { get; set; }
         public DbSet<TourCatKumite> TourCatKumites { get; set; }
 
-        public ApplicationDbContext()
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
         {
         }
 

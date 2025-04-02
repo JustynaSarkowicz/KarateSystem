@@ -15,12 +15,9 @@ namespace KarateSystem.Views
     /// </summary>
     public partial class CompetitorsView : UserControl
     {
-        private readonly ICompetitorRepository _competitorRepository;
-        public CompetitorsView(ICompetitorRepository competitorRepository)
+        public CompetitorsView()
         { 
-            _competitorRepository = competitorRepository;
             InitializeComponent();
-            DataContext = new CompetitorsViewModel(_competitorRepository);
         }
 
         private void btnEditCompetitor_Click(object sender, RoutedEventArgs e)
@@ -92,22 +89,6 @@ namespace KarateSystem.Views
 
         private void dgvCompetitors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var viewModel = (CompetitorsViewModel)DataContext;
-            viewModel.Tournaments.Clear();
-            if (viewModel.SelectedCompetitor is Competitor selectedCompetitor && viewModel.SelectedCompetitor != null)
-            {
-                // Przypisz dane do TextBox-ów
-                tbCompetitorName.Text = selectedCompetitor.CompFirstName;
-                tbCompetitorSurname.Text = selectedCompetitor.CompLastName;
-                tbCompetitorDateOfBirth.Text = selectedCompetitor.CompDateOfBirth.ToString("dd.MM.yyyy");
-                tbCompetitorAge.Text = selectedCompetitor.CompAge.ToString();
-                tbCompetitorWeight.Text = selectedCompetitor.CompWeight.ToString();
-                cbCompetitorGender.SelectedItem = selectedCompetitor.CompGender == "Kobieta" ? Gender.Kobieta : Gender.Mężczyzna;
-                foreach (var tour in viewModel.Tournaments)
-                {
-                    //viewModel.SelectedCompetitor.CompId;
-                }
-            }
         }
     }
 }
