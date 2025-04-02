@@ -3,6 +3,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using KarateSystem.Misc;
+using KarateSystem.Models;
+using KarateSystem.Repository.Interfaces;
+using KarateSystem.ViewModel;
+using static KarateSystem.Misc.Enum;
 
 namespace KarateSystem.Views
 {
@@ -11,9 +15,12 @@ namespace KarateSystem.Views
     /// </summary>
     public partial class CompetitorsView : UserControl
     {
-        public CompetitorsView()
-        {
+        private readonly ICompetitorRepository _competitorRepository;
+        public CompetitorsView(ICompetitorRepository competitorRepository)
+        { 
+            _competitorRepository = competitorRepository;
             InitializeComponent();
+            DataContext = new CompetitorsViewModel(_competitorRepository);
         }
 
         private void btnEditCompetitor_Click(object sender, RoutedEventArgs e)
@@ -80,6 +87,26 @@ namespace KarateSystem.Views
             if (text.Length > 10)
             {
                 e.Handled = true;
+            }
+        }
+
+        private void dgvCompetitors_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var viewModel = (CompetitorsViewModel)DataContext;
+            viewModel.Tournaments.Clear();
+            if (viewModel.SelectedCompetitor is Competitor selectedCompetitor && viewModel.SelectedCompetitor != null)
+            {
+                // Przypisz dane do TextBox-ów
+                tbCompetitorName.Text = selectedCompetitor.CompFirstName;
+                tbCompetitorSurname.Text = selectedCompetitor.CompLastName;
+                tbCompetitorDateOfBirth.Text = selectedCompetitor.CompDateOfBirth.ToString("dd.MM.yyyy");
+                tbCompetitorAge.Text = selectedCompetitor.CompAge.ToString();
+                tbCompetitorWeight.Text = selectedCompetitor.CompWeight.ToString();
+                cbCompetitorGender.SelectedItem = selectedCompetitor.CompGender == "Kobieta" ? Gender.Kobieta : Gender.Mężczyzna;
+                foreach (var tour in viewModel.Tournaments)
+                {
+                    //viewModel.SelectedCompetitor.CompId;
+                }
             }
         }
     }

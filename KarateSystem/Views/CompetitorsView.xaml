@@ -116,22 +116,26 @@
                         Style="{StaticResource contentButton}">
                 </Button>
             </Grid>
-                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                <DataGrid x:Name="dgvCompetitors" 
+                          SelectionChanged="dgvCompetitors_SelectionChanged"
+                          RowStyle="{DynamicResource DataGridRowStyle1}" 
                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                           Style="{DynamicResource DataGridStyle1}"
-                          Grid.Row="2">
+                          Grid.Row="2"
+                          ItemsSource="{Binding Competitors}"
+                          SelectedItem="{Binding SelectedCompetitor}">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopień"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Klub"/>
+                        <DataGridTextColumn Binding="{Binding CompId}" ClipboardContentBinding="{x:Null}" Header="ID" Width="50"/>
+                        <DataGridTextColumn Binding="{Binding CompFirstName}" ClipboardContentBinding="{x:Null}" Header="Imię" Width="150"/>
+                        <DataGridTextColumn Binding="{Binding CompLastName}" ClipboardContentBinding="{x:Null}" Header="Nazwisko" Width="150"/>
+                    <DataGridTextColumn Binding="{Binding CompDateOfBirth, StringFormat='dd.MM.yyyy'}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia" Width="120"/>
+                        <DataGridTextColumn Binding="{Binding CompAge}" ClipboardContentBinding="{x:Null}" Header="Wiek" Width="70"/>
+                        <DataGridTextColumn Binding="{Binding CompGender}" ClipboardContentBinding="{x:Null}" Header="Płeć" Width="120"/>
+                        <DataGridTextColumn Binding="{Binding CompWeight}" ClipboardContentBinding="{x:Null}" Header="Waga" Width="80"/>
+                        <DataGridTextColumn Binding="{Binding Degree.DegreeName}" ClipboardContentBinding="{x:Null}" Header="Stopień" Width="100"/>
+                        <DataGridTextColumn Binding="{Binding Club.ClubName}" ClipboardContentBinding="{x:Null}" Header="Klub" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <Border Grid.Row="3"
@@ -258,6 +262,7 @@
                                      BorderBrush="White"
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
+                                     TextAlignment="Center"
                                      IsReadOnly="True"
                                      Style="{StaticResource textBoxEnabled}"/>
                             <TextBox x:Name="tbCompetitorSurname"
@@ -272,6 +277,7 @@
                                      BorderBrush="White"
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
+                                     TextAlignment="Center"
                                      IsReadOnly="True"
                                      Style="{StaticResource textBoxEnabled}"/>
                             <TextBox x:Name="tbCompetitorDateOfBirth"
@@ -286,6 +292,7 @@
                                      BorderBrush="White"
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
+                                     TextAlignment="Center"
                                      IsReadOnly="True"
                                      TextChanged="tbCompetitorDateOfBirth_TextChanged"
                                      Style="{StaticResource textBoxEnabled}"
@@ -302,6 +309,7 @@
                                      BorderBrush="White"
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
+                                     TextAlignment="Center"
                                      IsReadOnly="True"
                                      Style="{StaticResource textBoxEnabled}"/>
                             <TextBox x:Name="tbCompetitorWeight"
@@ -316,53 +324,29 @@
                                      BorderBrush="White"
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
+                                     TextAlignment="Center"
                                      IsReadOnly="True"
                                      Style="{StaticResource textBoxEnabled}"/>
                             <ComboBox x:Name="cbCompetitorGender"
-                                  Width="180"
-                                  Style="{StaticResource comboboxStyle}"
-                                  Margin="5, 0,0,8"
-                                  IsEnabled="False">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Name}" />
-                                            <TextBlock Text="{Binding Name}" />
-                                            <TextBlock Text="{Binding Name}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                                      Width="180"
+                                      Style="{StaticResource comboboxStyle}"
+                                      Margin="5, 0,0,8"
+                                      IsEnabled="False"
+                                      ItemsSource="{Binding Genders}" 
+                                      SelectedItem="{Binding CompGender, Mode=TwoWay}"/>
+
                             <ComboBox x:Name="cbCompetitorDegree"
                                   Width="180"
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="5, 0,0,8"
-                                  IsEnabled="False">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Name}" />
-                                            <TextBlock Text="{Binding Name}" />
-                                            <TextBlock Text="{Binding Name}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                                  IsEnabled="False"/>
+
                             <ComboBox x:Name="cbCompetitorClub"
                                   Width="180"
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="5, 0,0 ,0"
-                                  IsEnabled="False">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Name}" />
-                                            <TextBlock Text="{Binding Name}" />
-                                            <TextBlock Text="{Binding Name}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                                  IsEnabled="False"/>
+
                         </StackPanel>
                         <StackPanel Grid.Row="2"
                                     Orientation="Horizontal"
@@ -397,6 +381,7 @@
                                    Grid.Row="0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
+                        
                         <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
                                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                                   CellStyle="{DynamicResource DataGridCellStyle1}" 

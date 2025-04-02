@@ -13,15 +13,9 @@
         AllowsTransparency="True"
         Background="Transparent"
         Icon="pack://application:,,,/Images/programIcon.ico">
-    <Window.DataContext>
-        <viewModel:MainViewModel/>
-    </Window.DataContext>
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <local:HomeView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:CompetitorsViewModel}">
-            <local:CompetitorsView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:ClubsDegreesMatsViewModel}">
             <local:ClubsDegreesMatsView/>
@@ -39,6 +33,7 @@
             <local:SettingsView/>
         </DataTemplate>
     </Window.Resources>
+    
     <Border CornerRadius="10"
         BorderThickness="1">
         <Border.BorderBrush>
