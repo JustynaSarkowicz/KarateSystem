@@ -102,22 +102,22 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollViewer">
                     <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
                                                 CanContentScroll="{TemplateBinding CanContentScroll}"
                                                 Cursor="{TemplateBinding Cursor}"
                                                 Margin="{TemplateBinding Padding}"
                                                 ContentTemplate="{TemplateBinding ContentTemplate}"/>
 
-                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                        <ScrollBar x:Name="PART_VerticalScrollBar"
                                    Width="12"
                                    Height="Auto"
                                    IsTabStop="False"
@@ -130,17 +130,9 @@
                                    Minimum="0"
                                    Value="{TemplateBinding VerticalOffset}"
                                    Style="{StaticResource CustomScrollBar}"/>
-                        </Grid>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
-
-
-
-
-
-
-
 </ResourceDictionary>

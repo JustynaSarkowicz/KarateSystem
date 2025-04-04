@@ -31,13 +31,22 @@ namespace KarateSystem.Repository
         }
         public async Task UpdateClubAsync(Club club)
         {
-            var existingClub = await _dbContext.Clubs.FindAsync(club.ClubId);
+            var existingClub = await _dbContext.Clubs.FirstOrDefaultAsync(c => c.ClubId == club.ClubId);
+            if (string.IsNullOrEmpty(club.ClubName) || string.IsNullOrEmpty(club.ClubPlace)) return;
             if (existingClub != null)
             {
                 existingClub.ClubName = club.ClubName;
                 existingClub.ClubPlace = club.ClubPlace;
                 await _dbContext.SaveChangesAsync();
             }
+        }
+        public async Task AddClubAsync(Club club)
+        {
+            if (string.IsNullOrEmpty(club.ClubName) || string.IsNullOrEmpty(club.ClubPlace)) return;
+            var newClub = _dbContext.Clubs.FirstOrDefault(c => c.ClubId == club.ClubId || c.ClubName == club.ClubName);
+            if (newClub != null) return;
+            _dbContext.Clubs.Add(club);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

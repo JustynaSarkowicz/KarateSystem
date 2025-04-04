@@ -24,47 +24,5 @@ namespace KarateSystem.Views
         {
             InitializeComponent();
         }
-
-        private void btnEditClub_Click(object sender, RoutedEventArgs e)
-        {
-            tbClubName.IsReadOnly = false;
-            tbClubPlace.IsReadOnly = false;
-        }
-
-        private void btnAddNewClub_Click(object sender, RoutedEventArgs e)
-        {
-            tbClubName.Text = "";
-            tbClubPlace.Text = "";
-        }
-
-        private void btnSaveDegree_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnEditDegree_Click(object sender, RoutedEventArgs e)
-        {
-            tbDegreeName.IsReadOnly = false;
-        }
-
-        private void btnAddNewDegree_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnSaveMat_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnEditMat_Click(object sender, RoutedEventArgs e)
-        {
-            tbMatName.IsReadOnly = false;
-        }
-
-        private void btnAddNewMat_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

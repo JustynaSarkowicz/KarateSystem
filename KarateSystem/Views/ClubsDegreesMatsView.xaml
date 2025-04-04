@@ -42,12 +42,11 @@
                       VerticalAlignment="Top"
                       Grid.Row="1"
                       ItemsSource="{Binding Clubs}"
-                      SelectedItem="{Binding SelectedClub, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-
+                      SelectedItem="{Binding SelectedClub}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ClubId}" ClipboardContentBinding="{x:Null}" Header="Id" Width="50"/>
-                    <DataGridTextColumn Binding="{Binding ClubPlace}" ClipboardContentBinding="{x:Null}" Header="Miejsce" Width="200"/>
-                    <DataGridTextColumn Binding="{Binding ClubName}" ClipboardContentBinding="{x:Null}" Header="Nazwa" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding ClubId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Id" Width="50"/>
+                    <DataGridTextColumn Binding="{Binding ClubPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Miejsce" Width="200"/>
+                    <DataGridTextColumn Binding="{Binding ClubName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -77,11 +76,10 @@
                             Grid.Row="1"
                             Grid.Column="0">
                         <TextBox x:Name="tbClubPlace" 
-                                 Text="{Binding SelectedClub.ClubPlace, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding EditingClub.ClubPlace, UpdateSourceTrigger=PropertyChanged}"
                                  Padding="3"
                                  BorderThickness="0"
                                  Background="Transparent"
-                                 IsReadOnly="True"
                                  Style="{StaticResource textBoxEnabled}"/>
                     </Border>
                     <TextBlock Text="Nazwa"
@@ -97,11 +95,10 @@
                             Grid.Row="1"
                             Grid.Column="1">
                         <TextBox x:Name="tbClubName"
-                                 Text="{Binding SelectedClub.ClubName, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding EditingClub.ClubName, UpdateSourceTrigger=PropertyChanged}"
                                  Padding="3"
                                  Background="Transparent"
                                  BorderThickness="0"
-                                 IsReadOnly="True"
                                  Style="{StaticResource textBoxEnabled}"/>
                     </Border>
                 </Grid>
@@ -117,9 +114,8 @@
 
             <Button x:Name="btnSaveClub"
                     Width="80"    
-                    Command="{Binding EditClubCommand}"                            
+                    Command="{Binding UpdateClubCommand}"                            
                     Content="Zapisz"
-                    Click="btnSaveClub_Click"
                     Margin="0,0,5,0"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -128,11 +124,22 @@
                     Foreground="White"
                     Style="{StaticResource contentButton}">
             </Button>
+            <Button x:Name="btnCancelEdit"
+                    Command="{Binding CancelClubCommand}"
+                    Width="80"                         
+                    Content="Anuluj"
+                    Margin="0,0,5,0"
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Bottom"
+                    Style="{StaticResource contentButton}"/>
             <Button x:Name="btnEditClub"
                     Width="80"
-                    Command="{Binding LoginCommand}"                            
+                    Command="{Binding EditClubCommand}"                            
                     Content="Edytuj"
-                    Click="btnEditClub_Click"
                     Margin="0,0,5,0"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -144,9 +151,8 @@
             </Button>
             <Button x:Name="btnAddNewClub"
                     Width="80"
-                    Command="{Binding LoginCommand}"                            
+                    Command="{Binding AddClubCommand}"                            
                     Content="Dodaj"
-                    Click="btnAddNewClub_Click"
                     Margin="0,0,5,0"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -154,8 +160,8 @@
                     BorderThickness="0"
                     Foreground="White"
                     VerticalAlignment="Bottom"
-                    Style="{StaticResource contentButton}">
-            </Button>
+                    Style="{StaticResource contentButton}"/>
+
         </StackPanel>
         <Grid Grid.Column="0"
               Grid.Row="0"
@@ -234,7 +240,6 @@
                     Width="80"
                     Command="{Binding LoginCommand}"                            
                     Content="Zapisz"
-                    Click="btnSaveDegree_Click"
                     Margin="0,0,3,0"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -247,7 +252,6 @@
                     Width="80"
                     Command="{Binding LoginCommand}"                            
                     Content="Edytuj"
-                    Click="btnEditDegree_Click"
                     Margin="0,0,3,0"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -260,7 +264,6 @@
                     Width="80"
                     Command="{Binding LoginCommand}"                            
                     Content="Dodaj"
-                    Click="btnAddNewDegree_Click"
                     Margin="0,0,3,0"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -347,7 +350,6 @@
                     Width="80"
                     Command="{Binding LoginCommand}"                            
                     Content="Zapisz"
-                    Click="btnSaveMat_Click"
                     Margin="0,0,3,0"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -360,7 +362,6 @@
                     Width="80"
                     Command="{Binding LoginCommand}"                            
                     Content="Edytuj"
-                    Click="btnEditMat_Click"
                     Margin="0,0,3,0"
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -373,7 +374,6 @@
                     Width="80"
                     Command="{Binding LoginCommand}"                            
                     Content="Dodaj"
-                    Click="btnAddNewMat_Click"
                     Margin="0,0,3,0"
                     FontSize="12"
                     FontFamily="Montserrat"
