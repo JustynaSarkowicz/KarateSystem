@@ -4,131 +4,158 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KarateSystem.Views"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="625" d:DesignWidth="1050">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="310"/>
-            <ColumnDefinition Width="310"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="400"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Column="2"
-              Grid.Row="0"
-              Margin="10,0,20,0">
+             d:DesignHeight="900" d:DesignWidth="1050">
+
+    <ScrollViewer Margin="0,0,0,-15"
+                  Style="{StaticResource CustomScrollViewer}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
-                <RowDefinition Height="300"/>
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="400"/>
+                <RowDefinition Height="450"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
+
             <TextBlock Text="Kluby"
                        Foreground="White"
                        FontFamily="Montserrat"
-                       FontSize="16"
+                       FontSize="20"
+                       Width="700"
                        FontWeight="Medium"
-                       HorizontalAlignment="Center"
+                       HorizontalAlignment="Left"
                        VerticalAlignment="Bottom"
+                       TextAlignment="Center"
                        Grid.Row="0"
                        Margin="0,0,0,10"/>
-            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                      CellStyle="{DynamicResource DataGridCellStyle1}" 
-                      Style="{DynamicResource DataGridStyle1}"
-                      Height="290"
-                      VerticalAlignment="Top"
-                      Grid.Row="1"
-                      ItemsSource="{Binding Clubs}"
-                      SelectedItem="{Binding SelectedClub}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ClubId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Id" Width="50"/>
-                    <DataGridTextColumn Binding="{Binding ClubPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Miejsce" Width="200"/>
-                    <DataGridTextColumn Binding="{Binding ClubName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid Grid.Row="1"
+                  Margin="10,0,20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="700"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="45"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="2"
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Top"
+                                Grid.Column="0">
+                        <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
+
+                        <TextBox x:Name="tbSearchClub"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  
+                                 materialDesign:HintAssist.Hint="Szukaj..."
+                                 materialDesign:HintAssist.Foreground="White"
+                                 Style="{StaticResource TransparentHintTextBox}">
+                        </TextBox>
+
+                    </StackPanel>
+                </Grid>
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                          CellStyle="{DynamicResource DataGridCellStyle1}" 
+                          Style="{DynamicResource DataGridStyle1}"
+                          Height="290"
+                          VerticalAlignment="Top"
+                          Grid.Row="1"
+                          ItemsSource="{Binding Clubs}"
+                          SelectedItem="{Binding SelectedClub}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ClubId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Id" Width="50"/>
+                        <DataGridTextColumn Binding="{Binding ClubPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Miejsce" Width="200"/>
+                        <DataGridTextColumn Binding="{Binding ClubName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Border Grid.Row="2"
                     CornerRadius="10"
                     BorderBrush="#1B3663"
                     Background="#1B3663">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Miejsce"
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="16"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Miejsce"
                                    Foreground="#BCBEE0"
                                    FontFamily="Montserrat"
                                    FontSize="14"
                                    Margin="10,0,5,0"
                                    Grid.Column="0"
                                    Grid.Row="0"/>
-                    <Border Margin="10,3,0,3"
+                        <Border Margin="10,3,0,3"
                             CornerRadius="10"
                             Background="#5D83B1"
                             Grid.Row="1"
                             Grid.Column="0">
-                        <TextBox x:Name="tbClubPlace" 
+                            <TextBox x:Name="tbClubPlace" 
                                  Text="{Binding EditingClub.ClubPlace, UpdateSourceTrigger=PropertyChanged}"
                                  Padding="3"
                                  BorderThickness="0"
                                  Background="Transparent"
                                  Style="{StaticResource textBoxEnabled}"/>
-                    </Border>
-                    <TextBlock Text="Nazwa"
+                        </Border>
+                        <TextBlock Text="Nazwa"
                                Foreground="#BCBEE0"
                                FontFamily="Montserrat"
                                FontSize="14"
                                Grid.Column="1"
                                Grid.Row="0"
                                Margin="5,0,5,0"/>
-                    <Border Margin="5,3,10,3"
+                        <Border Margin="5,3,10,3"
                             CornerRadius="10"
                             Background="#5D83B1"
                             Grid.Row="1"
                             Grid.Column="1">
-                        <TextBox x:Name="tbClubName"
+                            <TextBox x:Name="tbClubName"
                                  Text="{Binding EditingClub.ClubName, UpdateSourceTrigger=PropertyChanged}"
                                  Padding="3"
                                  Background="Transparent"
                                  BorderThickness="0"
                                  Style="{StaticResource textBoxEnabled}"/>
-                    </Border>
-                </Grid>
-            </Border>
-        </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
 
-        <StackPanel Grid.Row="1"
-                    Grid.Column="2"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Center"
-                    Margin="3">
+                <StackPanel Grid.Column="1"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Orientation="Vertical"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Left"
+                    Margin="5,5,5,0">
 
-            <Button x:Name="btnSaveClub"
+                    <Button x:Name="btnSaveClub"
                     Width="80"    
                     Command="{Binding UpdateClubCommand}"                            
                     Content="Zapisz"
-                    Margin="0,0,5,0"
+                    Margin="0,0,0,5"
                     FontSize="12"
                     FontFamily="Montserrat"
                     Cursor="Hand"
                     BorderThickness="0"
                     Foreground="White"
                     Style="{StaticResource contentButton}">
-            </Button>
-            <Button x:Name="btnCancelEdit"
+                    </Button>
+                    <Button x:Name="btnCancelEdit"
                     Command="{Binding CancelClubCommand}"
                     Width="80"                         
                     Content="Anuluj"
-                    Margin="0,0,5,0"
+                    Margin="0,0,0,5"
                     FontSize="12"
                     FontFamily="Montserrat"
                     Cursor="Hand"
@@ -136,11 +163,11 @@
                     Foreground="White"
                     VerticalAlignment="Bottom"
                     Style="{StaticResource contentButton}"/>
-            <Button x:Name="btnEditClub"
+                    <Button x:Name="btnEditClub"
                     Width="80"
                     Command="{Binding EditClubCommand}"                            
                     Content="Edytuj"
-                    Margin="0,0,5,0"
+                    Margin="0,0,0,5"
                     FontSize="12"
                     FontFamily="Montserrat"
                     Cursor="Hand"
@@ -148,12 +175,11 @@
                     Foreground="White"
                     VerticalAlignment="Bottom"
                     Style="{StaticResource contentButton}">
-            </Button>
-            <Button x:Name="btnAddNewClub"
+                    </Button>
+                    <Button x:Name="btnAddNewClub"
                     Width="80"
                     Command="{Binding AddClubCommand}"                            
                     Content="Dodaj"
-                    Margin="0,0,5,0"
                     FontSize="12"
                     FontFamily="Montserrat"
                     Cursor="Hand"
@@ -162,231 +188,267 @@
                     VerticalAlignment="Bottom"
                     Style="{StaticResource contentButton}"/>
 
-        </StackPanel>
-        <Grid Grid.Column="0"
-              Grid.Row="0"
-              Margin="10,0,10,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="300"/>
-                <RowDefinition Height="45"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Stopnie"
-                       Foreground="White"
-                       FontFamily="Montserrat"
-                       FontSize="16"
-                       FontWeight="Medium"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Bottom"
-                       Margin="0,0,0,10"
-                       Grid.Row="0"/>
-            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                      CellStyle="{DynamicResource DataGridCellStyle1}" 
-                      Style="{DynamicResource DataGridStyle1}"
-                      Height="290"
-                      VerticalAlignment="Top"
-                      Grid.Row="1">
+                </StackPanel>
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
-            <Border Grid.Row="2"
-                    CornerRadius="10"
-                    BorderBrush="#1B3663"
-                    Background="#1B3663">
-                <Grid>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Margin="10,0,10,0"
+                      Grid.Column="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="300"/>
+                        <RowDefinition Height="45"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal"
+                    <TextBlock Text="Stopnie"
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Bottom"
+                               Margin="0,0,0,10"
+                               Grid.Row="0"/>
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              Height="290"
+                              VerticalAlignment="Top"
+                              Grid.Row="1">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id"/>
+                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border Grid.Row="2"
+                            CornerRadius="10"
+                            BorderBrush="#1B3663"
+                            Background="#1B3663">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="16"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal"
                                 Grid.Row="0">
-                        <TextBlock Text="Nazwa"
+                                <TextBlock Text="Nazwa"
                                    Foreground="#BCBEE0"
                                    FontFamily="Montserrat"
                                    FontSize="14"
                                    Width="200"
                                    Margin="10,0,5,0"/>
-                        <TextBlock/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1"
+                                <TextBlock/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1"
                                 Orientation="Horizontal">
-                        <Border Margin="10,3,0,3"
+                                <Border Margin="10,3,0,3"
                                 CornerRadius="10"
                                 Background="#5D83B1"
-                                Width="270">
-                            <TextBox x:Name="tbDegreeName"
+                                Width="310">
+                                    <TextBox x:Name="tbDegreeName"
                                      Padding="3"
                                      Background="Transparent"
                                      BorderThickness="0"
                                      IsReadOnly="True"
                                      Style="{StaticResource textBoxEnabled}"/>
-                        </Border>
-                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                 </Grid>
-            </Border>
-        </Grid>
-        <StackPanel Grid.Row="1"
-                    Grid.Column="0"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Center"
-                    Margin="3">
-            <Button x:Name="btnSaveDegree"
-                    Width="80"
-                    Command="{Binding LoginCommand}"                            
-                    Content="Zapisz"
-                    Margin="0,0,3,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}">
-            </Button>
-            <Button x:Name="btnEditDegree"
-                    Width="80"
-                    Command="{Binding LoginCommand}"                            
-                    Content="Edytuj"
-                    Margin="0,0,3,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}">
-            </Button>
-            <Button x:Name="btnAddNewDegree"
-                    Width="80"
-                    Command="{Binding LoginCommand}"                            
-                    Content="Dodaj"
-                    Margin="0,0,3,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}">
-            </Button>
-        </StackPanel>
-        <Grid Grid.Column="1"
-              Grid.Row="0"
-              Margin="10,0,10,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="300"/>
-                <RowDefinition Height="45"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Maty"
-                       Foreground="White"
-                       FontFamily="Montserrat"
-                       FontSize="16"
-                       FontWeight="Medium"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Bottom"
-                       Margin="0,0,0,10"
-                       Grid.Row="0"/>
-            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                      CellStyle="{DynamicResource DataGridCellStyle1}" 
-                      Style="{DynamicResource DataGridStyle1}"
-                      Height="290"
-                      VerticalAlignment="Top"
-                      Grid.Row="1">
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
-            <Border Grid.Row="2"
-                    CornerRadius="10"
-                    BorderBrush="#1B3663"
-                    Background="#1B3663">
-                <Grid>
+                <Grid Grid.Column="2"
+                      Grid.Row="3"
+                      Margin="10,0,10,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="16"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="300"/>
+                        <RowDefinition Height="45"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal"
-                                Grid.Row="0">
-                        <TextBlock Text="Nazwa"
-                                   Foreground="#BCBEE0"
-                                   FontFamily="Montserrat"
-                                   FontSize="14"
-                                   Width="200"
-                                   Margin="10,0,5,0"/>
-                        <TextBlock/>
-                    </StackPanel>
-                    <StackPanel Grid.Row="1"
-                                Orientation="Horizontal">
-                        <Border Margin="10,3,0,3"
-                                CornerRadius="10"
-                                Background="#5D83B1"
-                                Width="270">
-                            <TextBox x:Name="tbMatName"
-                                     Padding="3"
-                                     Background="Transparent"
-                                     BorderThickness="0"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                        </Border>
-                    </StackPanel>
+                    <TextBlock Text="Maty"
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Bottom"
+                               Margin="0,0,0,10"
+                               Grid.Row="0"/>
+                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}"
+                              Height="290"
+                              VerticalAlignment="Top"
+                              Grid.Row="1" 
+                              ItemsSource="{Binding Mats}"
+                              SelectedItem="{Binding SelectedMat}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding MatId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Id" Width="60"/>
+                            <DataGridTextColumn Binding="{Binding MatName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border Grid.Row="2"
+                            CornerRadius="10"
+                            BorderBrush="#1B3663"
+                            Background="#1B3663">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="16"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Row="0">
+                                <TextBlock Text="Nazwa"
+                                           Foreground="#BCBEE0"
+                                           FontFamily="Montserrat"
+                                           FontSize="14"
+                                           Width="200"
+                                           Margin="10,0,5,0"/>
+                                <TextBlock/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1"
+                                        Orientation="Horizontal">
+                                <Border Margin="10,3,0,3"
+                                        CornerRadius="10"
+                                        Background="#5D83B1"
+                                        Width="310">
+                                    <TextBox x:Name="tbMatName"
+                                             Padding="3"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Text="{Binding EditingMat.MatName, UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource textBoxEnabled}"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                 </Grid>
-            </Border>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Vertical"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="3,55,3,3">
+                    <Button x:Name="btnSaveDegree"
+                            Width="80"
+                            Command="{Binding LoginCommand}"                            
+                            Content="Zapisz"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}">
+                    </Button>
+                    <Button x:Name="btnCancelDegree"
+                            Width="80"
+                            Command="{Binding LoginCommand}"                            
+                            Content="Anuluj"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}">
+                    </Button>
+                    <Button x:Name="btnEditDegree"
+                            Width="80"
+                            Command="{Binding LoginCommand}"                            
+                            Content="Edytuj"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}">
+                    </Button>
+                    <Button x:Name="btnAddNewDegree"
+                            Width="80"
+                            Command="{Binding LoginCommand}"                            
+                            Content="Dodaj"
+                            Margin="0,0,3,0"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}">
+                    </Button>
+                </StackPanel>
+                <StackPanel Grid.Column="3"
+                            Orientation="Vertical"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            Margin="3,55,3,3">
+                    <Button x:Name="btnSaveMat"
+                            Width="80"
+                            Command="{Binding UpdateMatCommand}"                            
+                            Content="Zapisz"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}"/>
+
+                    <Button x:Name="btnCancelMat"
+                            Width="80"
+                            Command="{Binding CancelMatCommand}"                            
+                            Content="Anuluj"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}"/>
+
+                    <Button x:Name="btnEditMat"
+                            Width="80"
+                            Command="{Binding EditMatCommand}"                            
+                            Content="Edytuj"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}"/>
+
+                    <Button x:Name="btnAddNewMat"
+                            Width="80"
+                            Command="{Binding AddMatCommand}"                            
+                            Content="Dodaj"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}"/>
+
+                </StackPanel>
+            </Grid>
+            <Border Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    BorderThickness="0,1,0,0"
+                    BorderBrush="#5D83B1"
+                    Margin="0,10,10,0"/>
         </Grid>
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Center"
-                    Margin="3">
-            <Button x:Name="btnSaveMat"
-                    Width="80"
-                    Command="{Binding LoginCommand}"                            
-                    Content="Zapisz"
-                    Margin="0,0,3,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}">
-            </Button>
-            <Button x:Name="btnEditMat"
-                    Width="80"
-                    Command="{Binding LoginCommand}"                            
-                    Content="Edytuj"
-                    Margin="0,0,3,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}">
-            </Button>
-            <Button x:Name="btnAddNewMat"
-                    Width="80"
-                    Command="{Binding LoginCommand}"                            
-                    Content="Dodaj"
-                    Margin="0,0,3,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}">
-            </Button>
-        </StackPanel>
-        <Border Grid.Row="2"
-                Grid.ColumnSpan="3"
-                BorderThickness="0,1,0,0"
-                BorderBrush="#5D83B1"
-                Margin="0,0,10,0"/>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
+    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignThemes.Wpf" Version="1.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
       <PrivateAssets>all</PrivateAssets>

@@ -1,5 +1,6 @@
 ﻿using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
+using KarateSystem.Service.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -13,16 +14,28 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
     // Properties
     private Club _selectedClub;
     private Club _editingClub;
+    private Mat _selectedMat;
+    private Mat _editingMat;
+    private string _searchText;
     private ObservableCollection<Club> _clubs;
+    private ObservableCollection<Mat> _mats;
+    private List<Club> _allClubs; 
+
 
     // Interfaces
     private readonly IClubRepository _clubRepository;
+    private readonly ISearchService _searchService;
+    private readonly IMatRepository _matRepository;
 
     // Commands
     public ICommand EditClubCommand { get; }
     public ICommand UpdateClubCommand { get; }
     public ICommand AddClubCommand { get; }
     public ICommand CancelClubCommand { get; }
+    public ICommand EditMatCommand { get; }
+    public ICommand UpdateMatCommand { get; }
+    public ICommand AddMatCommand { get; }
+    public ICommand CancelMatCommand { get; }
 
     public ObservableCollection<Club> Clubs
     {
@@ -33,7 +46,15 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
             OnPropertyChanged(nameof(Clubs));
         }
     }
-
+    public ObservableCollection<Mat> Mats
+    {
+        get => _mats;
+        set
+        {
+            _mats = value;
+            OnPropertyChanged(nameof(Mats));
+        }
+    }
     public Club? SelectedClub
     {
         get => _selectedClub;
@@ -43,7 +64,6 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
             OnPropertyChanged(nameof(SelectedClub));
         }
     }
-
     public Club? EditingClub
     {
         get => _editingClub;
@@ -53,51 +73,83 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
             OnPropertyChanged(nameof(EditingClub));
         }
     }
-
-    public ClubsDegreesMatsViewModel(IClubRepository clubRepository)
+    public Mat? EditingMat
     {
-        _clubRepository = clubRepository ?? throw new ArgumentNullException(nameof(clubRepository));
+        get => _editingMat;
+        set
+        {
+            _editingMat = value;
+            OnPropertyChanged(nameof(EditingMat));
+        }
+    }
+    public Mat? SelectedMat
+    {
+        get => _selectedMat;
+        set
+        {
+            _selectedMat = value;
+            OnPropertyChanged(nameof(SelectedMat));
+        }
+    }
+    public string SearchText
+    {
+        get => _searchText;
+        set
+        {
+            _searchText = value;
+            OnPropertyChanged(nameof(SearchText));
+            FilterClubs();
+        }
+    }
+    public ClubsDegreesMatsViewModel(IClubRepository clubRepository, 
+        ISearchService searchService,
+        IMatRepository matRepository)
+    {
+        _clubRepository = clubRepository;
+        _searchService = searchService;
+        _matRepository = matRepository;
 
         Clubs = new ObservableCollection<Club>();
         EditingClub = new Club();
+        Mats = new ObservableCollection<Mat>();
+        EditingMat = new Mat();
 
         EditClubCommand = new ViewModelCommand(ExecuteEditClubCommand, CanEditClub);
-        UpdateClubCommand = new ViewModelCommand(ExecuteUpdateClubCommand, CanEditClub);
+        UpdateClubCommand = new ViewModelCommand(ExecuteUpdateClubCommand, CanCancelClubEdit);
         AddClubCommand = new ViewModelCommand(ExecuteAddClubCommand);
-        CancelClubCommand = new ViewModelCommand(ExecuteCancelEditCommand, CanCancelEdit);
+        CancelClubCommand = new ViewModelCommand(ExecuteCancelClubCommand, CanCancelClubEdit);
 
-        LoadClubsAsync();
+        EditMatCommand = new ViewModelCommand(ExecuteEditMatCommand, CanEditMat);
+        UpdateMatCommand = new ViewModelCommand(ExecuteUpdateMatCommand, CanCancelMatEdit);
+        AddMatCommand = new ViewModelCommand(ExecuteAddMatCommand);
+        CancelMatCommand = new ViewModelCommand(ExecuteCancelMatCommand, CanCancelMatEdit);
+
+
+        LoadAsync();
     }
 
-    private async void LoadClubsAsync()
+    private async void LoadAsync()
     {
-        try
-        {
-            var allClubs = await _clubRepository.GetAllClubsAsync();
-            Clubs = new ObservableCollection<Club>(allClubs);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error updating club: {ex.Message}");
-        }
+        _allClubs = await _clubRepository.GetAllClubsAsync();
+        Clubs = new ObservableCollection<Club>(_allClubs);
+        var mats = await _matRepository.GetAllMatAsync();
+        Mats = new ObservableCollection<Mat>(mats);
     }
+    private bool CanEditClub(object obj) => SelectedClub != null;
+    private bool CanEditMat(object obj) => SelectedMat != null;
+    private bool CanCancelClubEdit(object obj) => EditingClub != null && SelectedClub != null;
+    private bool CanCancelMatEdit(object obj) => EditingMat != null && SelectedMat != null;
     private void ExecuteEditClubCommand(object obj)
     {
-        if (SelectedClub != null)
+        EditingClub = new Club
         {
-            EditingClub = new Club
-            {
-                ClubId = SelectedClub.ClubId,
-                ClubName = SelectedClub.ClubName,
-                ClubPlace = SelectedClub.ClubPlace
-            };
-        }
+            ClubId = SelectedClub.ClubId,
+            ClubName = SelectedClub.ClubName,
+            ClubPlace = SelectedClub.ClubPlace
+        };
     }
-
-    private bool CanEditClub(object obj) => SelectedClub != null;
     private async void ExecuteUpdateClubCommand(object obj)
     {
-        if(SelectedClub == null || EditingClub == null) return;
         try
         {
             if (Clubs.Contains(SelectedClub))
@@ -134,8 +186,58 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
 
         EditingClub = new Club();
     }
-    private void ExecuteCancelEditCommand(object obj) => EditingClub = new Club();
-       
-    private bool CanCancelEdit(object obj) =>  EditingClub != null && SelectedClub != null;
+    private void ExecuteCancelClubCommand(object obj) => EditingClub = new Club();
+    private void ExecuteEditMatCommand(object obj)
+    {
+        EditingMat = new Mat
+        {
+            MatId = SelectedMat.MatId,
+            MatName = SelectedMat.MatName
+        };
+    }
+    private async void ExecuteUpdateMatCommand(object obj)
+    {
+        try
+        {
+            if (Mats.Contains(SelectedMat))
+            {
+                SelectedMat.MatName= EditingMat.MatName;
+                await _matRepository.UpdateMatAsync(SelectedMat);
+                var index = Mats.IndexOf(SelectedMat);
+                Mats[index] = SelectedMat;
+            }
+            var updatedMats = new ObservableCollection<Mat>(Mats);
+            Mats = updatedMats;
+            EditingMat = new Mat();
+            SelectedMat = null;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error updating mat: {ex.Message}");
+        }
+    }
+    private async void ExecuteAddMatCommand(object obj)
+    {
+        if (string.IsNullOrWhiteSpace(EditingMat?.MatName))
+            return;
+
+        var newMat = new Mat
+        {
+            MatName = EditingMat.MatName
+        };
+
+        await _matRepository.AddMatAsync(newMat);
+        Mats.Add(newMat);
+
+        EditingMat = new Mat();
+    }
+    private void ExecuteCancelMatCommand(object obj) => EditingMat = new Mat();
+    private void FilterClubs()
+    {
+        Clubs = string.IsNullOrWhiteSpace(SearchText)
+        ? new ObservableCollection<Club>(_allClubs)
+        : new ObservableCollection<Club>(
+            _searchService.SearchInCollection(_allClubs, SearchText, "ClubName", "ClubPlace"));
+    }
 }
 

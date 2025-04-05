@@ -2,6 +2,8 @@
 using KarateSystem.JsonManager;
 using KarateSystem.Repository;
 using KarateSystem.Repository.Interfaces;
+using KarateSystem.Service;
+using KarateSystem.Service.Interfaces;
 using KarateSystem.ViewModel;
 using KarateSystem.Views;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +38,8 @@ namespace KarateSystem
 
             services.AddScoped<ICompetitorRepository, CompetitorRepository>();
             services.AddScoped<IClubRepository, ClubRepository>();
+            services.AddScoped<IMatRepository, MatRepository>();
+            services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<CompetitorsViewModel>();
             services.AddScoped<ClubsDegreesMatsViewModel>();
             services.AddScoped<MainViewModel>();
