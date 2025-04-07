@@ -16,16 +16,19 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
     private Club _editingClub;
     private Mat _selectedMat;
     private Mat _editingMat;
+    private Degree _selectedDegree;
+    private Degree _editingDegree;
     private string _searchText;
     private ObservableCollection<Club> _clubs;
     private ObservableCollection<Mat> _mats;
+    private ObservableCollection<Degree> _degrees;
     private List<Club> _allClubs; 
-
 
     // Interfaces
     private readonly IClubRepository _clubRepository;
     private readonly ISearchService _searchService;
     private readonly IMatRepository _matRepository;
+    private readonly IDegreeRepository _degreeRepository;
 
     // Commands
     public ICommand EditClubCommand { get; }
@@ -36,6 +39,10 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
     public ICommand UpdateMatCommand { get; }
     public ICommand AddMatCommand { get; }
     public ICommand CancelMatCommand { get; }
+    public ICommand EditDegreeCommand { get; }
+    public ICommand UpdateDegreeCommand { get; }
+    public ICommand AddDegreeCommand { get; }
+    public ICommand CancelDegreeCommand { get; }
 
     public ObservableCollection<Club> Clubs
     {
@@ -53,6 +60,15 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
         {
             _mats = value;
             OnPropertyChanged(nameof(Mats));
+        }
+    }
+    public ObservableCollection<Degree> Degrees
+    {
+        get => _degrees;
+        set
+        {
+            _degrees = value;
+            OnPropertyChanged(nameof(Degrees));
         }
     }
     public Club? SelectedClub
@@ -91,6 +107,24 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
             OnPropertyChanged(nameof(SelectedMat));
         }
     }
+    public Degree? EditingDegree
+    {
+        get => _editingDegree;
+        set
+        {
+            _editingDegree = value;
+            OnPropertyChanged(nameof(EditingDegree));
+        }
+    }
+    public Degree? SelectedDegree
+    {
+        get => _selectedDegree;
+        set
+        {
+            _selectedDegree = value;
+            OnPropertyChanged(nameof(SelectedDegree));
+        }
+    }
     public string SearchText
     {
         get => _searchText;
@@ -103,16 +137,20 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
     }
     public ClubsDegreesMatsViewModel(IClubRepository clubRepository, 
         ISearchService searchService,
-        IMatRepository matRepository)
+        IMatRepository matRepository,
+        IDegreeRepository degreeRepository)
     {
         _clubRepository = clubRepository;
         _searchService = searchService;
         _matRepository = matRepository;
+        _degreeRepository = degreeRepository;
 
         Clubs = new ObservableCollection<Club>();
         EditingClub = new Club();
         Mats = new ObservableCollection<Mat>();
         EditingMat = new Mat();
+        Degrees = new ObservableCollection<Degree>();
+        EditingDegree = new Degree();
 
         EditClubCommand = new ViewModelCommand(ExecuteEditClubCommand, CanEditClub);
         UpdateClubCommand = new ViewModelCommand(ExecuteUpdateClubCommand, CanCancelClubEdit);
@@ -124,6 +162,11 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
         AddMatCommand = new ViewModelCommand(ExecuteAddMatCommand);
         CancelMatCommand = new ViewModelCommand(ExecuteCancelMatCommand, CanCancelMatEdit);
 
+        EditDegreeCommand = new ViewModelCommand(ExecuteEditDegreeCommand, CanEditDegree);
+        UpdateDegreeCommand = new ViewModelCommand(ExecuteUpdateDegreeCommand, CanCancelDegreeEdit);
+        AddDegreeCommand = new ViewModelCommand(ExecuteAddDegreeCommand);
+        CancelDegreeCommand = new ViewModelCommand(ExecuteCancelDegreeCommand, CanCancelDegreeEdit);
+
 
         LoadAsync();
     }
@@ -134,11 +177,15 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
         Clubs = new ObservableCollection<Club>(_allClubs);
         var mats = await _matRepository.GetAllMatAsync();
         Mats = new ObservableCollection<Mat>(mats);
+        var degrees = await _degreeRepository.GetAllDegreeAsync();
+        Degrees = new ObservableCollection<Degree>(degrees);
     }
     private bool CanEditClub(object obj) => SelectedClub != null;
-    private bool CanEditMat(object obj) => SelectedMat != null;
     private bool CanCancelClubEdit(object obj) => EditingClub != null && SelectedClub != null;
+    private bool CanEditMat(object obj) => SelectedMat != null;
     private bool CanCancelMatEdit(object obj) => EditingMat != null && SelectedMat != null;
+    private bool CanEditDegree(object obj) => SelectedDegree != null;
+    private bool CanCancelDegreeEdit(object obj) => EditingDegree != null && SelectedDegree != null;
     private void ExecuteEditClubCommand(object obj)
     {
         EditingClub = new Club
@@ -232,6 +279,51 @@ public class ClubsDegreesMatsViewModel : ViewModelBase
         EditingMat = new Mat();
     }
     private void ExecuteCancelMatCommand(object obj) => EditingMat = new Mat();
+    private void ExecuteEditDegreeCommand(object obj)
+    {
+        EditingDegree = new Degree
+        {
+            DegreeId = SelectedDegree.DegreeId,
+            DegreeName = SelectedDegree.DegreeName
+        };
+    }
+    private async void ExecuteUpdateDegreeCommand(object obj)
+    {
+        try
+        {
+            if (Degrees.Contains(SelectedDegree))
+            {
+                SelectedDegree.DegreeName= EditingDegree.DegreeName;
+                await _degreeRepository.UpdateDegreeAsync(SelectedDegree);
+                var index = Degrees.IndexOf(SelectedDegree);
+                Degrees[index] = SelectedDegree;
+            }
+            var updatedDegrees = new ObservableCollection<Degree>(Degrees);
+            Degrees= updatedDegrees;
+            EditingDegree= new Degree();
+            SelectedDegree = null;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error updating mat: {ex.Message}");
+        }
+    }
+    private async void ExecuteAddDegreeCommand(object obj)
+    {
+        if (string.IsNullOrWhiteSpace(EditingDegree?.DegreeName))
+            return;
+
+        var newDegree = new Degree
+        {
+            DegreeName = EditingDegree.DegreeName
+        };
+
+        await _degreeRepository.AddDegreeAsync(newDegree);
+        Degrees.Add(newDegree);
+
+        EditingDegree = new Degree();
+    }
+    private void ExecuteCancelDegreeCommand(object obj) => EditingDegree = new Degree();
     private void FilterClubs()
     {
         Clubs = string.IsNullOrWhiteSpace(SearchText)

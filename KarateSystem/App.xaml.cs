@@ -39,6 +39,7 @@ namespace KarateSystem
             services.AddScoped<ICompetitorRepository, CompetitorRepository>();
             services.AddScoped<IClubRepository, ClubRepository>();
             services.AddScoped<IMatRepository, MatRepository>();
+            services.AddScoped<IDegreeRepository, DegreeRepository>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<CompetitorsViewModel>();
             services.AddScoped<ClubsDegreesMatsViewModel>();
