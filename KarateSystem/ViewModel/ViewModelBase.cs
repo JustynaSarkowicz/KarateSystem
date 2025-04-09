@@ -13,6 +13,7 @@ namespace KarateSystem.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public List<GenderOption> GenderOptions => Helper.GenderOptions;
+        public List<GenderOption2> GenderOptions2 => Helper.GenderOptions2;
 
         public void OnPropertyChanged(string propertyName)
         {

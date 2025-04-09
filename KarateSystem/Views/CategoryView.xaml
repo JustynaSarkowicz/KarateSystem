@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:KarateSystem.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="850" d:DesignWidth="1050">
+             d:DesignHeight="900" d:DesignWidth="1050">
     <ScrollViewer Margin="0,0,0,-15"
               Style="{StaticResource CustomScrollViewer}">
         <Grid Margin="0,0,10,0">
@@ -15,7 +15,7 @@
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="400"/>
                 <RowDefinition Height="60"/>
-                <RowDefinition Height="350"/>
+                <RowDefinition Height="400"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Top"
@@ -23,7 +23,7 @@
                 <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
 
                 <TextBox x:Name="tbSearchCatKata"
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  
+                             Text="{Binding SearchTextCatKata, UpdateSourceTrigger=PropertyChanged}"  
                              materialDesign:HintAssist.Hint="Szukaj..."
                              materialDesign:HintAssist.Foreground="White"
                              Style="{StaticResource TransparentHintTextBox}"/>
@@ -128,7 +128,7 @@
                                       Width="180"
                                       Grid.Row="1"
                                       ItemsSource="{Binding GenderOptions}"
-                                      SelectedItem="{Binding SelectedGender, Mode=TwoWay}"
+                                      SelectedItem="{Binding SelectedGenderCatKata, Mode=TwoWay}"
                                       Style="{StaticResource comboboxStyle}"
                                       DisplayMemberPath="DisplayName"/>
                         </StackPanel>
@@ -211,8 +211,7 @@
                     </StackPanel>
 
                     </Grid>
-                    <StackPanel Grid.ColumnSpan="2"
-                                Grid.Row="1"
+                    <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center">
@@ -233,6 +232,7 @@
                                  BorderBrush="White"
                                  BorderThickness="0,0,0,1"  
                                  TextAlignment="Center"
+                                 MaxLength="3"
                                  PreviewTextInput="NumberValidationTextBox"
                                  Text="{Binding EditingKataCategory.KataCatAgeMin, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource textBoxEnabled}"/>
@@ -253,6 +253,7 @@
                                  BorderBrush="White"
                                  BorderThickness="0,0,0,1"
                                  Margin="20,0,0,0"
+                                 MaxLength="3"
                                  TextAlignment="Center"
                                  PreviewTextInput="NumberValidationTextBox"
                                  Text="{Binding EditingKataCategory.KataCatAgeMax, UpdateSourceTrigger=PropertyChanged}"
@@ -273,7 +274,7 @@
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
-                                IsEnabled="{Binding IsEditingExisting}"
+                                IsEnabled="{Binding IsEditingExistingCatKata}"
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnCancelCatKata"
@@ -310,7 +311,7 @@
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
-                                IsEnabled="{Binding IsAddingNew}"
+                                IsEnabled="{Binding IsAddingNewCatKata}"
                                 Style="{StaticResource contentButton}"/>
 
                     </StackPanel>
@@ -329,7 +330,7 @@
                 <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
 
                 <TextBox x:Name="tbSearchCatKumite"
-                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  
+                         Text="{Binding SearchTextCatKumite, UpdateSourceTrigger=PropertyChanged}"  
                          materialDesign:HintAssist.Hint="Szukaj..."
                          materialDesign:HintAssist.Foreground="White"
                          Style="{StaticResource TransparentHintTextBox}"/>
@@ -358,16 +359,18 @@
                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                       CellStyle="{DynamicResource DataGridCellStyle1}" 
                       Style="{DynamicResource DataGridStyle1}"
-                      Grid.Row="1">
+                      Grid.Row="1"
+                          ItemsSource="{Binding KumiteCategories}"
+                          SelectedItem="{Binding SelectedKumiteCategory}">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga Min"/>
-                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga Max"/>
+                        <DataGridTextColumn Binding="{Binding KumiteCatId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat="" Width="50"/>
+                        <DataGridTextColumn Binding="{Binding KumiteCatName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                        <DataGridTextColumn Binding="{Binding GenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
+                        <DataGridTextColumn Binding="{Binding KumiteCatAgeMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
+                        <DataGridTextColumn Binding="{Binding KumiteCatAgeMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
+                        <DataGridTextColumn Binding="{Binding KumiteCatWeightMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga Min"/>
+                        <DataGridTextColumn Binding="{Binding KumiteCatWeightMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga Max"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -383,64 +386,37 @@
 
                 <Grid Grid.Row="1"
                       Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="210"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Column="0"
-                                Grid.Row="0"
-                            Margin="5,0,0,0">
-
-                        <TextBlock Text="Nazwa"
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                Margin="5,0,0,0">
+                            <TextBlock Text="Nazwa"
                            Foreground="White"
                            FontFamily="Montserrat"
                            FontSize="14"
                            FontWeight="Medium"
                            Margin="0,30,0,20"
                            HorizontalAlignment="Center"/>
-                        <TextBlock Text="Płeć"
+                            <TextBlock Text="Płeć"
                            Foreground="White"
                            FontFamily="Montserrat"
                            FontSize="14"
                            FontWeight="Medium"
                            Margin="0,0,0,20"
                            HorizontalAlignment="Center"/>
-                        <TextBlock Text="Wiek Min"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
-                        <TextBlock Text="Wiek Max"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
-                        <TextBlock Text="Waga Min"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
-                        <TextBlock Text="Waga Max"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
 
-                    </StackPanel>
-                    <StackPanel Grid.Row="0"
-                                Grid.Column="1">
                             <TextBox x:Name="tbCatKumiteName"
                                      Background="Transparent"
                                      Width="180"
@@ -453,86 +429,121 @@
                                      BorderBrush="White"
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                            <TextBox x:Name="tbCatKumiteGender"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,18"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                            <TextBox x:Name="tbCatKumiteAgeMin"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,20"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                            <TextBox x:Name="tbCatKumiteAgeMax"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,15"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                            <TextBox x:Name="tbCatKumiteWeightMin"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,15"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                            <TextBox x:Name="tbCatKumiteWeightMax"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,15"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
+                                     Text="{Binding EditingKumiteCategory.KumiteCatName, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource textBoxEnabled}"/>
+                            <ComboBox x:Name="cbGenderCatKumite"
+                                  Width="180"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding GenderOptions2}"
+                                  SelectedItem="{Binding SelectedGenderCatKumite, Mode=TwoWay}"
+                                  Style="{StaticResource comboboxStyle}"
+                                  DisplayMemberPath="DisplayName"/>
                         </StackPanel>
+                    </Grid>
                     <StackPanel Grid.Row="1"
-                                Grid.ColumnSpan="2"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+
+                        <TextBlock Text="Wiek Min"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   FontWeight="Medium"/>
+                        <TextBox x:Name="tbCatKumiteAgeMin"
+                                 Background="Transparent"
+                                 Width="50"
+                                 Height="19"
+                                 Margin="20,0,0,0"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"  
+                                 TextAlignment="Center"
+                                 MaxLength="3"
+                                 PreviewTextInput="NumberValidationTextBox"
+                                 Text="{Binding EditingKumiteCategory.KumiteCatAgeMin, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource textBoxEnabled}"/>
+                        <TextBlock Text="Wiek Max"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   FontWeight="Medium"
+                                   Margin="20,0,0,0"/>
+                        <TextBox x:Name="tbCatKumiteAgeMax"
+                                 Background="Transparent"
+                                 Width="50"
+                                 Height="19"
+                                 Margin="20,0,0,0"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"  
+                                 TextAlignment="Center"
+                                 MaxLength="3"
+                                 PreviewTextInput="NumberValidationTextBox"
+                                 Text="{Binding EditingKumiteCategory.KumiteCatAgeMax, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource textBoxEnabled}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+
+                        <TextBlock Text="Waga Min"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   FontWeight="Medium"/>
+                        <TextBox x:Name="tbCatKumiteWeightMin"
+                                 Background="Transparent"
+                                 Width="50"
+                                 Height="19"
+                                 Margin="20,0,0,0"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"  
+                                 TextAlignment="Center"
+                                 MaxLength="6"
+                                 PreviewTextInput="WeightValidationTextBox"
+                                 Text="{Binding EditingKumiteCategory.KumiteCatWeightMin, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource textBoxEnabled}"/>
+                        <TextBlock Text="Waga Max"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   FontWeight="Medium"
+                                   Margin="20,0,0,0"/>
+                        <TextBox x:Name="tbCatKumiteWeightMax"
+                                 Background="Transparent"
+                                 Width="50"
+                                 Height="19"
+                                 Margin="20,0,0,0"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"  
+                                 TextAlignment="Center"
+                                 MaxLength="6"
+                                 PreviewTextInput="WeightValidationTextBox"
+                                 Text="{Binding EditingKumiteCategory.KumiteCatWeightMax, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource textBoxEnabled}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="3"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center">
                         <Button x:Name="btnSaveCatKumite"
                                 Width="70"
-                                Command="{Binding LoginCommand}"                            
+                                Command="{Binding UpdateKumiteCategoryCommand}"                            
                                 Content="Zapisz"
                                 Margin="0,0,3,0"
                                 FontSize="12"
@@ -540,11 +551,12 @@
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
+                                IsEnabled="{Binding IsEditingExistingCatKumite}"
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnCancelCatKumite"
                                 Width="70"
-                                Command="{Binding LoginCommand}"                            
+                                Command="{Binding CancelKumiteCategoryCommand}"                            
                                 Content="Anuluj"
                                 Margin="0,0,3,0"
                                 FontSize="12"
@@ -556,7 +568,7 @@
 
                         <Button x:Name="btnEditCatKumite"
                                 Width="70"
-                                Command="{Binding LoginCommand}"                            
+                                Command="{Binding EditKumiteCategoryCommand}"                            
                                 Content="Edytuj"
                                 Margin="0,0,3,0"
                                 FontSize="12"
@@ -568,7 +580,7 @@
 
                         <Button x:Name="btnAddNewCatKumite"
                                 Width="70"
-                                Command="{Binding LoginCommand}"                            
+                                Command="{Binding AddKumiteCategoryCommand}"                            
                                 Content="Dodaj"
                                 Margin="0,0,3,0"
                                 FontSize="12"
@@ -576,6 +588,7 @@
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
+                                IsEnabled="{Binding IsAddingNewCatKumite}"
                                 Style="{StaticResource contentButton}"/>
 
                     </StackPanel>

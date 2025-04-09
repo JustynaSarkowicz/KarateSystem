@@ -23,6 +23,7 @@ namespace KarateSystem.MappingProfiles
             CreateMap<CatKataDegree, CatKataDegreeDto>()
                 .ForMember(dest => dest.DegreeName, opt => opt.MapFrom(src => src.Degree.DegreeName))
                 .ReverseMap();
+            CreateMap<KumiteCategory, KumiteCategoryDto>().ReverseMap();
         }
     }
 }

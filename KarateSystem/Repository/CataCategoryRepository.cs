@@ -76,6 +76,8 @@ namespace KarateSystem.Repository
                 .Include(k => k.CatKataDegrees)
                 .FirstOrDefaultAsync(k => k.KataCatId == kataCategoryDto.KataCatId);
 
+            if (existingKataCategory == null) return false;
+
             if (string.IsNullOrWhiteSpace(kataCategoryDto.KataCatName) ||
                 kataCategoryDto.KataCatAgeMin < 0 ||
                 kataCategoryDto.KataCatAgeMax <= 0 ||
@@ -85,7 +87,6 @@ namespace KarateSystem.Repository
                 return false;
             }
 
-            if (existingKataCategory == null) return false;
 
             existingKataCategory.KataCatName = kataCategoryDto.KataCatName;
             existingKataCategory.KataCatGender = kataCategoryDto.KataCatGender;
