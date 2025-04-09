@@ -108,7 +108,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(Degrees));
             }
         }
-        public KataCategoryDto? SelectedKataCategory
+        public KataCategoryDto SelectedKataCategory
         {
             get => _selectedKataCategory;
             set
@@ -117,7 +117,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedKataCategory));
             }
         }
-        public KumiteCategoryDto? SelectedKumiteCategory
+        public KumiteCategoryDto SelectedKumiteCategory
         {
             get => _selectedKumiteCategory;
             set
@@ -126,7 +126,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedKumiteCategory));
             }
         }
-        public KumiteCategoryDto? EditingKumiteCategory
+        public KumiteCategoryDto EditingKumiteCategory
         {
             get => _editingKumiteCategory;
             set
@@ -135,7 +135,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(EditingKumiteCategory));
             }
         }
-        public DegreeDto? SelectedDegreeToAdd
+        public DegreeDto SelectedDegreeToAdd
         {
             get => _selectedDegreeToAdd;
             set
@@ -144,7 +144,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedDegreeToAdd));
             }
         }
-        public CatKataDegreeDto? SelectedCatKataDegree
+        public CatKataDegreeDto SelectedCatKataDegree
         {
             get => _selectedCatKataDegree;
             set
@@ -153,7 +153,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedCatKataDegree));
             }
         }
-        public KataCategoryDto? EditingKataCategory
+        public KataCategoryDto EditingKataCategory
         {
             get => _editingKataCategory;
             set
