@@ -22,11 +22,9 @@ namespace KarateSystem.Configurations
                    .WithOne(c => c.Degree)
                    .HasForeignKey(c => c.CompDegreeId);
 
-            // Relacja: jeden stopień należy do wielu kategorii kata
-            //          kategoria kata ma jeden stopień (1:N)
-            builder.HasMany(c => c.KataCategories)
+            builder.HasMany(c => c.CatKataDegrees)
                    .WithOne(c => c.Degree)
-                   .HasForeignKey(c => c.KataCatDegreeId);
+                   .HasForeignKey(c => c.DegreeId);
         }
     }
 }

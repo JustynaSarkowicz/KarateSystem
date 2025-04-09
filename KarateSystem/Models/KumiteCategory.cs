@@ -8,7 +8,7 @@ namespace KarateSystem.Models
     {
         public int KumiteCatId { get; set; }
         public string KumiteCatName{ get; set; }
-        public string KumiteCatGender { get; set; }
+        public bool KumiteCatGender { get; set; }
         public int KumiteCatAgeMin { get; set; }
         public int KumiteCatAgeMax { get; set; }
         public decimal KumiteCatWeightMin { get; set; }

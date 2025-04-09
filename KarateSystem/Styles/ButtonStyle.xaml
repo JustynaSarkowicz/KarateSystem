@@ -367,11 +367,8 @@
     </Style>
 
     <!--Search textbox-->
-        <!-- 1. First define the converter -->
-        <BooleanToVisibilityConverter x:Key="BoolToVisibility" x:Name="BoolToVisibility"/>
-
-        <!-- 2. Then define the style that uses it -->
-        <Style x:Key="TransparentHintTextBox" TargetType="TextBox">
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility" x:Name="BoolToVisibility"/>
+    <Style x:Key="TransparentHintTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="White"/>
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
@@ -423,4 +420,26 @@
         </Style.Triggers>
         </Style>
 
+    <!--Degree Category button-->
+    <Style x:Key="degreeCategoryButton" TargetType="Button">
+        <Setter Property="Background" Value="#5D83B1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Height="20"
+                        CornerRadius="10"
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#344D6B"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

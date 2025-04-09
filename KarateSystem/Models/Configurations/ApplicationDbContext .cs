@@ -1,5 +1,6 @@
 ﻿using KarateSystem.JsonManager;
 using KarateSystem.Models;
+using KarateSystem.Models.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace KarateSystem.Configurations
@@ -19,12 +20,14 @@ namespace KarateSystem.Configurations
         public DbSet<TourCompetitor> TourCompetitors { get; set; }
         public DbSet<TourCatKata> TourCatKatas { get; set; }
         public DbSet<TourCatKumite> TourCatKumites { get; set; }
-
+        public DbSet<CatKataDegree> CatKataDegrees { get; set; }
+        public ApplicationDbContext()
+        {
+        }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ClubConfiguration());
@@ -40,6 +43,7 @@ namespace KarateSystem.Configurations
             modelBuilder.ApplyConfiguration(new TourCatKataConfiguration());
             modelBuilder.ApplyConfiguration(new TourCatKumiteConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new CatKataDegreeConfiguration());
             base.OnModelCreating(modelBuilder);
         }
 

@@ -30,6 +30,7 @@
                        TextAlignment="Center"
                        Grid.Row="0"
                        Margin="0,0,0,10"/>
+
             <Grid Grid.Row="1"
                   Margin="10,0,20,0">
                 <Grid.ColumnDefinitions>
@@ -41,6 +42,7 @@
                     <RowDefinition Height="300"/>
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
+
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -56,11 +58,10 @@
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  
                                  materialDesign:HintAssist.Hint="Szukaj..."
                                  materialDesign:HintAssist.Foreground="White"
-                                 Style="{StaticResource TransparentHintTextBox}">
-                        </TextBox>
-
+                                 Style="{StaticResource TransparentHintTextBox}"/>
                     </StackPanel>
                 </Grid>
+
                 <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                           CellStyle="{DynamicResource DataGridCellStyle1}" 
@@ -78,9 +79,9 @@
                 </DataGrid>
 
                 <Border Grid.Row="2"
-                    CornerRadius="10"
-                    BorderBrush="#1B3663"
-                    Background="#1B3663">
+                        CornerRadius="10"
+                        BorderBrush="#1B3663"
+                        Background="#1B3663">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="16"/>
@@ -90,6 +91,7 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
+
                         <TextBlock Text="Miejsce"
                                    Foreground="#BCBEE0"
                                    FontFamily="Montserrat"
@@ -97,100 +99,104 @@
                                    Margin="10,0,5,0"
                                    Grid.Column="0"
                                    Grid.Row="0"/>
+
                         <Border Margin="10,3,0,3"
-                            CornerRadius="10"
-                            Background="#5D83B1"
-                            Grid.Row="1"
-                            Grid.Column="0">
+                                CornerRadius="10"
+                                Background="#5D83B1"
+                                Grid.Row="1"
+                                Grid.Column="0">
                             <TextBox x:Name="tbClubPlace" 
-                                 Text="{Binding EditingClub.ClubPlace, UpdateSourceTrigger=PropertyChanged}"
-                                 Padding="3"
-                                 BorderThickness="0"
-                                 Background="Transparent"
-                                 Style="{StaticResource textBoxEnabled}"/>
+                                     Text="{Binding EditingClub.ClubPlace, UpdateSourceTrigger=PropertyChanged}"
+                                     Padding="3"
+                                     BorderThickness="0"
+                                     Background="Transparent"
+                                     Style="{StaticResource textBoxEnabled}"/>
                         </Border>
+
                         <TextBlock Text="Nazwa"
-                               Foreground="#BCBEE0"
-                               FontFamily="Montserrat"
-                               FontSize="14"
-                               Grid.Column="1"
-                               Grid.Row="0"
-                               Margin="5,0,5,0"/>
+                                   Foreground="#BCBEE0"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   Grid.Column="1"
+                                   Grid.Row="0"
+                                   Margin="5,0,5,0"/>
+
                         <Border Margin="5,3,10,3"
-                            CornerRadius="10"
-                            Background="#5D83B1"
-                            Grid.Row="1"
-                            Grid.Column="1">
+                                CornerRadius="10"
+                                Background="#5D83B1"
+                                Grid.Row="1"
+                                Grid.Column="1">
                             <TextBox x:Name="tbClubName"
-                                 Text="{Binding EditingClub.ClubName, UpdateSourceTrigger=PropertyChanged}"
-                                 Padding="3"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 Style="{StaticResource textBoxEnabled}"/>
+                                     Text="{Binding EditingClub.ClubName, UpdateSourceTrigger=PropertyChanged}"
+                                     Padding="3"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Style="{StaticResource textBoxEnabled}"/>
                         </Border>
                     </Grid>
                 </Border>
 
                 <StackPanel Grid.Column="1"
-                    Grid.Row="1"
-                    Grid.RowSpan="2"
-                    Orientation="Vertical"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Left"
-                    Margin="5,5,5,0">
-
+                            Grid.Row="1"
+                            Grid.RowSpan="2"
+                            Orientation="Vertical"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Left"
+                            Margin="5,5,5,0">
                     <Button x:Name="btnSaveClub"
-                    Width="80"    
-                    Command="{Binding UpdateClubCommand}"                            
-                    Content="Zapisz"
-                    Margin="0,0,0,5"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}">
+                            Width="80"    
+                            Command="{Binding UpdateClubCommand}"                            
+                            Content="Zapisz"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}">
                     </Button>
+
                     <Button x:Name="btnCancelEdit"
-                    Command="{Binding CancelClubCommand}"
-                    Width="80"                         
-                    Content="Anuluj"
-                    Margin="0,0,0,5"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource contentButton}"/>
+                            Command="{Binding CancelClubCommand}"
+                            Width="80"                         
+                            Content="Anuluj"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            VerticalAlignment="Bottom"
+                            Style="{StaticResource contentButton}"/>
+
                     <Button x:Name="btnEditClub"
-                    Width="80"
-                    Command="{Binding EditClubCommand}"                            
-                    Content="Edytuj"
-                    Margin="0,0,0,5"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource contentButton}">
+                            Width="80"
+                            Command="{Binding EditClubCommand}"                            
+                            Content="Edytuj"
+                            Margin="0,0,0,5"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            VerticalAlignment="Bottom"
+                            Style="{StaticResource contentButton}">
                     </Button>
+
                     <Button x:Name="btnAddNewClub"
-                    Width="80"
-                    Command="{Binding AddClubCommand}"                            
-                    Content="Dodaj"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource contentButton}"/>
-
+                            Width="80"
+                            Command="{Binding AddClubCommand}"                            
+                            Content="Dodaj"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            VerticalAlignment="Bottom"
+                            Style="{StaticResource contentButton}"/>
                 </StackPanel>
-
             </Grid>
+
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="350"/>
@@ -199,6 +205,7 @@
                     <ColumnDefinition Width="120"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+
                 <Grid Margin="10,0,10,0"
                       Grid.Column="0">
                     <Grid.RowDefinitions>
@@ -206,6 +213,7 @@
                         <RowDefinition Height="300"/>
                         <RowDefinition Height="45"/>
                     </Grid.RowDefinitions>
+
                     <TextBlock Text="Stopnie"
                                Foreground="White"
                                FontFamily="Montserrat"
@@ -215,6 +223,7 @@
                                VerticalAlignment="Bottom"
                                Margin="0,0,0,10"
                                Grid.Row="0"/>
+
                     <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
@@ -224,7 +233,6 @@
                               Grid.Row="1"
                               ItemsSource="{Binding Degrees}"
                               SelectedItem="{Binding SelectedDegree}">
-
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding DegreeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Id"/>
                             <DataGridTextColumn Binding="{Binding DegreeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
@@ -240,6 +248,7 @@
                                 <RowDefinition Height="16"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
+
                             <StackPanel Orientation="Horizontal"
                                         Grid.Row="0">
                                 <TextBlock Text="Nazwa"
@@ -250,6 +259,7 @@
                                            Margin="10,0,5,0"/>
                                 <TextBlock/>
                             </StackPanel>
+
                             <StackPanel Grid.Row="1"
                                         Orientation="Horizontal">
                                 <Border Margin="10,3,0,3"
@@ -269,13 +279,13 @@
                 </Grid>
 
                 <Grid Grid.Column="2"
-                      Grid.Row="3"
                       Margin="10,0,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="300"/>
                         <RowDefinition Height="45"/>
                     </Grid.RowDefinitions>
+
                     <TextBlock Text="Maty"
                                Foreground="White"
                                FontFamily="Montserrat"
@@ -285,6 +295,7 @@
                                VerticalAlignment="Bottom"
                                Margin="0,0,0,10"
                                Grid.Row="0"/>
+
                     <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
@@ -294,7 +305,6 @@
                               Grid.Row="1" 
                               ItemsSource="{Binding Mats}"
                               SelectedItem="{Binding SelectedMat}">
-
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding MatId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Id" Width="60"/>
                             <DataGridTextColumn Binding="{Binding MatName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
@@ -310,6 +320,7 @@
                                 <RowDefinition Height="16"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
+
                             <StackPanel Orientation="Horizontal"
                                         Grid.Row="0">
                                 <TextBlock Text="Nazwa"
@@ -320,6 +331,7 @@
                                            Margin="10,0,5,0"/>
                                 <TextBlock/>
                             </StackPanel>
+
                             <StackPanel Grid.Row="1"
                                         Orientation="Horizontal">
                                 <Border Margin="10,3,0,3"
@@ -355,6 +367,7 @@
                             Foreground="White"
                             Style="{StaticResource contentButton}">
                     </Button>
+
                     <Button x:Name="btnCancelDegree"
                             Width="80"
                             Command="{Binding CancelDegreeCommand}"                            
@@ -367,6 +380,7 @@
                             Foreground="White"
                             Style="{StaticResource contentButton}">
                     </Button>
+
                     <Button x:Name="btnEditDegree"
                             Width="80"
                             Command="{Binding EditDegreeCommand}"                            
@@ -379,6 +393,7 @@
                             Foreground="White"
                             Style="{StaticResource contentButton}">
                     </Button>
+
                     <Button x:Name="btnAddNewDegree"
                             Width="80"
                             Command="{Binding AddDegreeCommand}"                            
@@ -392,6 +407,7 @@
                             Style="{StaticResource contentButton}">
                     </Button>
                 </StackPanel>
+
                 <StackPanel Grid.Column="3"
                             Orientation="Vertical"
                             VerticalAlignment="Top"
@@ -443,9 +459,9 @@
                             BorderThickness="0"
                             Foreground="White"
                             Style="{StaticResource contentButton}"/>
-
                 </StackPanel>
             </Grid>
+
             <Border Grid.Row="2"
                     Grid.ColumnSpan="2"
                     BorderThickness="0,1,0,0"

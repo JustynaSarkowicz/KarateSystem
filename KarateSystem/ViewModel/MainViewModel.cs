@@ -13,7 +13,7 @@ public class MainViewModel : ViewModelBase
 
     private readonly CompetitorsViewModel _competitorsViewModel;
     private readonly ClubsDegreesMatsViewModel _clubsDegreesMatsViewModel;
-    private readonly ICompetitorRepository _competitorRepository;
+    private readonly CategoryViewModel _categoryViewModel;
 
     //Properties
     public ViewModelBase CurrentChildView
@@ -68,10 +68,12 @@ public class MainViewModel : ViewModelBase
     public ICommand ShowSettingsViewCommand { get; }
 
     public MainViewModel(CompetitorsViewModel competitorsViewModel,
-        ClubsDegreesMatsViewModel clubsDegreesMatsViewModel)
+        ClubsDegreesMatsViewModel clubsDegreesMatsViewModel,
+        CategoryViewModel categoryViewModel)
     {
         _competitorsViewModel = competitorsViewModel;
         _clubsDegreesMatsViewModel = clubsDegreesMatsViewModel;
+        _categoryViewModel = categoryViewModel;
 
         ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
         ShowCompetitorViewCommand = new ViewModelCommand(ExecuteShowCompetitorViewCommand);
@@ -82,6 +84,7 @@ public class MainViewModel : ViewModelBase
         ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
 
         ExecuteShowHomeViewCommand(null);
+        _categoryViewModel = categoryViewModel;
     }
 
     private void ExecuteShowCompetitorViewCommand(object obj)
@@ -106,7 +109,7 @@ public class MainViewModel : ViewModelBase
     }
     private void ExecuteShowCategoryViewCommand(object obj)
     {
-        CurrentChildView = new CategoryViewModel();
+        CurrentChildView = _categoryViewModel;
         Caption = "Kategorie";
         Icon = IconChar.Navicon;
     }

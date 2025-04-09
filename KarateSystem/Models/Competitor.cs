@@ -21,7 +21,7 @@ namespace KarateSystem.Models
                 return age;
             }
         }
-        public string CompGender { get; set; }
+        public bool CompGender { get; set; }
         public decimal CompWeight { get; set; }
         public int CompDegreeId { get; set; }
         public Degree Degree { get; set; }

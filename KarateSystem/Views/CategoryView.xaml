@@ -5,61 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:KarateSystem.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="750" d:DesignWidth="1050">
+             d:DesignHeight="850" d:DesignWidth="1050">
     <ScrollViewer Margin="0,0,0,-15"
               Style="{StaticResource CustomScrollViewer}">
         <Grid Margin="0,0,10,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="300"/>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="350"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="120"/>
-            </Grid.ColumnDefinitions>
-
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="400"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="350"/>
+            </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal"
-                VerticalAlignment="Top"
-                Grid.Column="0">
+                            VerticalAlignment="Top"
+                            Grid.Row="0">
                 <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
 
                 <TextBox x:Name="tbSearchCatKata"
-                         Text="Szukaj..."   
-                         FontSize="13"
-                         Height="24"
-                         Width="300"
-                         Background="Transparent"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="White"
-                         BorderBrush="White"
-                         BorderThickness="0,0,0,1"                             
-                         VerticalContentAlignment="Center"
-                         Margin="5,5,0,0"
-                         LostFocus="tbSearchCatKata_LostFocus"
-                         GotFocus="tbSearchCatKata_GotFocus"/>
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  
+                             materialDesign:HintAssist.Hint="Szukaj..."
+                             materialDesign:HintAssist.Foreground="White"
+                             Style="{StaticResource TransparentHintTextBox}"/>
             </StackPanel>
-
-            <Button x:Name="btnSearchCatKata" 
-                    Grid.Column="1"
-                    Click="btnSearchCatKata_Click"
-                    Command="{Binding LoginCommand}"                            
-                    Content="Wyszukaj"                            
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Top"
-                    Style="{StaticResource contentButton}">
-            </Button>
-        </Grid>
-        <Grid Grid.Row="1">
+            <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition/>
@@ -80,15 +49,17 @@
                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                       CellStyle="{DynamicResource DataGridCellStyle1}" 
                       Style="{DynamicResource DataGridStyle1}"
-                      Grid.Row="1">
+                      Grid.Row="1"
+                      ItemsSource="{Binding KataCategories}"
+                      SelectedItem="{Binding SelectedKataCategory}">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopnie"/>
+                        <DataGridTextColumn Binding="{Binding KataCatId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
+                        <DataGridTextColumn Binding="{Binding KataCatName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                        <DataGridTextColumn Binding="{Binding GenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
+                        <DataGridTextColumn Binding="{Binding KataCatAgeMin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
+                        <DataGridTextColumn Binding="{Binding KataCatAgeMax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
+                        <DataGridTextColumn Binding="{Binding DegreesDisplay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Stopnie"/>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -102,175 +73,249 @@
                        Grid.Row="0"
                        Grid.Column="1"/>
 
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="270"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0"
-                            Margin="5,0,0,0">
-                    
-                <TextBlock Text="Nazwa"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,30,0,20"
-                           HorizontalAlignment="Center"/>
-                <TextBlock Text="Płeć"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
-                <TextBlock Text="Wiek Min"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
-                <TextBlock Text="Wiek Max"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
-                <TextBlock Text="Stopnie"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="14"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
-
-                </StackPanel>
-                <Grid Grid.Column="1">
+                <Grid Grid.Row="1"
+                      Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="210"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="175"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0">
-                    <TextBox x:Name="tbCatKataName"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,27,0,20"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                    <TextBox x:Name="tbCatKataGender"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,18"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                    <TextBox x:Name="tbCatKataAgeMin"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,20"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                    <TextBox x:Name="tbCatKataAgeMax"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,15"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                    <TextBox x:Name="tbCatKataDegree"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,15"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     IsReadOnly="True"
-                                     Style="{StaticResource textBoxEnabled}"/>
+                    <Grid Grid.Row="0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"
+                                
+                                Margin="5,0,0,0">
+
+                        <TextBlock Text="Nazwa"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="5,30,0,20"
+                           HorizontalAlignment="Center"/>
+                        <TextBlock Text="Płeć"
+                           Foreground="White"
+                           FontFamily="Montserrat"
+                           FontSize="14"
+                           FontWeight="Medium"
+                           Margin="5,0,0,20"
+                           HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1"
+                        <StackPanel Grid.Row="0"
+                                Grid.Column="1">
+                            <TextBox x:Name="tbCatKataName"
+                                 Background="Transparent"
+                                 Width="180"
+                                 Height="19"
+                                 Margin="0,27,0,20"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"                             
+                                 VerticalContentAlignment="Center"
+                                 TextAlignment="Center"
+                                 Text="{Binding EditingKataCategory.KataCatName, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource textBoxEnabled}"/>
+
+                            <ComboBox x:Name="cbGenderCatKata"
+                                      Width="180"
+                                      Grid.Row="1"
+                                      ItemsSource="{Binding GenderOptions}"
+                                      SelectedItem="{Binding SelectedGender, Mode=TwoWay}"
+                                      Style="{StaticResource comboboxStyle}"
+                                      DisplayMemberPath="DisplayName"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <Grid Grid.Row="2"
+                          Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0"
+                                Grid.Row="2"
+                                Margin="5,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Stopnie"
+                                       Foreground="White"
+                                       FontFamily="Montserrat"
+                                       FontSize="14"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,10"
+                                       Grid.Row="0"/>
+                            <ComboBox x:Name="cbDegreeCatKata"
+                                      Width="180"
+                                      Grid.Row="1"
+                                      Style="{StaticResource comboboxStyle}"
+                                      ItemsSource="{Binding Degrees}"
+                                      SelectedItem="{Binding SelectedDegreeToAdd}">
+                                <ComboBox.DisplayMemberPath>DegreeName</ComboBox.DisplayMemberPath>
+                            </ComboBox>
+                            <StackPanel Grid.Row="2"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        Margin="0,10,0,0">
+                            <Button x:Name="btnAddDegreeCatKata"
+                                    Width="70"
+                                    Command="{Binding AddDegreeCommand}"                            
+                                    Content="Dodaj"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    Margin="0,0,5,0"
+                                    Style="{StaticResource degreeCategoryButton}"/>
+                        <Button x:Name="btnDeleteDegreeCatKata"
+                                Width="70"
+                                Command="{Binding RemoveDegreeCommand}"                            
+                                Content="Usuń"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource degreeCategoryButton}"/>
+                            </StackPanel>
+                        </Grid>                    
+                        <StackPanel Grid.Column="1"
+                                    Grid.Row="2"
+                                    VerticalAlignment="Center">
+                        <DataGrid ItemsSource="{Binding EditingKataCategory.CatKataDegrees}"
+                                  RowStyle="{DynamicResource DataGridRowStyle1}" 
+                                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                                  CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                  Style="{DynamicResource DataGridStyle1}"
+                                  Height="130"
+                                  Width="150"
+                                  HorizontalAlignment="Right"
+                                  SelectedItem="{Binding SelectedCatKataDegree}">
+                            <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding DegreeName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa" HeaderStringFormat=""/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+
+                    </Grid>
+                    <StackPanel Grid.ColumnSpan="2"
+                                Grid.Row="1"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="Wiek Min"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   FontWeight="Medium"/>
+                        <TextBox x:Name="tbCatKataAgeMin"
+                                 Background="Transparent"
+                                 Width="50"
+                                 Height="19"
+                                 Margin="20,0,0,0"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"  
+                                 TextAlignment="Center"
+                                 PreviewTextInput="NumberValidationTextBox"
+                                 Text="{Binding EditingKataCategory.KataCatAgeMin, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource textBoxEnabled}"/>
+                        <TextBlock Text="Wiek Max"
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="14"
+                                   FontWeight="Medium"
+                                   Margin="20,0,0,0"/>
+                        <TextBox x:Name="tbCatKataAgeMax"
+                                 Background="Transparent"
+                                 Width="50"
+                                 Height="19"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"
+                                 Margin="20,0,0,0"
+                                 TextAlignment="Center"
+                                 PreviewTextInput="NumberValidationTextBox"
+                                 Text="{Binding EditingKataCategory.KataCatAgeMax, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource textBoxEnabled}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3"
+                                Grid.ColumnSpan="2"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center">
                         <Button x:Name="btnSaveCatKata"
                                 Width="70"
-                                Command="{Binding LoginCommand}"                            
+                                Command="{Binding UpdateKataCategoryCommand}"                            
                                 Content="Zapisz"
-                                Click="btnSaveCatKata_Click"
                                 Margin="0,0,3,0"
                                 FontSize="12"
                                 FontFamily="Montserrat"
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
-                                Style="{StaticResource contentButton}">
-                        </Button>
+                                IsEnabled="{Binding IsEditingExisting}"
+                                Style="{StaticResource contentButton}"/>
+
+                        <Button x:Name="btnCancelCatKata"
+                                Width="70"
+                                Command="{Binding CancelKataCategoryCommand}"                            
+                                Content="Anuluj"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}"/>
+
                         <Button x:Name="btnEditCatKata"
                                 Width="70"
-                                Command="{Binding LoginCommand}"                            
+                                Command="{Binding EditKataCategoryCommand}"                            
                                 Content="Edytuj"
-                                Click="btnEditCatKata_Click"
                                 Margin="0,0,3,0"
                                 FontSize="12"
                                 FontFamily="Montserrat"
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
-                                Style="{StaticResource contentButton}">
-                        </Button>
+                                Style="{StaticResource contentButton}"/>
+
                         <Button x:Name="btnAddNewCatKata"
                                 Width="70"
-                                Command="{Binding LoginCommand}"                            
+                                Command="{Binding AddKataCategoryCommand}"                            
                                 Content="Dodaj"
-                                Click="btnAddNewCatKata_Click"
                                 Margin="0,0,3,0"
                                 FontSize="12"
                                 FontFamily="Montserrat"
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
-                                Style="{StaticResource contentButton}">
-                        </Button>
+                                IsEnabled="{Binding IsAddingNew}"
+                                Style="{StaticResource contentButton}"/>
+
                     </StackPanel>
                 </Grid>
             </Grid>
-        </Grid>
         <Grid Grid.Row="2"
               Margin="0,20,0,0">
             <Grid.ColumnDefinitions>
@@ -284,36 +329,12 @@
                 <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
 
                 <TextBox x:Name="tbSearchCatKumite"
-                         Text="Szukaj..."   
-                         FontSize="13"
-                         Height="24"
-                         Width="300"
-                         Background="Transparent"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="White"
-                         BorderBrush="White"
-                         BorderThickness="0,0,0,1"                             
-                         VerticalContentAlignment="Center"
-                         Margin="5,5,0,0"
-                         LostFocus="tbSearchCatKumite_LostFocus"
-                         GotFocus="tbSearchCatKumite_GotFocus"/>
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"  
+                         materialDesign:HintAssist.Hint="Szukaj..."
+                         materialDesign:HintAssist.Foreground="White"
+                         Style="{StaticResource TransparentHintTextBox}"/>
             </StackPanel>
 
-            <Button x:Name="btnSearchCatKumite" 
-                    Grid.Column="1"
-                    Click="btnSearchCatKumite_Click"
-                    Command="{Binding LoginCommand}"                            
-                    Content="Wyszukaj"                            
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Top"
-                    Style="{StaticResource contentButton}">
-            </Button>
         </Grid>
             <Grid Grid.Row="3"
                   Margin="0,0,0,30">
@@ -361,12 +382,17 @@
                        Grid.Column="1"/>
 
                 <Grid Grid.Row="1"
-                  Grid.Column="1">
+                      Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="210"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0"
+                                Grid.Row="0"
                             Margin="5,0,0,0">
 
                         <TextBlock Text="Nazwa"
@@ -413,12 +439,8 @@
                            HorizontalAlignment="Center"/>
 
                     </StackPanel>
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="240"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <StackPanel Grid.Row="0">
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="1">
                             <TextBox x:Name="tbCatKumiteName"
                                      Background="Transparent"
                                      Width="180"
@@ -504,50 +526,59 @@
                                      IsReadOnly="True"
                                      Style="{StaticResource textBoxEnabled}"/>
                         </StackPanel>
-                        <StackPanel Grid.Row="1"
+                    <StackPanel Grid.Row="1"
+                                Grid.ColumnSpan="2"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Center">
-                            <Button x:Name="btnSaveCatKumite"
+                        <Button x:Name="btnSaveCatKumite"
                                 Width="70"
                                 Command="{Binding LoginCommand}"                            
                                 Content="Zapisz"
-                                Click="btnSaveCatKumite_Click"
                                 Margin="0,0,3,0"
                                 FontSize="12"
                                 FontFamily="Montserrat"
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
-                                Style="{StaticResource contentButton}">
-                            </Button>
-                            <Button x:Name="btnEditCatKumite"
+                                Style="{StaticResource contentButton}"/>
+
+                        <Button x:Name="btnCancelCatKumite"
+                                Width="70"
+                                Command="{Binding LoginCommand}"                            
+                                Content="Anuluj"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}"/>
+
+                        <Button x:Name="btnEditCatKumite"
                                 Width="70"
                                 Command="{Binding LoginCommand}"                            
                                 Content="Edytuj"
-                                Click="btnEditCatKumite_Click"
                                 Margin="0,0,3,0"
                                 FontSize="12"
                                 FontFamily="Montserrat"
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
-                                Style="{StaticResource contentButton}">
-                            </Button>
-                            <Button x:Name="btnAddNewCatKumite"
+                                Style="{StaticResource contentButton}"/>
+
+                        <Button x:Name="btnAddNewCatKumite"
                                 Width="70"
                                 Command="{Binding LoginCommand}"                            
                                 Content="Dodaj"
-                                Click="btnAddNewCatKumite_Click"
                                 Margin="0,0,3,0"
                                 FontSize="12"
                                 FontFamily="Montserrat"
                                 Cursor="Hand"
                                 BorderThickness="0"
                                 Foreground="White"
-                                Style="{StaticResource contentButton}">
-                            </Button>
-                        </StackPanel>
-                    </Grid>
+                                Style="{StaticResource contentButton}"/>
+
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Grid>

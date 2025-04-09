@@ -1,4 +1,5 @@
-﻿using KarateSystem.Models;
+﻿using KarateSystem.Dto;
+using KarateSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace KarateSystem.Repository.Interfaces
 {
     public interface IDegreeRepository
     {
-        Task<List<Degree>> GetAllDegreeAsync();
-        Task UpdateDegreeAsync(Degree degree);
-        Task AddDegreeAsync(Degree degree);
+        Task<List<DegreeDto>> GetAllDegreeAsync();
+        Task<bool> UpdateDegreeAsync(DegreeDto degreeDto);
+        Task<bool> AddDegreeAsync(DegreeDto degreeDto);
     }
 }

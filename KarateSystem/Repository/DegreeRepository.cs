@@ -1,11 +1,12 @@
-﻿using KarateSystem.Configurations;
+﻿using AutoMapper;
+using KarateSystem.Configurations;
+using KarateSystem.Dto;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KarateSystem.Repository
@@ -13,33 +14,48 @@ namespace KarateSystem.Repository
     public class DegreeRepository : IDegreeRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        public DegreeRepository(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public DegreeRepository(ApplicationDbContext context, IMapper mapper)
         {
             _dbContext = context;
+            _mapper = mapper;
         }
-        public async Task AddDegreeAsync(Degree degree)
+
+        public async Task<bool> AddDegreeAsync(DegreeDto degreeDto)
         {
-            if(string.IsNullOrEmpty(degree.DegreeName)) return;
-            var newDegree = _dbContext.Degrees.FirstOrDefault(c => c.DegreeId == degree.DegreeId || c.DegreeName == degree.DegreeName);
-            if (newDegree != null) return;
+            if (string.IsNullOrEmpty(degreeDto.DegreeName)) return false;
+
+            var degree = _mapper.Map<Degree>(degreeDto);
+
+            var newDegree = await _dbContext.Degrees
+                .FirstOrDefaultAsync(c => c.DegreeId == degree.DegreeId || c.DegreeName == degree.DegreeName);
+            if (newDegree != null) return false;
+
             _dbContext.Degrees.Add(degree);
             await _dbContext.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<List<Degree>> GetAllDegreeAsync()
+        public async Task<List<DegreeDto>> GetAllDegreeAsync()
         {
-            return await _dbContext.Degrees.ToListAsync();
+            var degrees = await _dbContext.Degrees.AsNoTracking().ToListAsync();
+
+            return _mapper.Map<List<DegreeDto>>(degrees);
         }
 
-        public async Task UpdateDegreeAsync(Degree degree)
+        public async Task<bool> UpdateDegreeAsync(DegreeDto degreeDto)
         {
-            var existingDegree = _dbContext.Degrees.FirstOrDefault(c => c.DegreeId == degree.DegreeId);
-            if (string.IsNullOrEmpty(degree.DegreeName)) return;
-            if (existingDegree != null)
-            {
-                existingDegree.DegreeName = degree.DegreeName;
-                await _dbContext.SaveChangesAsync();
-            }
+            if (string.IsNullOrEmpty(degreeDto.DegreeName)) return false;
+
+            var existingDegree = await _dbContext.Degrees
+                .FirstOrDefaultAsync(c => c.DegreeId == degreeDto.DegreeId);
+
+            if (existingDegree == null) return false;
+
+            _mapper.Map(degreeDto, existingDegree);
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

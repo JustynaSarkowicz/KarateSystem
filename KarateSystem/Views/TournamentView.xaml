@@ -57,9 +57,7 @@
                              BorderBrush="White"
                              BorderThickness="0,0,0,1"                             
                              VerticalContentAlignment="Center"
-                             Margin="5,5,0,0"
-                             LostFocus="tbSearchTour_LostFocus"
-                             GotFocus="tbSearchTour_GotFocus"/>
+                             Margin="5,5,0,0"/>
                 </StackPanel>
 
                 <Button x:Name="btnSearchTour" 
@@ -288,9 +286,7 @@
                              BorderBrush="White"
                              BorderThickness="0,0,0,1"                             
                              VerticalContentAlignment="Center"
-                             Margin="5,5,0,0"
-                             LostFocus="tbSearchTourComp_LostFocus"
-                             GotFocus="tbSearchTourComp_GotFocus"/>
+                             Margin="5,5,0,0"/>
                 </StackPanel>
 
                 <Button x:Name="btnSearchTourComp" 

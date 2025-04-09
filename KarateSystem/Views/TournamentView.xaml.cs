@@ -46,18 +46,12 @@ namespace KarateSystem.Views
 
         }
 
-        private void tbSearchTour_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchTour);
-
-        private void tbSearchTour_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchTour);
 
         private void btnSearchTourComp_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void tbSearchTourComp_LostFocus(object sender, RoutedEventArgs e) => Helper.SetPlaceholderIfEmpty(tbSearchTourComp);
-
-        private void tbSearchTourComp_GotFocus(object sender, RoutedEventArgs e) => Helper.ClearPlaceholderOnFocus(tbSearchTourComp);
 
         private void btnFilterTourCompetitor_Click(object sender, RoutedEventArgs e)
         {

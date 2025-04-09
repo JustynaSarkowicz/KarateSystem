@@ -1,4 +1,5 @@
-﻿using KarateSystem.Models;
+﻿using KarateSystem.Dto;
+using KarateSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace KarateSystem.Repository.Interfaces
 {
     public interface IMatRepository
     {
-        Task<List<Mat>> GetAllMatAsync();
-        Task UpdateMatAsync(Mat mat);
-        Task AddMatAsync(Mat mat);
+        Task<List<MatDto>> GetAllMatAsync();
+        Task<bool> UpdateMatAsync(MatDto matDto);
+        Task<bool> AddMatAsync(MatDto matDto);
     }
 }

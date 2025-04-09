@@ -4,6 +4,7 @@ using KarateSystem.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KarateSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407101211_DodajRelacjeKategoriaStopien")]
+    partial class DodajRelacjeKategoriaStopien
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,8 +90,9 @@ namespace KarateSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("CompGender")
-                        .HasColumnType("bit");
+                    b.Property<string>("CompGender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CompLastName")
                         .IsRequired()
@@ -205,8 +209,12 @@ namespace KarateSystem.Migrations
                     b.Property<int>("KataCatAgeMin")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("KataCatGender")
-                        .HasColumnType("bit");
+                    b.Property<int>("KataCatDegreeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("KataCatGender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KataCatName")
                         .IsRequired()
@@ -231,8 +239,9 @@ namespace KarateSystem.Migrations
                     b.Property<int>("KumiteCatAgeMin")
                         .HasColumnType("int");
 
-                    b.Property<bool>("KumiteCatGender")
-                        .HasColumnType("bit");
+                    b.Property<string>("KumiteCatGender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KumiteCatName")
                         .IsRequired()

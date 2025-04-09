@@ -172,9 +172,7 @@
                                  BorderBrush="White"
                                  BorderThickness="0,0,0,1"                             
                                  VerticalContentAlignment="Center"
-                                 Margin="5,5,0,0"
-                                 LostFocus="tbSearchCompetitor_LostFocus"
-                                 GotFocus="tbSearchCompetitor_GotFocus"/>
+                                 Margin="5,5,0,0"/>
                     </StackPanel>
 
                     <Button x:Name="btnSearchCompetitor" 

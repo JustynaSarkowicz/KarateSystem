@@ -1,11 +1,12 @@
-﻿using KarateSystem.Configurations;
+﻿using AutoMapper;
+using KarateSystem.Configurations;
+using KarateSystem.Dto;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace KarateSystem.Repository
@@ -13,33 +14,48 @@ namespace KarateSystem.Repository
     public class MatRepository : IMatRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        public MatRepository(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public MatRepository(ApplicationDbContext context, IMapper mapper)
         {
             _dbContext = context;
+            _mapper = mapper;
         }
-        public async Task AddMatAsync(Mat mat)
+
+        public async Task<bool> AddMatAsync(MatDto matDto)
         {
-            if (string.IsNullOrEmpty(mat.MatName)) return;
-            var newMat = _dbContext.Mats.FirstOrDefault(c => c.MatId == mat.MatId || c.MatName == mat.MatName);
-            if (newMat != null) return;
+            if (string.IsNullOrEmpty(matDto.MatName)) return false;
+
+            var mat = _mapper.Map<Mat>(matDto);
+
+            var existingMat = await _dbContext.Mats
+                .FirstOrDefaultAsync(c => c.MatId == mat.MatId || c.MatName == mat.MatName);
+            if (existingMat != null) return false;
+
             _dbContext.Mats.Add(mat);
             await _dbContext.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<List<Mat>> GetAllMatAsync()
+        public async Task<List<MatDto>> GetAllMatAsync()
         {
-            return await _dbContext.Mats.ToListAsync();
+            var mats = await _dbContext.Mats.AsNoTracking().ToListAsync();
+
+            return _mapper.Map<List<MatDto>>(mats);
         }
 
-        public async Task UpdateMatAsync(Mat mat)
+        public async Task<bool> UpdateMatAsync(MatDto matDto)
         {
-            var existingMat = await _dbContext.Mats.FirstOrDefaultAsync(c => c.MatId == mat.MatId);
-            if (string.IsNullOrEmpty(mat.MatName)) return;
-            if (existingMat != null)
-            {
-                existingMat.MatName = mat.MatName;
-                await _dbContext.SaveChangesAsync();
-            }
+            if (string.IsNullOrEmpty(matDto.MatName)) return false;
+
+            var existingMat = await _dbContext.Mats.FirstOrDefaultAsync(c => c.MatId == matDto.MatId);
+
+            if (existingMat == null) return false;
+
+            _mapper.Map(matDto, existingMat);
+            await _dbContext.SaveChangesAsync();
+            return true;
+
         }
     }
 }
