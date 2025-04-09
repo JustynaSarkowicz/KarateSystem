@@ -470,8 +470,7 @@
                         VerticalAlignment="Top">
 
                 <Button x:Name="btnEditTour"
-                        Width="120"
-                        Command="{Binding LoginCommand}"                            
+                        Width="120"                           
                         Content="Zarządzaj turniejem"
                         Margin="0,5,0,0"
                         FontSize="12"
@@ -481,8 +480,7 @@
                         Foreground="White"
                         Style="{StaticResource contentButton}"/>
                 <Button x:Name="btnStatisticsTour"
-                        Width="120"
-                        Command="{Binding LoginCommand}"                            
+                        Width="120"                          
                         Content="Zobacz statystyki"
                         Margin="10,5,0,0"
                         FontSize="12"
@@ -492,8 +490,7 @@
                         Foreground="White"
                         Style="{StaticResource contentButton}"/>
                 <Button x:Name="btnChangeStatusTour"
-                        Width="120"
-                        Command="{Binding LoginCommand}"                            
+                        Width="120"                          
                         Content="Zmień status"
                         Margin="10,5,0,0"
                         FontSize="12"
