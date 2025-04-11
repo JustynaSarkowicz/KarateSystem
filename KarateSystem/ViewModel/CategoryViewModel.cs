@@ -170,11 +170,6 @@ namespace KarateSystem.ViewModel
             {
                 _selectedGenderCatKata = value;
                 OnPropertyChanged(nameof(SelectedGenderCatKata));
-                if (EditingKataCategory != null)
-                {
-                    EditingKataCategory.KataCatGender = value?.Value;
-                    OnPropertyChanged(nameof(EditingKataCategory));
-                }
             }
         }
         public GenderOption2 SelectedGenderCatKumite
@@ -184,11 +179,6 @@ namespace KarateSystem.ViewModel
             {
                 _selectedGenderCatKumite = value;
                 OnPropertyChanged(nameof(SelectedGenderCatKumite));
-                if (EditingKumiteCategory != null)
-                {
-                    EditingKumiteCategory.KumiteCatGender = value?.Value ?? true;
-                    OnPropertyChanged(nameof(EditingKumiteCategory));
-                }
             }
         }
         public string SearchTextCatKata
@@ -293,7 +283,7 @@ namespace KarateSystem.ViewModel
             {
                 CatKataDegrees = new ObservableCollection<CatKataDegreeDto>()
             };
-            SelectedGenderCatKata = GenderOptions.FirstOrDefault(g => g.Value == null);
+            SelectedGenderCatKata = null;
             IsEditingExistingCatKata = false;
             SelectedKataCategory = null;
         }
@@ -374,7 +364,7 @@ namespace KarateSystem.ViewModel
         private void ExecuteCancelKumiteCategoryCommand(object obj)
         {
             EditingKumiteCategory = new KumiteCategoryDto();
-            SelectedGenderCatKumite = GenderOptions2.FirstOrDefault(g => g.Value == true);
+            SelectedGenderCatKumite = null;
             IsEditingExistingCatKumite = false;
             SelectedKumiteCategory = null;
         }

@@ -19,73 +19,52 @@ namespace KarateSystem.Views
         { 
             InitializeComponent();
         }
+        //private void tbCompetitorDateOfBirth_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    TextBox textBox = (TextBox)sender;
+        //    string text = textBox.Text.Trim();
 
-        private void btnEditCompetitor_Click(object sender, RoutedEventArgs e)
+        //    text = Regex.Replace(text, @"\D", "");
+        //    if (text.Length >= 3)
+        //    {
+        //        text = text.Insert(2, "/");
+        //        if (text.Length > 5)
+        //        {
+        //            text = text.Insert(5, "/");
+        //        }
+        //    }
+
+        //    textBox.Text = text;
+        //    textBox.CaretIndex = text.Length;
+        //}
+
+        //private void tbCompetitorDateOfBirth_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    TextBox textBox = (TextBox)sender;
+        //    string text = textBox.Text + e.Text;
+
+        //    if (text.Length > 10)
+        //    {
+        //        e.Handled = true;
+        //    }
+        //}
+        private void WeightValidationTextBox(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            tbCompetitorName.IsReadOnly = false;
-            tbCompetitorSurname.IsReadOnly = false;
-            tbCompetitorDateOfBirth.IsReadOnly = false;
-            tbCompetitorDateOfBirth.IsReadOnly = false;
-            tbCompetitorAge.IsReadOnly = false;
-            tbCompetitorWeight.IsReadOnly = false;
-            cbCompetitorGender.IsEnabled = true;
-            cbCompetitorDegree.IsEnabled = true;
-            cbCompetitorClub.IsEnabled = true;
-        }
-
-        private void btnSaveCompetitor_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnSearchCompetitor_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnFilterCompetitor_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnAddNewCompetitor_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
-        private void tbCompetitorDateOfBirth_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            string text = textBox.Text.Trim();
-
-            text = Regex.Replace(text, @"\D", "");
-            if (text.Length >= 3)
+            var textBox = sender as TextBox;
+            if (textBox != null)
             {
-                text = text.Insert(2, "/");
-                if (text.Length > 5)
+                string newText = textBox.Text.Insert(textBox.CaretIndex, e.Text);
+
+                if (e.Text == "." && !textBox.Text.Contains("."))
                 {
-                    text = text.Insert(5, "/");
+                    return;
+                }
+
+                if (!Helper.IsWeightCorrect(newText))
+                {
+                    e.Handled = true;
                 }
             }
-
-            textBox.Text = text;
-            textBox.CaretIndex = text.Length;
-        }
-
-        private void tbCompetitorDateOfBirth_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            string text = textBox.Text + e.Text;
-
-            if (text.Length > 10)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void dgvCompetitors_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
         }
     }
 }

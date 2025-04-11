@@ -1,4 +1,6 @@
-﻿using KarateSystem.Configurations;
+﻿using AutoMapper;
+using KarateSystem.Configurations;
+using KarateSystem.Dto;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -8,54 +10,84 @@ namespace KarateSystem.Repository
     public class CompetitorRepository : ICompetitorRepository
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public CompetitorRepository(ApplicationDbContext context)
+        public CompetitorRepository(ApplicationDbContext context, IMapper mapper)
         {
             _dbContext = context;
+            _mapper = mapper;
         }
-        public async Task<List<Competitor>> GetAllCompetitorsAsync()
+        public async Task<bool> AddCompAsync(CompetitorDto competitor)
         {
-            var competitors = await _dbContext.Competitors
-                .Include(c => c.Degree)
-                .Include(c => c.Club)
-                .ToListAsync();  
-            return competitors;
+            if (string.IsNullOrWhiteSpace(competitor.CompFirstName) ||
+                string.IsNullOrWhiteSpace(competitor.CompLastName) ||
+                competitor.CompWeight < 0 ||
+                competitor.CompDegreeId <= 0 ||
+                competitor.CompClubId <= 0)
+            {
+                return false;
+            }
+            var existingComp = await _dbContext.Competitors
+                .FirstOrDefaultAsync(c => c.CompFirstName == competitor.CompFirstName &&
+                                          c.CompLastName == competitor.CompLastName &&
+                                          c.CompDateOfBirth == competitor.CompDateOfBirth);
+            if (existingComp != null) return false;
+            var newComp = _mapper.Map<Competitor>(competitor);
+            try
+            {
+                _dbContext.Competitors.Add(newComp);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
-        public async Task<Competitor?> GetCompetitorAsync(int compId)
+        public async Task<List<CompetitorDto>> GetAllCompetitorsAsync()
         {
-            var competitor = await _dbContext.Competitors
-                .Where(c => c.CompId == compId)
-                .FirstOrDefaultAsync();  
-            return competitor;
-        }
-        public async Task<List<Tournament>> GetCompetitorTournamentAsync(int compId)
-        {
-            var tournaments = await _dbContext.TourCompetitors
-                .Where(tc => tc.CompId == compId)
-                .Select(tc => tc.Tournament)
-                .ToListAsync();  
-            return tournaments;
-        }
-        public async Task<string> GetCompetitorTourCatKataAsync(int compId, int tourId)
-        {
-            var kataCategory = await _dbContext.TourCompetitors
-                .Where(tc => tc.CompId == compId && tc.TourId == tourId)
-                .Select(tc => tc.TourCatKata.KataCategory.KataCatName)
-                .FirstOrDefaultAsync();  
+            var entities = await _dbContext.Competitors
+                .Include(k => k.Club)
+                .Include(k => k.Degree)
+                .Include(k => k.TourCompetitors)
+                    .ThenInclude(tc => tc.Tournament)
+                .AsNoTracking()
+                .ToListAsync();
 
-            if (string.IsNullOrEmpty(kataCategory)) return "";
-            return kataCategory;
+            return _mapper.Map<List<CompetitorDto>>(entities);
         }
-        public async Task<string> GetCompetitorTourCatKumiteAsync(int compId, int tourId)
+        public async Task<bool> UpdateCompAsync(CompetitorDto competitor)
         {
-            var kumiteCategory = await _dbContext.TourCompetitors
-                .Where(tc => tc.CompId == compId && tc.TourId == tourId)
-                .Select(tc => tc.TourCatKumite.KumiteCategory.KumiteCatName)
-                .FirstOrDefaultAsync(); 
+            var existingComp = await _dbContext.Competitors
+                .FirstOrDefaultAsync(c => c.CompId == competitor.CompId);
+            if (existingComp == null) return false;
+            if (string.IsNullOrWhiteSpace(competitor.CompFirstName) ||
+                string.IsNullOrWhiteSpace(competitor.CompLastName) ||
+                competitor.CompWeight < 0 ||
+                competitor.CompDegreeId <= 0 ||
+                competitor.CompClubId <= 0)
+            {
+                return false;
+            }
 
-            if (string.IsNullOrEmpty(kumiteCategory)) return "";
-            return kumiteCategory;
+            existingComp.CompFirstName = competitor.CompFirstName;
+            existingComp.CompLastName = competitor.CompLastName;
+            existingComp.CompDateOfBirth = competitor.CompDateOfBirth;
+            existingComp.CompGender = competitor.CompGender;
+            existingComp.CompWeight = competitor.CompWeight;
+            existingComp.CompDegreeId = competitor.CompDegreeId;
+            existingComp.CompClubId = competitor.CompClubId;
+
+            try
+            {
+                _dbContext.Competitors.Update(existingComp);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
-
 }

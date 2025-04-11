@@ -8,7 +8,6 @@ namespace KarateSystem.Models
 {
     public class TourCompetitor
     {
-        // Tabele pośrednie do dodawania zawodników do turnieju i kategorii dla nich
         public int TourCompId { get; set; }
         public int TourId { get; set; }
         public Tournament Tournament { get; set; }

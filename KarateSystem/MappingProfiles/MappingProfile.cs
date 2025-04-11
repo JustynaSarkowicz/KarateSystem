@@ -24,6 +24,10 @@ namespace KarateSystem.MappingProfiles
                 .ForMember(dest => dest.DegreeName, opt => opt.MapFrom(src => src.Degree.DegreeName))
                 .ReverseMap();
             CreateMap<KumiteCategory, KumiteCategoryDto>().ReverseMap();
+            CreateMap<Competitor, CompetitorDto>()
+                .ForMember(dest => dest.DegreeName, opt => opt.MapFrom(src => src.Degree.DegreeName))
+                .ForMember(dest => dest.ClubName, opt => opt.MapFrom(src => src.Club.ClubName))
+                .ReverseMap();
         }
     }
 }
