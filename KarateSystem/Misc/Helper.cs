@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Globalization;
+using System.Windows.Controls;
 
 namespace KarateSystem.Misc
 {
@@ -8,13 +9,30 @@ namespace KarateSystem.Misc
         {
             return int.TryParse(text, out _);
         }
-        public static bool IsWeightCorrect(string text)
+        public static bool IsValidDecimalInput(string currentText, string newInput, int caretIndex)
         {
-            string pattern = @"^(\d*\.?\d{0,2}|\d+\.?)$";
+            // Calculate what the new text would be
+            string potentialText = currentText.Insert(caretIndex, newInput);
 
-            return System.Text.RegularExpressions.Regex.IsMatch(text, pattern);
+            // Allow empty string (for deletion cases)
+            if (string.IsNullOrEmpty(potentialText))
+                return true;
+
+            // Special handling for decimal point
+            if (newInput == ".")
+            {
+                // Allow only if:
+                // 1. No existing dot in the text
+                // 2. Not at the start of the text
+                return !currentText.Contains('.') && caretIndex > 0;
+            }
+
+            // Try parsing the complete potential text
+            return decimal.TryParse(potentialText,
+                NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign,
+                CultureInfo.InvariantCulture,
+                out _);
         }
-
         public static List<GenderOption> GenderOptions { get; } = new()
         {
             new GenderOption("Kobieta", false),

@@ -80,8 +80,7 @@
                 </StackPanel>
 
                 <Button x:Name="btnFilterCompetitor"
-                        Grid.Column="1"
-                        Command="{Binding LoginCommand}"                            
+                        Grid.Column="1"                         
                         Content="Filtruj"                            
                         FontSize="12"
                         FontFamily="Montserrat"
@@ -105,9 +104,9 @@
                     <DataGridTextColumn Binding="{Binding CompId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" Width="50"/>
                         <DataGridTextColumn Binding="{Binding CompFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Imię" Width="150"/>
                         <DataGridTextColumn Binding="{Binding CompLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwisko" Width="150"/>
-                    <DataGridTextColumn Binding="{Binding CompDateOfBirth, StringFormat='dd.MM.yyyy', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia" Width="120"/>
+                        <DataGridTextColumn Binding="{Binding CompDateOfBirth, StringFormat='dd.MM.yyyy', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia" Width="120"/>
                         <DataGridTextColumn Binding="{Binding CompAge, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek" Width="70"/>
-                        <DataGridTextColumn Binding="{Binding CompGender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć" Width="120"/>
+                        <DataGridTextColumn Binding="{Binding GenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć" Width="120"/>
                         <DataGridTextColumn Binding="{Binding CompWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga" Width="80"/>
                         <DataGridTextColumn Binding="{Binding DegreeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Stopień" Width="100"/>
                         <DataGridTextColumn Binding="{Binding ClubName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Klub" Width="*"/>
@@ -134,7 +133,7 @@
                                    FontFamily="Montserrat"
                                    FontSize="20"
                                    FontWeight="Medium"
-                                   Margin="0,0,0,20"/>
+                                   Margin="0,0,0,15"/>
                         <TextBlock Text="Imię"
                                    Foreground="White"
                                    FontFamily="Montserrat"
@@ -149,14 +148,14 @@
                                    FontWeight="Medium"
                                    Margin="0,0,0,10"
                                    HorizontalAlignment="Center"/>
-                        <TextBlock Text="Data Urodzenia"
+                        <TextBlock Text="Waga"
                                    Foreground="White"
                                    FontFamily="Montserrat"
                                    FontSize="16"
                                    FontWeight="Medium"
-                                   Margin="0,0,0,10"
+                                   Margin="0,0,0,15"
                                    HorizontalAlignment="Center"/>
-                        <TextBlock Text="Waga"
+                        <TextBlock Text="Data Urodzenia"
                                    Foreground="White"
                                    FontFamily="Montserrat"
                                    FontSize="16"
@@ -189,8 +188,8 @@
                           Grid.Row="0"
                           Margin="20,20,20,20">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="45"/>
-                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="37"/>
+                            <RowDefinition Height="215"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0"
                                     Orientation="Horizontal"
@@ -228,22 +227,6 @@
                                      TextAlignment="Center"
                                      Text="{Binding EditingComp.CompLastName, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource textBoxEnabled}"/>
-                            <TextBox x:Name="tbCompetitorDateOfBirth"
-                                     Background="Transparent"
-                                     Width="180"
-                                     Height="19"
-                                     Margin="0,0,0,10"
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     VerticalContentAlignment="Center"
-                                     TextAlignment="Center"
-                                     Text="{Binding EditingComp.CompDateOfBirth, StringFormat='{}{0:dd.MM.yyyy}',UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource textBoxEnabled}"/>
-                            
                             <TextBox x:Name="tbCompetitorWeight"
                                      Background="Transparent"
                                      Width="180"
@@ -257,9 +240,13 @@
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
                                      TextAlignment="Center"
-                                     PreviewTextInput="WeightValidationTextBox"
                                      Text="{Binding EditingComp.CompWeight, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource textBoxEnabled}"/>
+
+                            <DatePicker SelectedDate="{Binding EditingComp.CompDateOfBirth, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource DatePickerStyle}"
+                                        Width="180"
+                                        Margin="0,0,0,5"/>
                             <ComboBox x:Name="cbCompetitorGender"
                                       Width="180"
                                       ItemsSource="{Binding GenderOptions2}"
@@ -270,22 +257,23 @@
                             <ComboBox x:Name="cbDegreeComp"
                                       Width="180"
                                       Grid.Row="1"
-                                      Margin="0,5,0,0"
+                                      Margin="0,7,0,0"
                                       Style="{StaticResource comboboxStyle}"
                                       ItemsSource="{Binding Degrees}"
-                                      SelectedItem="{Binding SelectedDegree}">
-                                <ComboBox.DisplayMemberPath>DegreeName</ComboBox.DisplayMemberPath>
-                            </ComboBox>
+                                      SelectedValue="{Binding EditingComp.CompDegreeId, Mode=TwoWay}"
+                                      SelectedValuePath="DegreeId"
+                                      DisplayMemberPath="DegreeName"/>
+
 
                             <ComboBox x:Name="cbClubComp"
                                       Width="180"
                                       Grid.Row="1"
-                                      Margin="0,5,0,0"
+                                      Margin="0,7,0,0"
                                       Style="{StaticResource comboboxStyle}"
                                       ItemsSource="{Binding Clubs}"
-                                      SelectedItem="{Binding SelectedClub}">
-                                <ComboBox.DisplayMemberPath>ClubName</ComboBox.DisplayMemberPath>
-                            </ComboBox>
+                                      SelectedValue="{Binding EditingComp.CompClubId, Mode=TwoWay}"
+                                      SelectedValuePath="ClubId"
+                                      DisplayMemberPath="ClubName"/>
 
                         </StackPanel>
                     </Grid>
@@ -297,7 +285,7 @@
                                 HorizontalAlignment="Center">
                         <Button x:Name="btnSaveCompetitor"
                                         Width="80"
-                                        Command="{Binding LoginCommand}"                            
+                                        Command="{Binding UpdateCompCommand}"                            
                                         Content="Zapisz"
                                         Margin="0,0,5,0"
                                         FontSize="12"
@@ -318,7 +306,6 @@
                                         Cursor="Hand"
                                         BorderThickness="0"
                                         Foreground="White"
-                                        IsEnabled="{Binding IsEditingExisting}"
                                         Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnEditCompetitor"
@@ -335,7 +322,7 @@
 
                         <Button x:Name="btnAddNewCompetitor"
                                 Width="80"
-                                Command="{Binding LoginCommand}"                            
+                                Command="{Binding AddCompCommand}"                            
                                 Content="Dodaj"
                                 Margin="0,0,5,0"
                                 FontSize="12"
@@ -347,7 +334,7 @@
                                 Style="{StaticResource contentButton}"/>
                     </StackPanel>
                     <Grid Grid.Column="2"
-                          Grid.Row="0">
+                          Grid.RowSpan="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50"/>
                             <RowDefinition Height="*"/>
@@ -367,7 +354,7 @@
                                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                                   CellStyle="{DynamicResource DataGridCellStyle1}" 
                                   Style="{DynamicResource DataGridStyle1}"
-                                  Height="200"
+                                  Height="180"
                                   VerticalAlignment="Top"
                                   Grid.Row="1">
 

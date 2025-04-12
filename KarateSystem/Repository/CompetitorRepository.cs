@@ -39,8 +39,9 @@ namespace KarateSystem.Repository
                 await _dbContext.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine($"SQL Error: {ex.Message}");
                 return false;
             }
         }

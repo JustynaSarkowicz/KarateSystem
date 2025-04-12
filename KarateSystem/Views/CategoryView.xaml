@@ -509,7 +509,6 @@
                                  BorderThickness="0,0,0,1"  
                                  TextAlignment="Center"
                                  MaxLength="6"
-                                 PreviewTextInput="WeightValidationTextBox"
                                  Text="{Binding EditingKumiteCategory.KumiteCatWeightMin, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource textBoxEnabled}"/>
                         <TextBlock Text="Waga Max"
@@ -531,7 +530,6 @@
                                  BorderThickness="0,0,0,1"  
                                  TextAlignment="Center"
                                  MaxLength="6"
-                                 PreviewTextInput="WeightValidationTextBox"
                                  Text="{Binding EditingKumiteCategory.KumiteCatWeightMax, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource textBoxEnabled}"/>
                     </StackPanel>

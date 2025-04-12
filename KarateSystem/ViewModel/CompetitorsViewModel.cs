@@ -5,6 +5,7 @@ using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using KarateSystem.Service.Interfaces;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using static KarateSystem.Misc.Enum;
 using static KarateSystem.Misc.Helper;
@@ -19,14 +20,12 @@ namespace KarateSystem.ViewModel
         private CompetitorDto _selectedComp;
         private CompetitorDto _editingComp;
         private GenderOption2 _selectedGenderComp;
-        private DegreeDto _selectedDegree;
-        private ClubDto _selectedClub;
 
         private ObservableCollection<CompetitorDto> _competitors;
         private ObservableCollection<DegreeDto> _degrees;
         private ObservableCollection<ClubDto> _clubs;
         private List<CompetitorDto> _allCompetitors;
-        
+
         private readonly ICompetitorRepository _competitorRepository;
         private readonly IDegreeRepository _degreeRepository;
         private readonly IClubRepository _clubRepository;
@@ -36,6 +35,8 @@ namespace KarateSystem.ViewModel
         #region Commands
         public ICommand EditCompCommand { get; }
         public ICommand CancelCompCommand { get; }
+        public ICommand UpdateCompCommand { get; }
+        public ICommand AddCompCommand { get; }
         #endregion
 
         #region Properties
@@ -83,7 +84,7 @@ namespace KarateSystem.ViewModel
             set
             {
                 _selectedComp = value;
-                OnPropertyChanged(nameof(SelectedCompetitor)); 
+                OnPropertyChanged(nameof(SelectedCompetitor));
             }
         }
         public CompetitorDto EditingComp
@@ -92,7 +93,7 @@ namespace KarateSystem.ViewModel
             set
             {
                 _editingComp = value;
-                OnPropertyChanged(nameof(EditingComp)); 
+                OnPropertyChanged(nameof(EditingComp));
             }
         }
         public GenderOption2 SelectedGenderComp
@@ -101,25 +102,7 @@ namespace KarateSystem.ViewModel
             set
             {
                 _selectedGenderComp = value;
-                OnPropertyChanged(nameof(SelectedGenderComp)); 
-            }
-        }
-        public DegreeDto SelectedDegree
-        {
-            get => _selectedDegree;
-            set
-            {
-                _selectedDegree = value;
-                OnPropertyChanged(nameof(SelectedDegree));
-            }
-        }
-        public ClubDto SelectedClub
-        {
-            get => _selectedClub;
-            set
-            {
-                _selectedClub = value;
-                OnPropertyChanged(nameof(SelectedClub));
+                OnPropertyChanged(nameof(SelectedGenderComp));
             }
         }
         public string SearchTextComp
@@ -145,10 +128,13 @@ namespace KarateSystem.ViewModel
 
             EditCompCommand = new ViewModelCommand(ExecuteEditCompetitorCommand, CanEditCompetitor);
             CancelCompCommand = new ViewModelCommand(ExecuteCancelCompCommand);
+            UpdateCompCommand = new ViewModelCommand(ExecuteUpdateCompCommand, CanEditCompetitor);
+            AddCompCommand = new ViewModelCommand(ExecuteAddCompCommand);
 
             _ = LoadAsync();
         }
         private bool CanEditCompetitor(object obj) => SelectedCompetitor != null;
+        private bool CanCancelCompetitor(object obj) => SelectedCompetitor != null && EditingComp != null;
         private async Task LoadAsync()
         {
             _allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
@@ -159,7 +145,10 @@ namespace KarateSystem.ViewModel
 
             var clubs = await _clubRepository.GetAllClubsAsync();
             Clubs = new ObservableCollection<ClubDto>(clubs);
-            EditingComp = new CompetitorDto();
+            EditingComp = new CompetitorDto
+            {
+                CompDateOfBirth = new DateTime(2000, 1, 1)  
+            };
         }
         private void FilterComp()
         {
@@ -172,7 +161,7 @@ namespace KarateSystem.ViewModel
         private void ExecuteEditCompetitorCommand(object obj)
         {
             if (SelectedCompetitor == null) return;
-            
+
             EditingComp = new CompetitorDto
             {
                 CompId = SelectedCompetitor.CompId,
@@ -185,18 +174,55 @@ namespace KarateSystem.ViewModel
                 CompClubId = SelectedCompetitor.CompClubId
             };
             SelectedGenderComp = GenderOptions2.FirstOrDefault(g => g.Value == EditingComp.CompGender);
-            SelectedDegree = Degrees.FirstOrDefault(d => d.DegreeId == EditingComp.CompDegreeId);
-            SelectedClub = Clubs.FirstOrDefault(c => c.ClubId == EditingComp.CompClubId);
-            IsEditingExisting = true;            
+            IsEditingExisting = true;
         }
         private void ExecuteCancelCompCommand(object obj)
         {
-            EditingComp = new CompetitorDto();
-            SelectedGenderComp = null;
-            SelectedDegree = null;
-            SelectedClub = null;
+            EditingComp = new CompetitorDto
+            {
+                CompDateOfBirth = new DateTime(2000, 1, 1)  
+            };
             IsEditingExisting = false;
             SelectedCompetitor = null;
+            SelectedGenderComp = null;
+        }
+
+        private async void ExecuteUpdateCompCommand(object obj)
+        {
+            if (SelectedCompetitor == null || EditCompCommand == null) return;
+
+            if (!Competitors.Contains(SelectedCompetitor)) return;
+            
+            SelectedCompetitor.CompFirstName = EditingComp.CompFirstName;
+            SelectedCompetitor.CompLastName = EditingComp.CompLastName;
+            SelectedCompetitor.CompDateOfBirth = EditingComp.CompDateOfBirth;
+            SelectedCompetitor.CompGender = SelectedGenderComp?.Value ?? false;
+            SelectedCompetitor.CompWeight = EditingComp.CompWeight;
+            SelectedCompetitor.CompDegreeId = EditingComp.CompDegreeId;
+            SelectedCompetitor.CompClubId = EditingComp.CompClubId;
+            var result = await _competitorRepository.UpdateCompAsync(SelectedCompetitor);
+            if(!result)
+            {
+                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            ExecuteCancelCompCommand(obj);
+            _allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
+            Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
+        }
+        private async void ExecuteAddCompCommand(object obj)
+        {
+            if(EditingComp == null) return;
+            var result = await _competitorRepository.AddCompAsync(EditingComp);
+            if (!result)
+            {
+                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            _allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
+            Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
+
+            ExecuteCancelCompCommand(obj);
         }
     }
 }

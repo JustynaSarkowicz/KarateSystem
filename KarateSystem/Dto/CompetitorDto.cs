@@ -24,6 +24,11 @@ namespace KarateSystem.Dto
             }
         }
         public bool CompGender { get; set; }
+        public string GenderDisplay => CompGender switch
+        {
+            true => "Mężczyzna",
+            false => "Kobieta",
+        };
         public decimal CompWeight { get; set; }
         public int CompDegreeId { get; set; }
         public string DegreeName { get; set; }
