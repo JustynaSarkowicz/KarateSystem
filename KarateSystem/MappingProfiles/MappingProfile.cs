@@ -54,6 +54,7 @@ namespace KarateSystem.MappingProfiles
                 .ForMember(dest => dest.KataCategory, opt => opt.Ignore())
                 .ForMember(dest => dest.Mat, opt => opt.Ignore())
                 .ForMember(dest => dest.Tour, opt => opt.Ignore());
+            CreateMap<User, UserDto>().ReverseMap();
         }
     }
 }

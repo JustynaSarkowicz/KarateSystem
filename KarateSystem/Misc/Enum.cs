@@ -8,22 +8,12 @@ namespace KarateSystem.Misc
 {
     public static class Enum
     {
-        public enum Gender
-        {
-            Kobieta,
-            Mężczyzna
-        }
         public enum Status
         {
             RejestracjaOtwarta,
             RejestracjaZamknięta,
             Otwarty,
             Zakończony
-        }
-        public enum Role
-        {
-            Admin,
-            Obsługa
         }
     }
 }

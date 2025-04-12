@@ -6,7 +6,7 @@ namespace KarateSystem.ViewModel;
 
 public class MainViewModel : ViewModelBase
 {
-    //Fields
+    #region Fields
     private ViewModelBase _currentChildView;
     private string _caption;
     private IconChar _icon;
@@ -14,8 +14,11 @@ public class MainViewModel : ViewModelBase
     private readonly CompetitorsViewModel _competitorsViewModel;
     private readonly ClubsDegreesMatsViewModel _clubsDegreesMatsViewModel;
     private readonly CategoryViewModel _categoryViewModel;
+    private readonly SettingsViewModel _settingsViewModel;
 
-    //Properties
+    #endregion
+
+    #region Properties
     public ViewModelBase CurrentChildView
     {
         get
@@ -57,8 +60,9 @@ public class MainViewModel : ViewModelBase
             OnPropertyChanged(nameof(Icon));
         }
     }
+    #endregion
 
-    //--> Commands
+    #region Commands
     public ICommand ShowHomeViewCommand { get; }
     public ICommand ShowCompetitorViewCommand { get; }
     public ICommand ShowClubDegreesMatsViewCommand { get; }
@@ -66,14 +70,16 @@ public class MainViewModel : ViewModelBase
     public ICommand ShowTournamentViewCommand { get; }
     public ICommand ShowKataKumiteViewCommand { get; }
     public ICommand ShowSettingsViewCommand { get; }
-
+    #endregion
     public MainViewModel(CompetitorsViewModel competitorsViewModel,
         ClubsDegreesMatsViewModel clubsDegreesMatsViewModel,
-        CategoryViewModel categoryViewModel)
+        CategoryViewModel categoryViewModel,
+        SettingsViewModel settingsViewModel)
     {
         _competitorsViewModel = competitorsViewModel;
         _clubsDegreesMatsViewModel = clubsDegreesMatsViewModel;
         _categoryViewModel = categoryViewModel;
+        _settingsViewModel = settingsViewModel;
 
         ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
         ShowCompetitorViewCommand = new ViewModelCommand(ExecuteShowCompetitorViewCommand);
@@ -84,7 +90,6 @@ public class MainViewModel : ViewModelBase
         ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
 
         ExecuteShowHomeViewCommand(null);
-        _categoryViewModel = categoryViewModel;
     }
 
     private void ExecuteShowCompetitorViewCommand(object obj)
@@ -127,7 +132,7 @@ public class MainViewModel : ViewModelBase
     }
     private void ExecuteShowSettingsViewCommand(object obj)
     {
-        CurrentChildView = new SettingsViewModel();
+        CurrentChildView = _settingsViewModel;
         Caption = "Ustawienia";
         Icon = IconChar.Cog;
     }

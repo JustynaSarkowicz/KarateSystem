@@ -7,7 +7,6 @@ using KarateSystem.Service.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using static KarateSystem.Misc.Enum;
 using static KarateSystem.Misc.Helper;
 
 namespace KarateSystem.ViewModel

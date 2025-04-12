@@ -20,23 +20,5 @@ namespace KarateSystem.Repository
             _context = context;
             _mapper = mapper;
         }
-        public async Task<List<TourCompetitorDto>> GetTournamentsByCompetitorId(int competitorId)
-        {
-            return await _context.TourCompetitors
-                .Where(tc => tc.CompId == competitorId)
-                .Include(tc => tc.Tournament)
-                .Include(tc => tc.Competitor)
-                .Include(tc => tc.TourCatKata)
-                .Include(tc => tc.TourCatKumite)
-                .Select(tc => new TourCompetitorDto
-                {
-                    TourCompId = tc.TourCompId,
-                    TourId = tc.TourId,
-                    TourName = tc.Tournament.TourName,
-                    TourDate = tc.Tournament.TourDate,
-                    CompId = tc.CompId
-                })
-                .ToListAsync();
-        }
     }
 }

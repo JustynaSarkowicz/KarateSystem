@@ -41,7 +41,6 @@ namespace KarateSystem.Repository
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"SQL Error: {ex.Message}");
                 return false;
             }
         }

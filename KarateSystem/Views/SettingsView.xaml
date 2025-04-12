@@ -35,15 +35,16 @@
                       Style="{DynamicResource DataGridStyle1}"
                       Height="290"
                       VerticalAlignment="Top"
-                      Grid.Column="0">
+                      Grid.Column="0"
+                      ItemsSource="{Binding Users}"
+                      SelectedItem="{Binding SelectedUser}">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Id"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Login"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Hasło"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Uprawnienia"/>
+                    <DataGridTextColumn Binding="{Binding UserId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Id"/>
+                    <DataGridTextColumn Binding="{Binding UserFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
+                    <DataGridTextColumn Binding="{Binding UserLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
+                    <DataGridTextColumn Binding="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Login"/>
+                    <DataGridTextColumn Binding="{Binding UserRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Uprawnienia"/>
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel Grid.Column="1"
@@ -53,7 +54,7 @@
 
                 <Button x:Name="btnAddUser"
                     Width="80"
-                    Command="{Binding LoginCommand}"                            
+                    Command="{Binding AddUserCommand}"                            
                     Content="Dodaj"
                     Margin="10,0,0,5"
                     FontSize="12"
@@ -61,10 +62,11 @@
                     Cursor="Hand"
                     BorderThickness="0"
                     Foreground="White"
+                    IsEnabled="{Binding IsAddingNew}"
                     Style="{StaticResource contentButton}"/>
                 <Button x:Name="btnEditUser"
                     Width="80"
-                    Command="{Binding LoginCommand}"                            
+                    Command="{Binding EditUserCommand}"                            
                     Content="Edytuj"
                     Margin="10,0,0,5"
                     FontSize="12"
@@ -75,7 +77,7 @@
                     Style="{StaticResource contentButton}"/>
                 <Button x:Name="btnDeleteUser"
                     Width="80"
-                    Command="{Binding LoginCommand}"                            
+                    Command="{Binding DeleteUserCommand}"                            
                     Content="Usuń"
                     Margin="10,0,0,0"
                     FontSize="12"
@@ -95,13 +97,14 @@
                 <RowDefinition Height="35"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+            <StackPanel Grid.RowSpan="2"
+                        Grid.Column="1"
+                        VerticalAlignment="Bottom">
             <Button x:Name="btnSaveUser"
                     Width="80"
-                    Grid.Column="1"
-                    Grid.Row="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    Command="{Binding LoginCommand}"                            
+                    Command="{Binding UpdateUserCommand}"                            
                     Content="Zapisz"
                     Margin="10,5,0,0"
                     FontSize="12"
@@ -109,7 +112,22 @@
                     Cursor="Hand"
                     BorderThickness="0"
                     Foreground="White"
+                    IsEnabled="{Binding IsEditingExisting}"
                     Style="{StaticResource contentButton}"/>
+            <Button x:Name="btnCancelUser"
+                    Width="80"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding CancelUserCommand}"                            
+                    Content="Anuluj"
+                    Margin="10,5,0,0"
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    Style="{StaticResource contentButton}"/>
+            </StackPanel>
             <Border BorderThickness="2"
                     BorderBrush="#5D83B1"
                     CornerRadius="10"
@@ -123,6 +141,7 @@
                            FontSize="16"
                            FontWeight="Medium"
                            Width="140"
+                           Margin="5,0,0,0"
                            TextAlignment="Center"/>
                 <TextBlock Text="Nazwisko"
                            Foreground="White"
@@ -130,6 +149,7 @@
                            FontSize="16"
                            FontWeight="Medium"
                            Width="150"
+                           Margin="2,0,0,0"
                            TextAlignment="Center"/>
                 <TextBlock Text="Login"
                            Foreground="White"
@@ -137,6 +157,7 @@
                            FontSize="16"
                            FontWeight="Medium"
                            Width="180"
+                           Margin="3,0,0,0"
                            TextAlignment="Center"/>
                 <TextBlock Text="Hasło"
                            Foreground="White"
@@ -167,7 +188,9 @@
                          BorderBrush="White"
                          BorderThickness="0,0,0,1"                             
                          VerticalContentAlignment="Center"
-                         IsReadOnly="True"/>
+                         FontSize="15"
+                         TextAlignment="Center"
+                         Text="{Binding EditingUser.UserFirstName, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Width="145" 
                          Margin="0,5,7,5"
                          Background="Transparent"                                   
@@ -178,7 +201,9 @@
                          BorderBrush="White"
                          BorderThickness="0,0,0,1"                             
                          VerticalContentAlignment="Center"
-                         IsReadOnly="True"/>
+                         FontSize="15"
+                         TextAlignment="Center"
+                         Text="{Binding EditingUser.UserLastName, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Width="175" 
                          Margin="0,5,7,5"
                          Background="Transparent"                                   
@@ -189,7 +214,9 @@
                          BorderBrush="White"
                          BorderThickness="0,0,0,1"                             
                          VerticalContentAlignment="Center"
-                         IsReadOnly="True"/>
+                         FontSize="15"
+                         TextAlignment="Center"
+                         Text="{Binding EditingUser.UserLogin, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Width="175" 
                          Margin="0,5,7,5"
                          Background="Transparent"                                   
@@ -198,26 +225,20 @@
                          Foreground="White"
                          CaretBrush="White"
                          BorderBrush="White"
-                         BorderThickness="0,0,0,1"                             
+                         BorderThickness="0,0,0,1"    
+                         FontSize="15"
+                         TextAlignment="Center"                         
                          VerticalContentAlignment="Center"
-                         IsReadOnly="True"/>
+                         Text="{Binding EditingUser.UserPass, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <ComboBox x:Name="cbCompetitorClub"
-                                  Width="170"
-                                  Style="{StaticResource comboboxStyle}"
-                                  Margin="5, 0,0 ,0"
-                                  IsEnabled="False"
-                          Height="30">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="{Binding Name}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                <ComboBox x:Name="cbRole"
+                          Width="170"
+                          Style="{StaticResource comboboxStyle}"
+                          Margin="5, 0,0 ,0"
+                          Height="30"
+                          ItemsSource="{Binding RoleOptions}"
+                          SelectedItem="{Binding SelectedRole, Mode=TwoWay}"/>
+
             </StackPanel>
         </Grid>
     </Grid>

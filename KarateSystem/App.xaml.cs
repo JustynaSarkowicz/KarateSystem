@@ -47,9 +47,11 @@ namespace KarateSystem
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IKumiteCategoryRepository, KumiteCategoryRepository>();
             services.AddScoped<ITourCompetitorRepository, TourCompetitorRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<CompetitorsViewModel>();
             services.AddScoped<ClubsDegreesMatsViewModel>();
             services.AddScoped<CategoryViewModel>();
+            services.AddScoped<SettingsViewModel>();
             services.AddScoped<MainViewModel>();
             services.AddAutoMapper(typeof(MappingProfile));
 

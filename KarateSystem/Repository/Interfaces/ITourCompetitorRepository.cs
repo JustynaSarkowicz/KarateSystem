@@ -9,6 +9,5 @@ namespace KarateSystem.Repository.Interfaces
 {
     public interface ITourCompetitorRepository
     {
-        Task<List<TourCompetitorDto>> GetTournamentsByCompetitorId(int competitorId);
     }
 }
