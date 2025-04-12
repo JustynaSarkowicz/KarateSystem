@@ -46,6 +46,7 @@ namespace KarateSystem
             services.AddScoped<ICatKataDegreeRepository, CatKataDegreeRepository>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IKumiteCategoryRepository, KumiteCategoryRepository>();
+            services.AddScoped<ITourCompetitorRepository, TourCompetitorRepository>();
             services.AddScoped<CompetitorsViewModel>();
             services.AddScoped<ClubsDegreesMatsViewModel>();
             services.AddScoped<CategoryViewModel>();

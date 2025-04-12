@@ -56,13 +56,29 @@ namespace KarateSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "KataCategories",
+                columns: table => new
+                {
+                    KataCatId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KataCatName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KataCatGender = table.Column<bool>(type: "bit", nullable: true),
+                    KataCatAgeMin = table.Column<int>(type: "int", nullable: false),
+                    KataCatAgeMax = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KataCategories", x => x.KataCatId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "KumiteCategories",
                 columns: table => new
                 {
                     KumiteCatId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     KumiteCatName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KumiteCatGender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KumiteCatGender = table.Column<bool>(type: "bit", nullable: false),
                     KumiteCatAgeMin = table.Column<int>(type: "int", nullable: false),
                     KumiteCatAgeMax = table.Column<int>(type: "int", nullable: false),
                     KumiteCatWeightMin = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
@@ -128,7 +144,7 @@ namespace KarateSystem.Migrations
                     CompFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CompLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CompDateOfBirth = table.Column<DateTime>(type: "date", nullable: false),
-                    CompGender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompGender = table.Column<bool>(type: "bit", nullable: false),
                     CompWeight = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
                     CompDegreeId = table.Column<int>(type: "int", nullable: false),
                     CompClubId = table.Column<int>(type: "int", nullable: false)
@@ -151,58 +167,28 @@ namespace KarateSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "KataCategories",
+                name: "CatKataDegrees",
                 columns: table => new
                 {
-                    KataCatId = table.Column<int>(type: "int", nullable: false)
+                    CatKataDegreeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    KataCatName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KataCatGender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KataCatAgeMin = table.Column<int>(type: "int", nullable: false),
-                    KataCatAgeMax = table.Column<int>(type: "int", nullable: false),
-                    KataCatDegreeId = table.Column<int>(type: "int", nullable: false)
+                    KataCatId = table.Column<int>(type: "int", nullable: false),
+                    DegreeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KataCategories", x => x.KataCatId);
+                    table.PrimaryKey("PK_CatKataDegrees", x => x.CatKataDegreeId);
                     table.ForeignKey(
-                        name: "FK_KataCategories_Degrees_KataCatDegreeId",
-                        column: x => x.KataCatDegreeId,
+                        name: "FK_CatKataDegrees_Degrees_DegreeId",
+                        column: x => x.DegreeId,
                         principalTable: "Degrees",
                         principalColumn: "DegreeId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TourCatKumites",
-                columns: table => new
-                {
-                    TourCatKumiteId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TourId = table.Column<int>(type: "int", nullable: false),
-                    KumiteCatId = table.Column<int>(type: "int", nullable: false),
-                    MatId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TourCatKumites", x => x.TourCatKumiteId);
                     table.ForeignKey(
-                        name: "FK_TourCatKumites_KumiteCategories_KumiteCatId",
-                        column: x => x.KumiteCatId,
-                        principalTable: "KumiteCategories",
-                        principalColumn: "KumiteCatId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TourCatKumites_Mats_MatId",
-                        column: x => x.MatId,
-                        principalTable: "Mats",
-                        principalColumn: "MatId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TourCatKumites_Tournaments_TourId",
-                        column: x => x.TourId,
-                        principalTable: "Tournaments",
-                        principalColumn: "TourId",
+                        name: "FK_CatKataDegrees_KataCategories_KataCatId",
+                        column: x => x.KataCatId,
+                        principalTable: "KataCategories",
+                        principalColumn: "KataCatId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -240,6 +226,39 @@ namespace KarateSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TourCatKumites",
+                columns: table => new
+                {
+                    TourCatKumiteId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TourId = table.Column<int>(type: "int", nullable: false),
+                    KumiteCatId = table.Column<int>(type: "int", nullable: false),
+                    MatId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TourCatKumites", x => x.TourCatKumiteId);
+                    table.ForeignKey(
+                        name: "FK_TourCatKumites_KumiteCategories_KumiteCatId",
+                        column: x => x.KumiteCatId,
+                        principalTable: "KumiteCategories",
+                        principalColumn: "KumiteCatId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TourCatKumites_Mats_MatId",
+                        column: x => x.MatId,
+                        principalTable: "Mats",
+                        principalColumn: "MatId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TourCatKumites_Tournaments_TourId",
+                        column: x => x.TourId,
+                        principalTable: "Tournaments",
+                        principalColumn: "TourId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TourCompetitors",
                 columns: table => new
                 {
@@ -247,8 +266,8 @@ namespace KarateSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TourId = table.Column<int>(type: "int", nullable: false),
                     CompId = table.Column<int>(type: "int", nullable: false),
-                    TourCatKataId = table.Column<int>(type: "int", nullable: false),
-                    TourCatKumiteId = table.Column<int>(type: "int", nullable: false)
+                    TourCatKataId = table.Column<int>(type: "int", nullable: true),
+                    TourCatKumiteId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -306,6 +325,16 @@ namespace KarateSystem.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_CatKataDegrees_DegreeId",
+                table: "CatKataDegrees",
+                column: "DegreeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatKataDegrees_KataCatId",
+                table: "CatKataDegrees",
+                column: "KataCatId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Competitors_CompClubId",
                 table: "Competitors",
                 column: "CompClubId");
@@ -314,11 +343,6 @@ namespace KarateSystem.Migrations
                 name: "IX_Competitors_CompDegreeId",
                 table: "Competitors",
                 column: "CompDegreeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_KataCategories_KataCatDegreeId",
-                table: "KataCategories",
-                column: "KataCatDegreeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Katas_TourCompId",
@@ -381,6 +405,9 @@ namespace KarateSystem.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "CatKataDegrees");
+
+            migrationBuilder.DropTable(
                 name: "Fights");
 
             migrationBuilder.DropTable(
@@ -405,6 +432,9 @@ namespace KarateSystem.Migrations
                 name: "Clubs");
 
             migrationBuilder.DropTable(
+                name: "Degrees");
+
+            migrationBuilder.DropTable(
                 name: "KataCategories");
 
             migrationBuilder.DropTable(
@@ -415,9 +445,6 @@ namespace KarateSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tournaments");
-
-            migrationBuilder.DropTable(
-                name: "Degrees");
         }
     }
 }

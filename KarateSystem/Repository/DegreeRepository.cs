@@ -26,12 +26,11 @@ namespace KarateSystem.Repository
         {
             if (string.IsNullOrEmpty(degreeDto.DegreeName)) return false;
 
-            var degree = _mapper.Map<Degree>(degreeDto);
-
             var newDegree = await _dbContext.Degrees
-                .FirstOrDefaultAsync(c => c.DegreeId == degree.DegreeId || c.DegreeName == degree.DegreeName);
+                .FirstOrDefaultAsync(c => c.DegreeId == degreeDto.DegreeId || c.DegreeName == degreeDto.DegreeName);
             if (newDegree != null) return false;
 
+            var degree = _mapper.Map<Degree>(degreeDto);
             _dbContext.Degrees.Add(degree);
             await _dbContext.SaveChangesAsync();
             return true;

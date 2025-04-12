@@ -30,6 +30,30 @@ namespace KarateSystem.MappingProfiles
                 .ReverseMap()
                 .ForMember(dest => dest.Club, opt => opt.Ignore())
                 .ForMember(dest => dest.Degree, opt => opt.Ignore()); 
+            CreateMap<Tournament, TournamentDto>().ReverseMap();
+            CreateMap<TourCompetitor, TourCompetitorDto>()
+                .ForMember(dest => dest.TourName, opt => opt.MapFrom(src => src.Tournament.TourName))
+                .ForMember(dest => dest.TourPlace, opt => opt.MapFrom(src => src.Tournament.TourPlace))
+                .ForMember(dest => dest.TourDate, opt => opt.MapFrom(src => src.Tournament.TourDate))
+                .ForMember(dest => dest.KataCatName, opt => opt.MapFrom(src => src.TourCatKata != null ? src.TourCatKata.KataCategory.KataCatName : "Brak"))
+                .ForMember(dest => dest.KumiteCatName, opt => opt.MapFrom(src => src.TourCatKumite != null ? src.TourCatKumite.KumiteCategory.KumiteCatName : "Brak"))
+                .ReverseMap()
+                .ForMember(dest => dest.Tournament, opt => opt.Ignore())
+                .ForMember(dest => dest.Competitor, opt => opt.Ignore())
+                .ForMember(dest => dest.TourCatKata, opt => opt.Ignore())
+                .ForMember(dest => dest.TourCatKumite, opt => opt.Ignore());
+            CreateMap<TourCatKumite, TourCatKumiteDto>()
+                .ForMember(dest => dest.KumiteCatName, opt => opt.MapFrom(src => src.KumiteCategory.KumiteCatName))
+                .ReverseMap()
+                .ForMember(dest => dest.KumiteCategory, opt => opt.Ignore())
+                .ForMember(dest => dest.Mat, opt => opt.Ignore())
+                .ForMember(dest => dest.Tour, opt => opt.Ignore());
+            CreateMap<TourCatKata, TourCatKataDto>()
+                .ForMember(dest => dest.KataCatName, opt => opt.MapFrom(src => src.KataCategory.KataCatName))
+                .ReverseMap()
+                .ForMember(dest => dest.KataCategory, opt => opt.Ignore())
+                .ForMember(dest => dest.Mat, opt => opt.Ignore())
+                .ForMember(dest => dest.Tour, opt => opt.Ignore());
         }
     }
 }

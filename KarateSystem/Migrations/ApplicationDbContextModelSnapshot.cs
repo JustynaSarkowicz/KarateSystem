@@ -333,10 +333,10 @@ namespace KarateSystem.Migrations
                     b.Property<int>("CompId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TourCatKataId")
+                    b.Property<int?>("TourCatKataId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TourCatKumiteId")
+                    b.Property<int?>("TourCatKumiteId")
                         .HasColumnType("int");
 
                     b.Property<int>("TourId")
@@ -458,8 +458,7 @@ namespace KarateSystem.Migrations
                     b.HasOne("KarateSystem.Models.TourCompetitor", "TourCompetitor")
                         .WithOne("Kata")
                         .HasForeignKey("KarateSystem.Models.Kata", "TourCompId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("TourCompetitor");
                 });
@@ -529,14 +528,12 @@ namespace KarateSystem.Migrations
                     b.HasOne("KarateSystem.Models.TourCatKata", "TourCatKata")
                         .WithMany("TourCompetitors")
                         .HasForeignKey("TourCatKataId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("KarateSystem.Models.TourCatKumite", "TourCatKumite")
                         .WithMany("TourCompetitors")
                         .HasForeignKey("TourCatKumiteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("KarateSystem.Models.Tournament", "Tournament")
                         .WithMany("TourCompetitors")

@@ -52,6 +52,12 @@ namespace KarateSystem.Repository
                 .Include(k => k.Degree)
                 .Include(k => k.TourCompetitors)
                     .ThenInclude(tc => tc.Tournament)
+                .Include(c => c.TourCompetitors)
+                    .ThenInclude(tc => tc.TourCatKata)
+                    .ThenInclude(tck => tck.KataCategory)
+                .Include(c => c.TourCompetitors)
+                    .ThenInclude(tc => tc.TourCatKumite)
+                    .ThenInclude(tck => tck.KumiteCategory)
                 .AsNoTracking()
                 .ToListAsync();
 

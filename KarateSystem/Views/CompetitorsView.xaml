@@ -52,35 +52,23 @@
                     <ComboBox x:Name="cbFilterCategories"
                               Width="150"
                               Style="{StaticResource comboboxStyle}"
-                              Margin="5, 0,0 ,0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                    <TextBlock Text="{Binding Name}" />
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                              Margin="5, 0,0 ,0"
+                              ItemsSource="{Binding FilterTypes}"
+                              SelectedItem="{Binding SelectedFilterType, Mode=TwoWay}"/>
+
                     <ComboBox x:Name="cbCategoriesDetails"
                               Width="250"
                               Style="{StaticResource comboboxStyle}"
-                              Margin="5, 0,0 ,0">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}" />
-                                    <TextBlock Text="{Binding Name}" />
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                              Margin="5, 0,0 ,0"
+                              ItemsSource="{Binding FilterValues}"
+                              SelectedItem="{Binding SelectedFilterValue, Mode=TwoWay}"/>
+
+
                 </StackPanel>
 
                 <Button x:Name="btnFilterCompetitor"
-                        Grid.Column="1"                         
+                        Grid.Column="1"          
+                        Command="{Binding FilterCommand}"
                         Content="Filtruj"                            
                         FontSize="12"
                         FontFamily="Montserrat"
@@ -240,7 +228,7 @@
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
                                      TextAlignment="Center"
-                                     Text="{Binding EditingComp.CompWeight, UpdateSourceTrigger=PropertyChanged}"
+                                     Text="{Binding EditingComp.CompWeight, Mode=TwoWay,UpdateSourceTrigger=LostFocus, FallbackValue=0}"
                                      Style="{StaticResource textBoxEnabled}"/>
 
                             <DatePicker SelectedDate="{Binding EditingComp.CompDateOfBirth, UpdateSourceTrigger=PropertyChanged}"
@@ -356,13 +344,14 @@
                                   Style="{DynamicResource DataGridStyle1}"
                                   Height="180"
                                   VerticalAlignment="Top"
-                                  Grid.Row="1">
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding EditingComp.TourCompetitors}"
+                                  SelectedItem="{Binding SelectedTourComp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
-                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Miejsce"/>
-                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Data"/>
-                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stan"/>
+                                <DataGridTextColumn Binding="{Binding TourName}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
+                                <DataGridTextColumn Binding="{Binding TourPlace}" ClipboardContentBinding="{x:Null}" Header="Miejsce"/>
+                                <DataGridTextColumn Binding="{Binding TourDate, StringFormat={}{0:dd.MM.yyyy}}" ClipboardContentBinding="{x:Null}" Header="Data"/>
                             </DataGrid.Columns>
                         </DataGrid>
                         <Grid Grid.Row="2"
@@ -400,6 +389,7 @@
                                          BorderThickness="0,0,0,1"                             
                                          HorizontalAlignment="Left"
                                          IsReadOnly="True"
+                                         Text="{Binding SelectedTourComp.KataCatName, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource textBoxEnabled}"/>
                                 <TextBox x:Name="tbComTourCatKumite"
                                          Background="Transparent"
@@ -413,6 +403,7 @@
                                          BorderThickness="0,0,0,1"                                   
                                          HorizontalAlignment="Left"
                                          IsReadOnly="True"
+                                         Text="{Binding SelectedTourComp.KumiteCatName, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource textBoxEnabled}"/>
                             </StackPanel>
                         </Grid>

@@ -13,10 +13,10 @@ namespace KarateSystem.Models
         public Tournament Tournament { get; set; }
         public int CompId { get; set; } 
         public Competitor Competitor { get; set; }
-        public int TourCatKataId { get; set; }
-        public TourCatKata TourCatKata { get; set; }
-        public int TourCatKumiteId { get; set; }
-        public TourCatKumite TourCatKumite { get; set; }
+        public int? TourCatKataId { get; set; }
+        public TourCatKata? TourCatKata { get; set; }
+        public int? TourCatKumiteId { get; set; }
+        public TourCatKumite? TourCatKumite { get; set; }
         public Kata? Kata { get; set; }
     }
 }

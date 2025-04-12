@@ -19,12 +19,17 @@ namespace KarateSystem.ViewModel
         private bool _isEditingExisting;
         private CompetitorDto _selectedComp;
         private CompetitorDto _editingComp;
-        private GenderOption2 _selectedGenderComp;
+        private GenderOption2 _selectedGenderComp; 
+        private string _selectedFilterType;
+        private string _selectedFilterValue;
+        private TourCompetitorDto _selectedTourComp;
 
         private ObservableCollection<CompetitorDto> _competitors;
         private ObservableCollection<DegreeDto> _degrees;
         private ObservableCollection<ClubDto> _clubs;
         private List<CompetitorDto> _allCompetitors;
+        public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
+        public ObservableCollection<string> FilterValues { get; set; } = new();
 
         private readonly ICompetitorRepository _competitorRepository;
         private readonly IDegreeRepository _degreeRepository;
@@ -37,6 +42,7 @@ namespace KarateSystem.ViewModel
         public ICommand CancelCompCommand { get; }
         public ICommand UpdateCompCommand { get; }
         public ICommand AddCompCommand { get; }
+        public ICommand FilterCommand { get; }
         #endregion
 
         #region Properties
@@ -87,6 +93,17 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedCompetitor));
             }
         }
+        public TourCompetitorDto SelectedTourComp
+        {
+            get => _selectedTourComp;
+            set
+            {
+                _selectedTourComp = value;
+                OnPropertyChanged(nameof(SelectedTourComp));
+                OnPropertyChanged(nameof(SelectedTourComp.KataCatName));
+                OnPropertyChanged(nameof(SelectedTourComp.KumiteCatName));
+            }
+        }
         public CompetitorDto EditingComp
         {
             get => _editingComp;
@@ -115,6 +132,25 @@ namespace KarateSystem.ViewModel
                 FilterComp();
             }
         }
+        public string SelectedFilterType
+        {
+            get => _selectedFilterType;
+            set
+            {
+                _selectedFilterType = value;
+                OnPropertyChanged(nameof(SelectedFilterType));
+                OnFilterTypeChanged();
+            }
+        }
+        public string SelectedFilterValue
+        {
+            get => _selectedFilterValue;
+            set
+            {
+                _selectedFilterValue = value;
+                OnPropertyChanged(nameof(SelectedFilterValue));
+            }
+        }
         #endregion
         public CompetitorsViewModel(ICompetitorRepository competitorRepository,
             ISearchService searchService,
@@ -128,8 +164,9 @@ namespace KarateSystem.ViewModel
 
             EditCompCommand = new ViewModelCommand(ExecuteEditCompetitorCommand, CanEditCompetitor);
             CancelCompCommand = new ViewModelCommand(ExecuteCancelCompCommand);
-            UpdateCompCommand = new ViewModelCommand(ExecuteUpdateCompCommand, CanEditCompetitor);
+            UpdateCompCommand = new ViewModelCommand(ExecuteUpdateCompCommand, CanCancelCompetitor);
             AddCompCommand = new ViewModelCommand(ExecuteAddCompCommand);
+            FilterCommand = new ViewModelCommand(ExecuteFilter);
 
             _ = LoadAsync();
         }
@@ -145,9 +182,12 @@ namespace KarateSystem.ViewModel
 
             var clubs = await _clubRepository.GetAllClubsAsync();
             Clubs = new ObservableCollection<ClubDto>(clubs);
+
+
             EditingComp = new CompetitorDto
             {
-                CompDateOfBirth = new DateTime(2000, 1, 1)  
+                CompDateOfBirth = new DateTime(2000, 1, 1),
+                TourCompetitors = new ObservableCollection<TourCompetitorDto>()
             };
         }
         private void FilterComp()
@@ -157,6 +197,36 @@ namespace KarateSystem.ViewModel
                 : new ObservableCollection<CompetitorDto>(
                     _searchService.SearchInCollection(_allCompetitors, SearchTextComp, "CompFirstName", "CompLastName"));
         }
+        private void ExecuteFilter(object obj)
+        {
+            if (string.IsNullOrEmpty(SelectedFilterType) || string.IsNullOrEmpty(SelectedFilterValue) || SelectedFilterType == "")
+            {
+                Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
+                return;
+            }
+
+            IEnumerable<CompetitorDto> filtered = _allCompetitors;
+
+            switch (SelectedFilterType)
+            {
+                case "Płeć":
+                    bool isMale = SelectedFilterValue == "Mężczyzna";
+                    filtered = filtered.Where(c => c.CompGender == isMale);
+                    break;
+
+                case "Stopień":
+                    filtered = filtered.Where(c => c.DegreeName == SelectedFilterValue);
+                    break;
+
+                case "Klub":
+                    filtered = filtered.Where(c => c.ClubName == SelectedFilterValue);
+                    break;
+            }
+
+            Competitors = new ObservableCollection<CompetitorDto>(filtered);
+        }
+
+
 
         private void ExecuteEditCompetitorCommand(object obj)
         {
@@ -171,7 +241,9 @@ namespace KarateSystem.ViewModel
                 CompGender = SelectedCompetitor.CompGender,
                 CompWeight = SelectedCompetitor.CompWeight,
                 CompDegreeId = SelectedCompetitor.CompDegreeId,
-                CompClubId = SelectedCompetitor.CompClubId
+                CompClubId = SelectedCompetitor.CompClubId,
+                TourCompetitors = new ObservableCollection<TourCompetitorDto>(
+                SelectedCompetitor.TourCompetitors ?? new List<TourCompetitorDto>())
             };
             SelectedGenderComp = GenderOptions2.FirstOrDefault(g => g.Value == EditingComp.CompGender);
             IsEditingExisting = true;
@@ -180,7 +252,8 @@ namespace KarateSystem.ViewModel
         {
             EditingComp = new CompetitorDto
             {
-                CompDateOfBirth = new DateTime(2000, 1, 1)  
+                CompDateOfBirth = new DateTime(2000, 1, 1),
+                TourCompetitors = new ObservableCollection<TourCompetitorDto>()
             };
             IsEditingExisting = false;
             SelectedCompetitor = null;
@@ -213,6 +286,7 @@ namespace KarateSystem.ViewModel
         private async void ExecuteAddCompCommand(object obj)
         {
             if(EditingComp == null) return;
+            EditingComp.CompGender = SelectedGenderComp?.Value ?? false;
             var result = await _competitorRepository.AddCompAsync(EditingComp);
             if (!result)
             {
@@ -223,6 +297,28 @@ namespace KarateSystem.ViewModel
             Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
 
             ExecuteCancelCompCommand(obj);
+        }
+        private void OnFilterTypeChanged()
+        {
+            FilterValues.Clear();
+
+            switch (SelectedFilterType)
+            {
+                case "Płeć":
+                    FilterValues.Add("Mężczyzna");
+                    FilterValues.Add("Kobieta");
+                    break;
+
+                case "Stopień":
+                    foreach (var degree in _allCompetitors.Select(c => c.DegreeName).Distinct())
+                        FilterValues.Add(degree);
+                    break;
+
+                case "Klub":
+                    foreach (var club in _allCompetitors.Select(c => c.ClubName).Distinct())
+                        FilterValues.Add(club);
+                    break;
+            }
         }
     }
 }

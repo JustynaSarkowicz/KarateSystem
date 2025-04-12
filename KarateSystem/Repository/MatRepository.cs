@@ -26,12 +26,12 @@ namespace KarateSystem.Repository
         {
             if (string.IsNullOrEmpty(matDto.MatName)) return false;
 
-            var mat = _mapper.Map<Mat>(matDto);
 
             var existingMat = await _dbContext.Mats
-                .FirstOrDefaultAsync(c => c.MatId == mat.MatId || c.MatName == mat.MatName);
+                .FirstOrDefaultAsync(c => c.MatId == matDto.MatId || c.MatName == matDto.MatName);
             if (existingMat != null) return false;
 
+            var mat = _mapper.Map<Mat>(matDto);
             _dbContext.Mats.Add(mat);
             await _dbContext.SaveChangesAsync();
             return true;

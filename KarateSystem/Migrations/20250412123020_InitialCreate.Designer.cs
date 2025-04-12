@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KarateSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250402154626_InitialCreate")]
+    [Migration("20250412123020_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,29 @@ namespace KarateSystem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("KarateSystem.Models.CatKataDegree", b =>
+                {
+                    b.Property<int>("CatKataDegreeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CatKataDegreeId"));
+
+                    b.Property<int>("DegreeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KataCatId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CatKataDegreeId");
+
+                    b.HasIndex("DegreeId");
+
+                    b.HasIndex("KataCatId");
+
+                    b.ToTable("CatKataDegrees");
+                });
 
             modelBuilder.Entity("KarateSystem.Models.Club", b =>
                 {
@@ -67,9 +90,8 @@ namespace KarateSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CompGender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("CompGender")
+                        .HasColumnType("bit");
 
                     b.Property<string>("CompLastName")
                         .IsRequired()
@@ -186,20 +208,14 @@ namespace KarateSystem.Migrations
                     b.Property<int>("KataCatAgeMin")
                         .HasColumnType("int");
 
-                    b.Property<int>("KataCatDegreeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("KataCatGender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool?>("KataCatGender")
+                        .HasColumnType("bit");
 
                     b.Property<string>("KataCatName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("KataCatId");
-
-                    b.HasIndex("KataCatDegreeId");
 
                     b.ToTable("KataCategories");
                 });
@@ -218,9 +234,8 @@ namespace KarateSystem.Migrations
                     b.Property<int>("KumiteCatAgeMin")
                         .HasColumnType("int");
 
-                    b.Property<string>("KumiteCatGender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("KumiteCatGender")
+                        .HasColumnType("bit");
 
                     b.Property<string>("KumiteCatName")
                         .IsRequired()
@@ -321,10 +336,10 @@ namespace KarateSystem.Migrations
                     b.Property<int>("CompId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TourCatKataId")
+                    b.Property<int?>("TourCatKataId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TourCatKumiteId")
+                    b.Property<int?>("TourCatKumiteId")
                         .HasColumnType("int");
 
                     b.Property<int>("TourId")
@@ -403,6 +418,25 @@ namespace KarateSystem.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("KarateSystem.Models.CatKataDegree", b =>
+                {
+                    b.HasOne("KarateSystem.Models.Degree", "Degree")
+                        .WithMany("CatKataDegrees")
+                        .HasForeignKey("DegreeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KarateSystem.Models.KataCategory", "KataCategory")
+                        .WithMany("CatKataDegrees")
+                        .HasForeignKey("KataCatId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Degree");
+
+                    b.Navigation("KataCategory");
+                });
+
             modelBuilder.Entity("KarateSystem.Models.Competitor", b =>
                 {
                     b.HasOne("KarateSystem.Models.Club", "Club")
@@ -427,21 +461,9 @@ namespace KarateSystem.Migrations
                     b.HasOne("KarateSystem.Models.TourCompetitor", "TourCompetitor")
                         .WithOne("Kata")
                         .HasForeignKey("KarateSystem.Models.Kata", "TourCompId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("TourCompetitor");
-                });
-
-            modelBuilder.Entity("KarateSystem.Models.KataCategory", b =>
-                {
-                    b.HasOne("KarateSystem.Models.Degree", "Degree")
-                        .WithMany("KataCategories")
-                        .HasForeignKey("KataCatDegreeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Degree");
                 });
 
             modelBuilder.Entity("KarateSystem.Models.TourCatKata", b =>
@@ -509,14 +531,12 @@ namespace KarateSystem.Migrations
                     b.HasOne("KarateSystem.Models.TourCatKata", "TourCatKata")
                         .WithMany("TourCompetitors")
                         .HasForeignKey("TourCatKataId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("KarateSystem.Models.TourCatKumite", "TourCatKumite")
                         .WithMany("TourCompetitors")
                         .HasForeignKey("TourCatKumiteId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("KarateSystem.Models.Tournament", "Tournament")
                         .WithMany("TourCompetitors")
@@ -545,13 +565,15 @@ namespace KarateSystem.Migrations
 
             modelBuilder.Entity("KarateSystem.Models.Degree", b =>
                 {
-                    b.Navigation("Competitors");
+                    b.Navigation("CatKataDegrees");
 
-                    b.Navigation("KataCategories");
+                    b.Navigation("Competitors");
                 });
 
             modelBuilder.Entity("KarateSystem.Models.KataCategory", b =>
                 {
+                    b.Navigation("CatKataDegrees");
+
                     b.Navigation("TourCatKatas");
                 });
 

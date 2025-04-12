@@ -509,7 +509,7 @@
                                  BorderThickness="0,0,0,1"  
                                  TextAlignment="Center"
                                  MaxLength="6"
-                                 Text="{Binding EditingKumiteCategory.KumiteCatWeightMin, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding EditingKumiteCategory.KumiteCatWeightMin, Mode=TwoWay,UpdateSourceTrigger=LostFocus, FallbackValue=0}"
                                  Style="{StaticResource textBoxEnabled}"/>
                         <TextBlock Text="Waga Max"
                                    Foreground="White"
@@ -530,7 +530,7 @@
                                  BorderThickness="0,0,0,1"  
                                  TextAlignment="Center"
                                  MaxLength="6"
-                                 Text="{Binding EditingKumiteCategory.KumiteCatWeightMax, UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding EditingKumiteCategory.KumiteCatWeightMax,  Mode=TwoWay,UpdateSourceTrigger=LostFocus, FallbackValue=0}"
                                  Style="{StaticResource textBoxEnabled}"/>
                     </StackPanel>
 
