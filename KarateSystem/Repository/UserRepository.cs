@@ -19,17 +19,17 @@ namespace KarateSystem.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         public UserRepository(ApplicationDbContext context, IMapper mapper)
         {
-            _context = context;
+            _dbContext = context;
             _mapper = mapper;
         }
 
         public async Task AddUserAsync(UserDto user)
         {
-            var existingUser = await _context.Users.AnyAsync(u => u.UserLogin == user.UserLogin && u.UserId != user.UserId);
+            var existingUser = await _dbContext.Users.AnyAsync(u => u.UserLogin == user.UserLogin && u.UserId != user.UserId);
 
             if (existingUser)
             {
@@ -38,25 +38,25 @@ namespace KarateSystem.Repository
 
             var newUser = _mapper.Map<User>(user);
 
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
+            _dbContext.Users.Add(newUser);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<List<UserDto>> GetAllUsersAsync()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _dbContext.Users.ToListAsync();
             return _mapper.Map<List<UserDto>>(users);
         }
 
         public async Task UpdateUserAsync(UserDto user)
         {
-            var existingUser = await _context.Users
+            var existingUser = await _dbContext.Users
                 .FirstOrDefaultAsync(u => u.UserId == user.UserId);
 
             if (existingUser == null)
                 throw new Exception("Nie znaleziono użytkownika do edycji.");
 
-            var loginTaken = await _context.Users.AnyAsync(u => u.UserLogin == user.UserLogin && u.UserId != user.UserId);
+            var loginTaken = await _dbContext.Users.AnyAsync(u => u.UserLogin == user.UserLogin && u.UserId != user.UserId);
 
             if (loginTaken)
                 throw new Exception("Użytkownik o takim loginie już istnieje.");
@@ -67,23 +67,23 @@ namespace KarateSystem.Repository
             existingUser.UserPass = user.UserPass.Encrypt();
             existingUser.UserRole = user.UserRole;
 
-            _context.Users.Update(existingUser);
-            await _context.SaveChangesAsync();
+            _dbContext.Users.Update(existingUser);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteUserAsync(int userId)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = await _dbContext.Users.FindAsync(userId);
             if (user == null)
                 throw new Exception("Nie znaleziono użytkownika do usunięcia.");
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
         }
 
         public bool AuthenticateUser(NetworkCredential credential)
         {
-            var user = _context.Users
+            var user = _dbContext.Users
                 .AsEnumerable()
                 .FirstOrDefault(u =>
                     u.UserLogin == credential.UserName &&
@@ -95,7 +95,7 @@ namespace KarateSystem.Repository
 
         public async Task<UserDto> GetUserDtoByName(string username)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserLogin == username);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserLogin == username);
             if (user == null)
                 throw new Exception("Nie znaleziono użytkownika.");
 

@@ -11,7 +11,7 @@ namespace KarateSystem.Repository.Interfaces
     public interface IDegreeRepository
     {
         Task<List<DegreeDto>> GetAllDegreeAsync();
-        Task<bool> UpdateDegreeAsync(DegreeDto degreeDto);
-        Task<bool> AddDegreeAsync(DegreeDto degreeDto);
+        Task UpdateDegreeAsync(DegreeDto degreeDto);
+        Task AddDegreeAsync(DegreeDto degreeDto);
     }
 }

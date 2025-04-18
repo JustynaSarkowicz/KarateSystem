@@ -11,7 +11,7 @@ namespace KarateSystem.Repository.Interfaces
     public interface IMatRepository
     {
         Task<List<MatDto>> GetAllMatAsync();
-        Task<bool> UpdateMatAsync(MatDto matDto);
-        Task<bool> AddMatAsync(MatDto matDto);
+        Task UpdateMatAsync(MatDto matDto);
+        Task AddMatAsync(MatDto matDto);
     }
 }

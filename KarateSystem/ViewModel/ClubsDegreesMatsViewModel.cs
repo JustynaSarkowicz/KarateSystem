@@ -14,6 +14,9 @@ namespace KarateSystem.ViewModel
     public class ClubsDegreesMatsViewModel : ViewModelBase
     {
         #region Fields
+        private bool _isEditingExistingClub;
+        private bool _isEditingExistingMat;
+        private bool _isEditingExistingDegree;
         private ClubDto _selectedClub;
         private ClubDto _editingClub;
         private MatDto _selectedMat;
@@ -33,6 +36,7 @@ namespace KarateSystem.ViewModel
         private readonly IDegreeRepository _degreeRepository;
         private readonly IMapper _mapper;
         #endregion
+
         #region ICommands
         public ICommand EditClubCommand { get; }
         public ICommand UpdateClubCommand { get; }
@@ -47,7 +51,44 @@ namespace KarateSystem.ViewModel
         public ICommand AddDegreeCommand { get; }
         public ICommand CancelDegreeCommand { get; }
         #endregion
+
         #region Properties
+        public bool IsEditingExistingDegree
+        {
+            get => _isEditingExistingDegree;
+            set
+            {
+                _isEditingExistingDegree = value;
+                OnPropertyChanged(nameof(IsEditingExistingDegree));
+                OnPropertyChanged(nameof(IsAddingNewDegree));
+            }
+        }
+        public bool IsAddingNewDegree => !IsEditingExistingDegree;
+        
+        public bool IsEditingExistingClub
+        {
+            get => _isEditingExistingClub;
+            set
+            {
+                _isEditingExistingClub = value;
+                OnPropertyChanged(nameof(IsEditingExistingClub));
+                OnPropertyChanged(nameof(IsAddingNewClub));
+            }
+        }
+        public bool IsAddingNewClub => !IsEditingExistingClub;
+        
+        public bool IsEditingExistingMat
+        {
+            get => _isEditingExistingMat;
+            set
+            {
+                _isEditingExistingMat = value;
+                OnPropertyChanged(nameof(IsEditingExistingMat));
+                OnPropertyChanged(nameof(IsAddingNewMat));
+            }
+        }
+        public bool IsAddingNewMat => !IsEditingExistingMat;
+
         public ObservableCollection<ClubDto> Clubs
         {
             get => _clubs;
@@ -137,22 +178,22 @@ namespace KarateSystem.ViewModel
             EditClubCommand = new ViewModelCommand(ExecuteEditClubCommand, CanEditClub);
             UpdateClubCommand = new ViewModelCommand(ExecuteUpdateClubCommand, CanCancelClubEdit);
             AddClubCommand = new ViewModelCommand(ExecuteAddClubCommand);
-            CancelClubCommand = new ViewModelCommand(ExecuteCancelClubCommand, CanCancelClubEdit);
+            CancelClubCommand = new ViewModelCommand(ExecuteCancelClubCommand);
 
             EditMatCommand = new ViewModelCommand(ExecuteEditMatCommand, CanEditMat);
             UpdateMatCommand = new ViewModelCommand(ExecuteUpdateMatCommand, CanCancelMatEdit);
             AddMatCommand = new ViewModelCommand(ExecuteAddMatCommand);
-            CancelMatCommand = new ViewModelCommand(ExecuteCancelMatCommand, CanCancelMatEdit);
+            CancelMatCommand = new ViewModelCommand(ExecuteCancelMatCommand);
 
             EditDegreeCommand = new ViewModelCommand(ExecuteEditDegreeCommand, CanEditDegree);
             UpdateDegreeCommand = new ViewModelCommand(ExecuteUpdateDegreeCommand, CanCancelDegreeEdit);
             AddDegreeCommand = new ViewModelCommand(ExecuteAddDegreeCommand);
-            CancelDegreeCommand = new ViewModelCommand(ExecuteCancelDegreeCommand, CanCancelDegreeEdit);
+            CancelDegreeCommand = new ViewModelCommand(ExecuteCancelDegreeCommand);
 
-            _ = LoadAsync();
+            LoadAsync();
         }
 
-        private async Task LoadAsync()
+        private async void LoadAsync()
         {
             _allClubs = await _clubRepository.GetAllClubsAsync();
             Clubs = new ObservableCollection<ClubDto>(_allClubs);
@@ -164,6 +205,8 @@ namespace KarateSystem.ViewModel
             Degrees = new ObservableCollection<DegreeDto>(degrees);
         }
 
+
+        #region Club Commands
         private void FilterClubs()
         {
             Clubs = string.IsNullOrWhiteSpace(SearchText)
@@ -171,12 +214,8 @@ namespace KarateSystem.ViewModel
                 : new ObservableCollection<ClubDto>(
                     _searchService.SearchInCollection(_allClubs, SearchText, "ClubName", "ClubPlace"));
         }
-
-        #region Club Commands
-
         private bool CanEditClub(object obj) => SelectedClub != null;
         private bool CanCancelClubEdit(object obj) => EditingClub != null && SelectedClub != null;
-
         private void ExecuteEditClubCommand(object obj)
         {
             EditingClub = new ClubDto
@@ -185,61 +224,68 @@ namespace KarateSystem.ViewModel
                 ClubName = SelectedClub.ClubName,
                 ClubPlace = SelectedClub.ClubPlace
             };
+
+            IsEditingExistingClub = true;
         }
 
         private async void ExecuteUpdateClubCommand(object obj)
         {
             try
             {
-                if (!Clubs.Contains(SelectedClub)) return;
+                if (!IsClubValid(EditingClub) || SelectedClub == null) return;
 
                 SelectedClub.ClubId = EditingClub.ClubId;
                 SelectedClub.ClubName = EditingClub.ClubName;
                 SelectedClub.ClubPlace = EditingClub.ClubPlace;
-                var result = await _clubRepository.UpdateClubAsync(SelectedClub);
-                if(!result)
-                {
-                    MessageBox.Show("Dodaj nazwę i miejscę klubu.",
-                                    "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
 
-                Clubs = new ObservableCollection<ClubDto>(_allClubs);
-                EditingClub = new ClubDto();
-                SelectedClub = null;
+                await _clubRepository.UpdateClubAsync(SelectedClub);
+
+                Clubs = new ObservableCollection<ClubDto>(await _clubRepository.GetAllClubsAsync());
+                ExecuteCancelClubCommand(obj);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error updating club: {ex.Message}");
+                MessageBox.Show($"Wystąpił błąd podczas aktualizacji klubu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private async void ExecuteAddClubCommand(object obj)
         {
-            if (string.IsNullOrWhiteSpace(EditingClub?.ClubName) || string.IsNullOrWhiteSpace(EditingClub?.ClubPlace))
-                return;
-
-            var result = await _clubRepository.AddClubAsync(EditingClub);
-            if(!result)
+            try
             {
-                MessageBox.Show("Klub o takiej nazwie już istnieje.",
-                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!IsClubValid(EditingClub)) return;
+
+                await _clubRepository.AddClubAsync(EditingClub);
+
+                Clubs = new ObservableCollection<ClubDto>(await _clubRepository.GetAllClubsAsync());
+                ExecuteCancelClubCommand(obj);
             }
-            Clubs.Add(EditingClub);
-            EditingClub = new ClubDto();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawania klubu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ExecuteCancelClubCommand(object obj)
         {
             EditingClub = new ClubDto();
             SelectedClub = null;
+            IsEditingExistingClub = false;
         }
 
+        private bool IsClubValid(ClubDto club)
+        {
+            if(string.IsNullOrWhiteSpace(club.ClubName) || string.IsNullOrWhiteSpace(club.ClubPlace))
+            {
+                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.",
+                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        }
         #endregion
 
         #region Mat Commands
-
         private bool CanEditMat(object obj) => SelectedMat != null;
         private bool CanCancelMatEdit(object obj) => EditingMat != null && SelectedMat != null;
 
@@ -250,59 +296,62 @@ namespace KarateSystem.ViewModel
                 MatId = SelectedMat.MatId,
                 MatName = SelectedMat.MatName
             };
+            IsEditingExistingMat = true;
         }
-
         private async void ExecuteUpdateMatCommand(object obj)
         {
             try
             {
-                if (!Mats.Contains(SelectedMat)) return;
+                if (!IsMatValid(EditingMat) || SelectedMat == null) return;
+
                 SelectedMat.MatId = EditingMat.MatId;
                 SelectedMat.MatName = EditingMat.MatName;
-                var result = await _matRepository.UpdateMatAsync(SelectedMat);
-                if (!result)
-                {
-                    MessageBox.Show("Dodaj nazwę maty.",
-                                    "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
 
-                Mats = new ObservableCollection<MatDto>(_mats);
-                EditingMat = new MatDto();
-                SelectedMat = null;
+                await _matRepository.UpdateMatAsync(SelectedMat);
+
+                Mats = new ObservableCollection<MatDto>(await _matRepository.GetAllMatAsync());
+                ExecuteCancelMatCommand(obj);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error updating mat: {ex.Message}");
+                MessageBox.Show($"Wystąpił błąd podczas aktualizacji maty: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         private async void ExecuteAddMatCommand(object obj)
         {
-            if (string.IsNullOrWhiteSpace(EditingMat?.MatName))
-                return;
-
-            var result = await _matRepository.AddMatAsync(EditingMat);
-            if (!result)
+            try
             {
-                MessageBox.Show("Mata o takiej nazwie już istnieje.",
-                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            Mats.Add(EditingMat);
-            EditingMat = new MatDto();
-        }
+                if (!IsMatValid(EditingMat)) return;
 
+                await _matRepository.AddMatAsync(EditingMat);
+
+                Mats = new ObservableCollection<MatDto>(await _matRepository.GetAllMatAsync());
+                ExecuteCancelMatCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawania maty: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void ExecuteCancelMatCommand(object obj)
         {
             EditingMat = new MatDto();
             SelectedMat = null;
+            IsEditingExistingMat = false;
         }
-
+        private bool IsMatValid(MatDto mat)
+        {
+            if (string.IsNullOrWhiteSpace(mat.MatName))
+            {
+                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.",
+                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        }
         #endregion
 
         #region Degree Commands
-
         private bool CanEditDegree(object obj) => SelectedDegree != null;
         private bool CanCancelDegreeEdit(object obj) => EditingDegree != null && SelectedDegree != null;
 
@@ -313,55 +362,63 @@ namespace KarateSystem.ViewModel
                 DegreeId = SelectedDegree.DegreeId,
                 DegreeName = SelectedDegree.DegreeName
             };
+
+            IsEditingExistingDegree = true;
         }
 
         private async void ExecuteUpdateDegreeCommand(object obj)
         {
             try
             {
-                if (!Degrees.Contains(SelectedDegree)) return;
+                if (!IsDegreeValid(EditingDegree) || SelectedDegree == null) return;
+
                 SelectedDegree.DegreeId = EditingDegree.DegreeId;
                 SelectedDegree.DegreeName = EditingDegree.DegreeName;
-                var result = await _degreeRepository.UpdateDegreeAsync(SelectedDegree);
-                if (!result)
-                {
-                    MessageBox.Show("Dodaj nazwę stopnia.",
-                                    "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
 
-                Degrees = new ObservableCollection<DegreeDto>(_degrees);
-                EditingDegree = new DegreeDto();
-                SelectedDegree = null;
+                await _degreeRepository.UpdateDegreeAsync(SelectedDegree);
+                
+                Degrees = new ObservableCollection<DegreeDto>(await _degreeRepository.GetAllDegreeAsync());
+                ExecuteCancelDegreeCommand(obj);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error updating degree: {ex.Message}");
+                MessageBox.Show($"Wystąpił błąd podczas aktualizacji stopnia: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private async void ExecuteAddDegreeCommand(object obj)
         {
-            if (string.IsNullOrWhiteSpace(EditingDegree?.DegreeName))
-                return;
-
-            var result = await _degreeRepository.AddDegreeAsync(EditingDegree);
-            if (!result)
+            try
             {
-                MessageBox.Show("Stopień o takiej nazwie już istnieje.",
-                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!IsDegreeValid(EditingDegree)) return;
+
+                await _degreeRepository.AddDegreeAsync(EditingDegree);
+
+                Degrees = new ObservableCollection<DegreeDto>(await _degreeRepository.GetAllDegreeAsync());
+                ExecuteCancelDegreeCommand(obj);
             }
-            Degrees.Add(EditingDegree);
-            EditingDegree = new DegreeDto();
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawania stopnia: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ExecuteCancelDegreeCommand(object obj)
         {
             EditingDegree = new DegreeDto();
             SelectedDegree = null;
+            IsEditingExistingDegree = false;
         }
-
+        private bool IsDegreeValid(DegreeDto degree)
+        {
+            if (string.IsNullOrWhiteSpace(degree.DegreeName))
+            {
+                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.",
+                                "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        }
         #endregion
     }
 }

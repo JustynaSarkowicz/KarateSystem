@@ -4,6 +4,7 @@ using KarateSystem.Dto;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +23,19 @@ namespace KarateSystem.Repository
             _mapper = mapper;
         }
 
-        public async Task<bool> AddMatAsync(MatDto matDto)
+        public async Task AddMatAsync(MatDto matDto)
         {
-            if (string.IsNullOrEmpty(matDto.MatName)) return false;
+            var existingMat = await _dbContext.Mats.AnyAsync(c => c.MatId == matDto.MatId || c.MatName == matDto.MatName);
+            
+            if (existingMat)
+            {
+                throw new Exception("Mata o takiej nazwie już istnieje.");
+            }
 
+            var newMat = _mapper.Map<Mat>(matDto);
 
-            var existingMat = await _dbContext.Mats
-                .FirstOrDefaultAsync(c => c.MatId == matDto.MatId || c.MatName == matDto.MatName);
-            if (existingMat != null) return false;
-
-            var mat = _mapper.Map<Mat>(matDto);
-            _dbContext.Mats.Add(mat);
+            _dbContext.Mats.Add(newMat);
             await _dbContext.SaveChangesAsync();
-            return true;
         }
 
         public async Task<List<MatDto>> GetAllMatAsync()
@@ -44,18 +45,20 @@ namespace KarateSystem.Repository
             return _mapper.Map<List<MatDto>>(mats);
         }
 
-        public async Task<bool> UpdateMatAsync(MatDto matDto)
+        public async Task UpdateMatAsync(MatDto matDto)
         {
-            if (string.IsNullOrEmpty(matDto.MatName)) return false;
-
             var existingMat = await _dbContext.Mats.FirstOrDefaultAsync(c => c.MatId == matDto.MatId);
 
-            if (existingMat == null) return false;
+            if (existingMat == null)
+                throw new Exception("Nie znaleziono maty do edycji.");
+            
+            var matTaken = await _dbContext.Mats.AnyAsync(u => u.MatName == matDto.MatName && u.MatId != matDto.MatId);
+
+            if (matTaken)
+                throw new Exception("Mata o takiej nazwie już istnieje.");
 
             _mapper.Map(matDto, existingMat);
             await _dbContext.SaveChangesAsync();
-            return true;
-
         }
     }
 }

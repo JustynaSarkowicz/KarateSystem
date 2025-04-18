@@ -11,7 +11,7 @@ public interface IClubRepository
 {
     Task<List<ClubDto>> GetAllClubsAsync();
     Task<ClubDto> GetClubAsync(int clubId);
-    Task<bool> UpdateClubAsync(ClubDto clubDto);
-    Task<bool> AddClubAsync(ClubDto clubDto);
+    Task UpdateClubAsync(ClubDto clubDto);
+    Task AddClubAsync(ClubDto clubDto);
 }
 

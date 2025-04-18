@@ -153,6 +153,7 @@
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
+                            IsEnabled="{Binding IsEditingExistingClub}"
                             Style="{StaticResource contentButton}">
                     </Button>
 
@@ -193,6 +194,7 @@
                             BorderThickness="0"
                             Foreground="White"
                             VerticalAlignment="Bottom"
+                            IsEnabled="{Binding IsAddingNewClub}"
                             Style="{StaticResource contentButton}"/>
                 </StackPanel>
             </Grid>
@@ -365,6 +367,7 @@
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
+                            IsEnabled="{Binding IsEditingExistingDegree}"
                             Style="{StaticResource contentButton}">
                     </Button>
 
@@ -404,6 +407,7 @@
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
+                            IsEnabled="{Binding IsAddingNewDegree}"
                             Style="{StaticResource contentButton}">
                     </Button>
                 </StackPanel>
@@ -423,6 +427,7 @@
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
+                            IsEnabled="{Binding IsEditingExistingMat}"
                             Style="{StaticResource contentButton}"/>
 
                     <Button x:Name="btnCancelMat"
@@ -458,6 +463,7 @@
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
+                            IsEnabled="{Binding IsAddingNewMat}"
                             Style="{StaticResource contentButton}"/>
                 </StackPanel>
             </Grid>

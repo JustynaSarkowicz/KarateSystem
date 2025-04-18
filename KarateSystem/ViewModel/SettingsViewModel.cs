@@ -135,7 +135,7 @@ namespace KarateSystem.ViewModel
         {
             try
             {
-                if (!IsUserValid(EditingUser)) return;
+                if (!IsUserValid(EditingUser) || SelectedUser == null) return;
 
                 SelectedUser.UserFirstName = EditingUser.UserFirstName;
                 SelectedUser.UserLastName = EditingUser.UserLastName;
@@ -209,7 +209,7 @@ namespace KarateSystem.ViewModel
                 user.UserPass.Count() < 5 ||
                 string.IsNullOrWhiteSpace(SelectedRole))
             {
-                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.\n Hasło nie może być krótsze niż 5 znaków.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.\nHasło nie może być krótsze niż 5 znaków.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
             return true;

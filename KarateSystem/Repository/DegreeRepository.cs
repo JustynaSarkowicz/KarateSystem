@@ -4,6 +4,7 @@ using KarateSystem.Dto;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,18 +23,19 @@ namespace KarateSystem.Repository
             _mapper = mapper;
         }
 
-        public async Task<bool> AddDegreeAsync(DegreeDto degreeDto)
+        public async Task AddDegreeAsync(DegreeDto degreeDto)
         {
-            if (string.IsNullOrEmpty(degreeDto.DegreeName)) return false;
+            var existingDegree = await _dbContext.Degrees.AnyAsync(u => u.DegreeName == degreeDto.DegreeName && u.DegreeId != degreeDto.DegreeId);
 
-            var newDegree = await _dbContext.Degrees
-                .FirstOrDefaultAsync(c => c.DegreeId == degreeDto.DegreeId || c.DegreeName == degreeDto.DegreeName);
-            if (newDegree != null) return false;
+            if (existingDegree)
+            {
+                throw new Exception("Stopień o takiej nazwie już istnieje.");
+            }
 
             var degree = _mapper.Map<Degree>(degreeDto);
+
             _dbContext.Degrees.Add(degree);
             await _dbContext.SaveChangesAsync();
-            return true;
         }
 
         public async Task<List<DegreeDto>> GetAllDegreeAsync()
@@ -43,18 +45,21 @@ namespace KarateSystem.Repository
             return _mapper.Map<List<DegreeDto>>(degrees);
         }
 
-        public async Task<bool> UpdateDegreeAsync(DegreeDto degreeDto)
+        public async Task UpdateDegreeAsync(DegreeDto degreeDto)
         {
-            if (string.IsNullOrEmpty(degreeDto.DegreeName)) return false;
-
             var existingDegree = await _dbContext.Degrees
-                .FirstOrDefaultAsync(c => c.DegreeId == degreeDto.DegreeId);
+                .FirstOrDefaultAsync(u => u.DegreeId == degreeDto.DegreeId);
 
-            if (existingDegree == null) return false;
+            if (existingDegree == null)
+                throw new Exception("Nie znaleziono stopnia do edycji.");
+
+            var degreeTaken = await _dbContext.Degrees.AnyAsync(u => u.DegreeName == degreeDto.DegreeName && u.DegreeId != degreeDto.DegreeId);
+
+            if (degreeTaken)
+                throw new Exception("Stopień o takiej nazwoe już istnieje.");
 
             _mapper.Map(degreeDto, existingDegree);
             await _dbContext.SaveChangesAsync();
-            return true;
         }
     }
 }
