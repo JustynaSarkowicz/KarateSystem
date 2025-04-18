@@ -8,12 +8,10 @@ namespace KarateSystem.Misc
 {
     public static class Enum
     {
-        public enum Status
+        public enum UserRole
         {
-            RejestracjaOtwarta,
-            RejestracjaZamknięta,
-            Otwarty,
-            Zakończony
+            Admin,
+            Obsluga
         }
     }
 }

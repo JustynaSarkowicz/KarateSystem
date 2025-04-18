@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Enum = KarateSystem.Misc.Enum;
 
 namespace KarateSystem.Repository
 {
@@ -25,49 +26,40 @@ namespace KarateSystem.Repository
             _context = context;
             _mapper = mapper;
         }
-        public async Task<bool> AddUserAsync(UserDto user)
+
+        public async Task AddUserAsync(UserDto user)
         {
-            if(string.IsNullOrWhiteSpace(user.UserFirstName) ||
-               string.IsNullOrWhiteSpace(user.UserLastName) ||
-               string.IsNullOrWhiteSpace(user.UserLogin) ||
-               string.IsNullOrWhiteSpace(user.UserPass) ||
-               string.IsNullOrWhiteSpace(user.UserRole))
+            var existingUser = await _context.Users.AnyAsync(u => u.UserLogin == user.UserLogin && u.UserId != user.UserId);
+
+            if (existingUser)
             {
-                return false;
+                throw new Exception("Użytkownik o takim loginie już istnieje.");
             }
-            var existingUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserLogin == user.UserLogin);
-            if(existingUser != null) return false;
+
             var newUser = _mapper.Map<User>(user);
-            try
-            {
-                _context.Users.Add(newUser);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
         }
+
         public async Task<List<UserDto>> GetAllUsersAsync()
         {
             var users = await _context.Users.ToListAsync();
             return _mapper.Map<List<UserDto>>(users);
         }
-        public async Task<bool> UpdateUserAsync(UserDto user)
+
+        public async Task UpdateUserAsync(UserDto user)
         {
             var existingUser = await _context.Users
                 .FirstOrDefaultAsync(u => u.UserId == user.UserId);
-            if(existingUser == null) return false;
-            if (string.IsNullOrWhiteSpace(user.UserFirstName) ||
-               string.IsNullOrWhiteSpace(user.UserLastName) ||
-               string.IsNullOrWhiteSpace(user.UserLogin) ||
-               string.IsNullOrWhiteSpace(user.UserPass) ||
-               string.IsNullOrWhiteSpace(user.UserRole))
-            {
-                return false;
-            }
+
+            if (existingUser == null)
+                throw new Exception("Nie znaleziono użytkownika do edycji.");
+
+            var loginTaken = await _context.Users.AnyAsync(u => u.UserLogin == user.UserLogin && u.UserId != user.UserId);
+
+            if (loginTaken)
+                throw new Exception("Użytkownik o takim loginie już istnieje.");
 
             existingUser.UserFirstName = user.UserFirstName;
             existingUser.UserLastName = user.UserLastName;
@@ -75,45 +67,38 @@ namespace KarateSystem.Repository
             existingUser.UserPass = user.UserPass.Encrypt();
             existingUser.UserRole = user.UserRole;
 
-            try
-            {
-                _context.Users.Update(existingUser);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            _context.Users.Update(existingUser);
+            await _context.SaveChangesAsync();
         }
-        public async Task<bool> DeleteUserAsync(int userId)
+
+        public async Task DeleteUserAsync(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
-            if (user == null) return false;
-            try
-            {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            if (user == null)
+                throw new Exception("Nie znaleziono użytkownika do usunięcia.");
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
         }
+
         public bool AuthenticateUser(NetworkCredential credential)
         {
             var user = _context.Users
-                    .AsEnumerable() 
-                    .FirstOrDefault(u => u.UserLogin == credential.UserName && 
-                                    u.UserPass.Decrypt() == credential.Password &&
-                                    u.UserRole == "Admin");
-            return user == null ? false : true;
+                .AsEnumerable()
+                .FirstOrDefault(u =>
+                    u.UserLogin == credential.UserName &&
+                    u.UserPass.Decrypt() == credential.Password &&
+                    u.UserRole == Enum.UserRole.Admin.ToString());
+
+            return user != null;
         }
-        public UserDto GetUserDtoByName(string username)
+
+        public async Task<UserDto> GetUserDtoByName(string username)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserLogin == username);
-            if (user == null) return null;
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserLogin == username);
+            if (user == null)
+                throw new Exception("Nie znaleziono użytkownika.");
+
             return _mapper.Map<UserDto>(user);
         }
     }

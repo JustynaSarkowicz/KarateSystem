@@ -7,14 +7,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="625" d:DesignWidth="1050">
     <Grid>
+        <!-- Główne wiersze układu -->
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
+            <!-- Nagłówek -->
             <RowDefinition Height="300"/>
+            <!-- Tabela użytkowników -->
             <RowDefinition Height="90"/>
+            <!-- Formularz edycji nagłówki -->
             <RowDefinition/>
+            <!-- Formularz edycji pola -->
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0"
-                    VerticalAlignment="Center">
+
+        <!-- Nagłówek sekcji -->
+        <StackPanel Grid.Row="0" VerticalAlignment="Center">
             <TextBlock Text="Użytkownicy"
                        Foreground="White"
                        FontFamily="Montserrat"
@@ -23,161 +29,192 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"/>
         </StackPanel>
-        <Grid Grid.Row="1"
-              HorizontalAlignment="Left">
+
+        <!-- Sekcja tabeli użytkowników -->
+        <Grid Grid.Row="1" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="750"/>
+                <!-- Tabela -->
                 <ColumnDefinition/>
+                <!-- Przyciski akcji -->
             </Grid.ColumnDefinitions>
-            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+
+            <!-- DataGrid z listą użytkowników -->
+            <DataGrid Grid.Column="0"
+                      RowStyle="{DynamicResource DataGridRowStyle1}" 
                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                       CellStyle="{DynamicResource DataGridCellStyle1}" 
                       Style="{DynamicResource DataGridStyle1}"
                       Height="290"
                       VerticalAlignment="Top"
-                      Grid.Column="0"
                       ItemsSource="{Binding Users}"
                       SelectedItem="{Binding SelectedUser}">
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding UserId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Id"/>
-                    <DataGridTextColumn Binding="{Binding UserFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
-                    <DataGridTextColumn Binding="{Binding UserLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
-                    <DataGridTextColumn Binding="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Login"/>
-                    <DataGridTextColumn Binding="{Binding UserRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Uprawnienia"/>
+                    <DataGridTextColumn Binding="{Binding UserId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       ClipboardContentBinding="{x:Null}" 
+                                       Header="Id"/>
+                    <DataGridTextColumn Binding="{Binding UserFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       ClipboardContentBinding="{x:Null}" 
+                                       Header="Imię"/>
+                    <DataGridTextColumn Binding="{Binding UserLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       ClipboardContentBinding="{x:Null}" 
+                                       Header="Nazwisko"/>
+                    <DataGridTextColumn Binding="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       ClipboardContentBinding="{x:Null}" 
+                                       Header="Login"/>
+                    <DataGridTextColumn Binding="{Binding UserRole, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                       ClipboardContentBinding="{x:Null}" 
+                                       Header="Uprawnienia"/>
                 </DataGrid.Columns>
             </DataGrid>
-            <StackPanel Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        Orientation="Vertical"
-                        VerticalAlignment="Bottom">
 
+            <!-- Przyciski akcji -->
+            <StackPanel Grid.Column="1"
+                       HorizontalAlignment="Left"
+                       Orientation="Vertical"
+                       VerticalAlignment="Bottom">
                 <Button x:Name="btnAddUser"
-                    Width="80"
-                    Command="{Binding AddUserCommand}"                            
-                    Content="Dodaj"
-                    Margin="10,0,0,5"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    IsEnabled="{Binding IsAddingNew}"
-                    Style="{StaticResource contentButton}"/>
+                        Width="80"
+                        Command="{Binding AddUserCommand}"                            
+                        Content="Dodaj"
+                        Margin="10,0,0,5"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        IsEnabled="{Binding IsAddingNew}"
+                        Style="{StaticResource contentButton}"/>
                 <Button x:Name="btnEditUser"
-                    Width="80"
-                    Command="{Binding EditUserCommand}"                            
-                    Content="Edytuj"
-                    Margin="10,0,0,5"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}"/>
+                        Width="80"
+                        Command="{Binding EditUserCommand}"                            
+                        Content="Edytuj"
+                        Margin="10,0,0,5"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        Style="{StaticResource contentButton}"/>
                 <Button x:Name="btnDeleteUser"
-                    Width="80"
-                    Command="{Binding DeleteUserCommand}"                            
-                    Content="Usuń"
-                    Margin="10,0,0,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}"/>
+                        Width="80"
+                        Command="{Binding DeleteUserCommand}"                            
+                        Content="Usuń"
+                        Margin="10,0,0,0"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        Style="{StaticResource contentButton}"/>
             </StackPanel>
         </Grid>
+
+        <!-- Sekcja formularza edycji -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="850"/>
+                <!-- Pola formularza -->
                 <ColumnDefinition/>
+                <!-- Przyciski zapisz/anuluj -->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
+                <!-- Nagłówki pól -->
                 <RowDefinition/>
+                <!-- Pola edycji -->
             </Grid.RowDefinitions>
+
+            <!-- Przyciski zapisz/anuluj -->
             <StackPanel Grid.RowSpan="2"
                         Grid.Column="1"
                         VerticalAlignment="Bottom">
-            <Button x:Name="btnSaveUser"
-                    Width="80"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Command="{Binding UpdateUserCommand}"                            
-                    Content="Zapisz"
-                    Margin="10,5,0,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    IsEnabled="{Binding IsEditingExisting}"
-                    Style="{StaticResource contentButton}"/>
-            <Button x:Name="btnCancelUser"
-                    Width="80"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    Command="{Binding CancelUserCommand}"                            
-                    Content="Anuluj"
-                    Margin="10,5,0,0"
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    Style="{StaticResource contentButton}"/>
+                <Button x:Name="btnSaveUser"
+                        Width="80"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding UpdateUserCommand}"                            
+                        Content="Zapisz"
+                        Margin="10,5,0,0"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        IsEnabled="{Binding IsEditingExisting}"
+                        Style="{StaticResource contentButton}"/>
+                <Button x:Name="btnCancelUser"
+                        Width="80"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding CancelUserCommand}"                            
+                        Content="Anuluj"
+                        Margin="10,5,0,0"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        Style="{StaticResource contentButton}"/>
             </StackPanel>
-            <Border BorderThickness="2"
+
+            <!-- Nagłówki pól formularza -->
+            <Border Grid.Row="0"
+                    Grid.Column="0"
+                    BorderThickness="2"
                     BorderBrush="#5D83B1"
                     CornerRadius="10"
                     Grid.RowSpan="2"
                     Margin="0,10,0,0">
-            <StackPanel Orientation="Horizontal"
-                        Margin="0,5,0,0">
-                <TextBlock Text="Imię"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Width="140"
-                           Margin="5,0,0,0"
-                           TextAlignment="Center"/>
-                <TextBlock Text="Nazwisko"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Width="150"
-                           Margin="2,0,0,0"
-                           TextAlignment="Center"/>
-                <TextBlock Text="Login"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Width="180"
-                           Margin="3,0,0,0"
-                           TextAlignment="Center"/>
-                <TextBlock Text="Hasło"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Width="180"
-                           TextAlignment="Center"/>
-                <TextBlock Text="Uprawnienia"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Width="190"
-                           TextAlignment="Center"/>
-            </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,5,0,0">
+                    <TextBlock Text="Imię"
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Width="140"
+                               Margin="5,0,0,0"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="Nazwisko"
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Width="150"
+                               Margin="2,0,0,0"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="Login"
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Width="180"
+                               Margin="3,0,0,0"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="Hasło"
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Width="180"
+                               TextAlignment="Center"/>
+                    <TextBlock Text="Uprawnienia"
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Width="190"
+                               TextAlignment="Center"/>
+                </StackPanel>
             </Border>
-            <StackPanel Orientation="Horizontal"
-                        Grid.Row="1"
-                       Margin="10,5,0,5">
+
+            <!-- Pola edycji użytkownika -->
+            <StackPanel Grid.Row="1"
+                        Grid.Column="0"
+                        Orientation="Horizontal"
+                        Margin="10,5,0,5">
                 <TextBox Width="135" 
                          Margin="0,5,7,5"
                          Background="Transparent"                                   
@@ -238,7 +275,6 @@
                           Height="30"
                           ItemsSource="{Binding RoleOptions}"
                           SelectedItem="{Binding SelectedRole, Mode=TwoWay}"/>
-
             </StackPanel>
         </Grid>
     </Grid>

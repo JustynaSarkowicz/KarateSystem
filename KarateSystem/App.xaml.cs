@@ -24,14 +24,12 @@ namespace KarateSystem
     public partial class App : Application
     {
         private ServiceProvider serviceProvider;
-
         public App()
         {
             ServiceCollection services = new ServiceCollection();
             ConfigureServices(services);
             serviceProvider = services.BuildServiceProvider();
         }
-
         private void ConfigureServices(ServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -69,8 +67,6 @@ namespace KarateSystem
                                     provider.GetRequiredService<IUserRepository>(),
                                     provider));
         }
-
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);

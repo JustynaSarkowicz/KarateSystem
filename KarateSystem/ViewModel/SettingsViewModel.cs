@@ -1,14 +1,11 @@
 ﻿using KarateSystem.Dto;
 using KarateSystem.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
+using KarateSystem.ViewModel;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using static KarateSystem.Misc.Helper;
+using System.Windows;
+using KarateSystem.Misc;
+using Enum = KarateSystem.Misc.Enum;
 
 namespace KarateSystem.ViewModel
 {
@@ -20,7 +17,8 @@ namespace KarateSystem.ViewModel
         private UserDto _selectedUser;
         private UserDto _editingUser;
         private ObservableCollection<UserDto> _users;
-        public ObservableCollection<string> RoleOptions { get; set; } = new() { "Admin", "Obsługa" };
+        public ObservableCollection<string> RoleOptions { get; set; } =
+            new ObservableCollection<string>(System.Enum.GetNames(typeof(Enum.UserRole)));
 
         private readonly IUserRepository _userRepository;
         #endregion
@@ -44,7 +42,9 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(IsAddingNew));
             }
         }
+
         public bool IsAddingNew => !IsEditingExisting;
+
         public UserDto SelectedUser
         {
             get => _selectedUser;
@@ -54,6 +54,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedUser));
             }
         }
+
         public UserDto EditingUser
         {
             get => _editingUser;
@@ -63,6 +64,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(EditingUser));
             }
         }
+
         public ObservableCollection<UserDto> Users
         {
             get => _users;
@@ -72,6 +74,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(Users));
             }
         }
+
         public string SelectedRole
         {
             get => _selectedRole;
@@ -82,6 +85,7 @@ namespace KarateSystem.ViewModel
             }
         }
         #endregion
+
         public SettingsViewModel(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -94,6 +98,7 @@ namespace KarateSystem.ViewModel
 
             LoadUsers();
         }
+
         private bool CanEditUser(object obj) => SelectedUser != null;
         private bool CanUpdateUser(object obj) => SelectedUser != null && EditingUser != null;
 
@@ -101,12 +106,12 @@ namespace KarateSystem.ViewModel
         {
             var users = await _userRepository.GetAllUsersAsync();
             Users = new ObservableCollection<UserDto>(users);
-
             EditingUser = new UserDto();
         }
         private void ExecuteEditUserCommand(object obj)
         {
             if (SelectedUser == null) return;
+
             EditingUser = new UserDto
             {
                 UserId = SelectedUser.UserId,
@@ -128,60 +133,86 @@ namespace KarateSystem.ViewModel
         }
         private async void ExecuteUpdateUserCommand(object obj)
         {
-            if (EditingUser == null || SelectedUser == null) return;
-            if (!Users.Contains(SelectedUser)) return;
-
-            SelectedUser.UserFirstName = EditingUser.UserFirstName;
-            SelectedUser.UserLastName = EditingUser.UserLastName;
-            SelectedUser.UserLogin = EditingUser.UserLogin;
-            SelectedUser.UserPass = EditingUser.UserPass;
-            SelectedUser.UserRole = EditingUser.UserRole;
-
-            var result = await _userRepository.UpdateUserAsync(SelectedUser);
-            if (!result)
+            try
             {
-                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!IsUserValid(EditingUser)) return;
+
+                SelectedUser.UserFirstName = EditingUser.UserFirstName;
+                SelectedUser.UserLastName = EditingUser.UserLastName;
+                SelectedUser.UserLogin = EditingUser.UserLogin;
+                SelectedUser.UserPass = EditingUser.UserPass;
+                SelectedUser.UserRole = SelectedRole;
+
+                await _userRepository.UpdateUserAsync(SelectedUser);
+
+                Users = new ObservableCollection<UserDto>(await _userRepository.GetAllUsersAsync());
+                ExecuteCancelUserCommand(obj);
             }
-            var users = await _userRepository.GetAllUsersAsync();
-            Users = new ObservableCollection<UserDto>(users);
-            ExecuteCancelUserCommand(obj);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas aktualizacji użytkownika: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
         private async void ExecuteAddUserCommand(object obj)
         {
-            if(EditingUser == null) return;
-            EditingUser.UserRole = SelectedRole;
-            EditingUser.UserPass = EditingUser.UserPass.Encrypt();
-            var result = await _userRepository.AddUserAsync(EditingUser);
-            if (!result)
+            try
             {
-                MessageBox.Show("Użytkownik o podanym loginie już istnieje", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!IsUserValid(EditingUser)) return;
+
+                EditingUser.UserRole = SelectedRole;
+                EditingUser.UserPass = EditingUser.UserPass.Encrypt();
+
+                await _userRepository.AddUserAsync(EditingUser);
+
+                Users = new ObservableCollection<UserDto>(await _userRepository.GetAllUsersAsync());
+                ExecuteCancelUserCommand(obj);
             }
-            var users = await _userRepository.GetAllUsersAsync();
-            Users = new ObservableCollection<UserDto>(users);
-            ExecuteCancelUserCommand(obj);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawania użytkownika: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
+
         private async void ExecuteDeleteUserCommand(object obj)
         {
             if (SelectedUser == null) return;
 
             var result = MessageBox.Show("Czy na pewno chcesz usunąć tego użytkownika?",
-                                 "Potwierdzenie usunięcia",
-                                 MessageBoxButton.YesNo,
-                                 MessageBoxImage.Warning);
+                                         "Potwierdzenie usunięcia",
+                                         MessageBoxButton.YesNo,
+                                         MessageBoxImage.Warning);
 
             if (result == MessageBoxResult.Yes)
             {
-                bool isDeleted = await _userRepository.DeleteUserAsync(SelectedUser.UserId);
-                if (isDeleted)
-                {
-                    Users.Remove(SelectedUser);
-                    var users = await _userRepository.GetAllUsersAsync();
-                    Users = new ObservableCollection<UserDto>(users);
+                try 
+                { 
+                    await _userRepository.DeleteUserAsync(SelectedUser.UserId);
+                    
+                    Users = new ObservableCollection<UserDto>(await _userRepository.GetAllUsersAsync());
                     ExecuteCancelUserCommand(obj);
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas usuwania użytkownika: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
+        }
+
+        private bool IsUserValid(UserDto user)
+        {
+            if (user == null ||
+                string.IsNullOrWhiteSpace(user.UserFirstName) ||
+                string.IsNullOrWhiteSpace(user.UserLastName) ||
+                string.IsNullOrWhiteSpace(user.UserLogin) ||
+                string.IsNullOrWhiteSpace(user.UserPass) ||
+                user.UserPass.Count() < 5 ||
+                string.IsNullOrWhiteSpace(SelectedRole))
+            {
+                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.\n Hasło nie może być krótsze niż 5 znaków.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
         }
     }
 }

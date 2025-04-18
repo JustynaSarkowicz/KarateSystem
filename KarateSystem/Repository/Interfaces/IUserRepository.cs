@@ -11,10 +11,10 @@ namespace KarateSystem.Repository.Interfaces
     public interface IUserRepository
     {
         Task<List<UserDto>> GetAllUsersAsync();
-        Task<bool> AddUserAsync(UserDto user);
-        Task<bool> UpdateUserAsync(UserDto user);
-        Task<bool> DeleteUserAsync(int userId);
+        Task AddUserAsync(UserDto user);
+        Task UpdateUserAsync(UserDto user);
+        Task DeleteUserAsync(int userId);
         bool AuthenticateUser(NetworkCredential credential);
-        UserDto GetUserDtoByName(string username);
+        Task<UserDto> GetUserDtoByName(string username);
     }
 }
