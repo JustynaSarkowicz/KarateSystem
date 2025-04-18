@@ -362,7 +362,7 @@
     </Style>
 
     <!--Search textbox-->
-    <BooleanToVisibilityConverter x:Key="BoolToVisibility" x:Name="BoolToVisibility"/>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityTB" x:Name="BoolToVisibility"/>
     <Style x:Key="TransparentHintTextBox" TargetType="TextBox">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="White"/>
@@ -401,7 +401,7 @@
                                            Margin="0,0,0,4"
                                            Visibility="{Binding Text.IsEmpty, 
                                                               RelativeSource={RelativeSource TemplatedParent},
-                                                              Converter={StaticResource BoolToVisibility}}"/>
+                                                              Converter={StaticResource BoolToVisibilityTB}}"/>
                                 </Grid>
                             </Border>
                         </Grid>

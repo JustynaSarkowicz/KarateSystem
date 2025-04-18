@@ -226,7 +226,7 @@
                                     <fa:IconImage Icon="AngleDown" Width="12" Height="12" Style="{StaticResource iconButtonIcon}"/>
                                 </Button>
                                 <!--Tu będzie imię użytkownika zalogowanego-->
-                                <TextBlock Text="Justyna Sarkowicz" 
+                                <TextBlock Text="{Binding User.DisplayName}" 
                                        Foreground="White"
                                        FontFamily="Montserrat"
                                        FontSize="12"

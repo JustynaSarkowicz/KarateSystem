@@ -4,10 +4,13 @@ using KarateSystem.Dto;
 using KarateSystem.Misc;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -97,6 +100,21 @@ namespace KarateSystem.Repository
             {
                 return false;
             }
+        }
+        public bool AuthenticateUser(NetworkCredential credential)
+        {
+            var user = _context.Users
+                    .AsEnumerable() 
+                    .FirstOrDefault(u => u.UserLogin == credential.UserName && 
+                                    u.UserPass.Decrypt() == credential.Password &&
+                                    u.UserRole == "Admin");
+            return user == null ? false : true;
+        }
+        public UserDto GetUserDtoByName(string username)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserLogin == username);
+            if (user == null) return null;
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

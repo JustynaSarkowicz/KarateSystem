@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,5 +14,7 @@ namespace KarateSystem.Repository.Interfaces
         Task<bool> AddUserAsync(UserDto user);
         Task<bool> UpdateUserAsync(UserDto user);
         Task<bool> DeleteUserAsync(int userId);
+        bool AuthenticateUser(NetworkCredential credential);
+        UserDto GetUserDtoByName(string username);
     }
 }

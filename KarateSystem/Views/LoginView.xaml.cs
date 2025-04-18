@@ -38,10 +38,5 @@ namespace KarateSystem.Views
         {
             Application.Current.Shutdown();
         }
-
-        private void btnLogIn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

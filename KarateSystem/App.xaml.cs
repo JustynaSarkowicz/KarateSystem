@@ -53,19 +53,29 @@ namespace KarateSystem
             services.AddScoped<CategoryViewModel>();
             services.AddScoped<SettingsViewModel>();
             services.AddScoped<MainViewModel>();
+            services.AddScoped<LoginViewModel>();
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddScoped<MainWindow>(provider => new MainWindow()
             {
-                DataContext = provider.GetRequiredService<MainViewModel>() // Ustawienie ViewModel
+                DataContext = provider.GetRequiredService<MainViewModel>() 
             });
+            services.AddScoped<LoginView>(provider => new LoginView()
+            {
+                DataContext = provider.GetRequiredService<LoginViewModel>() 
+            });
+            services.AddScoped<LoginViewModel>(provider =>
+                                new LoginViewModel(
+                                    provider.GetRequiredService<IUserRepository>(),
+                                    provider));
         }
+
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            MainWindow = serviceProvider.GetRequiredService<MainWindow>();
-            MainWindow.Show();
+            var loginView = serviceProvider.GetRequiredService<LoginView>();
+            loginView.Show();
         }
     }
 }

@@ -14,5 +14,6 @@ namespace KarateSystem.Dto
         public string UserLogin { get; set; }
         public string UserPass { get; set; }
         public string UserRole { get; set; }
+        public string DisplayName => $"{UserFirstName} {UserLastName}";
     }
 }
