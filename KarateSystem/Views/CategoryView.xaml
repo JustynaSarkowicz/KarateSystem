@@ -130,7 +130,7 @@
 
                             <ComboBox x:Name="cbGenderCatKata"
                                       Width="180"
-                                      ItemsSource="{Binding GenderOptions}"
+                                      ItemsSource="{Binding GenderOptions2}"
                                       SelectedItem="{Binding SelectedGenderCatKata, Mode=TwoWay}"
                                       Style="{StaticResource comboboxStyle}"
                                       DisplayMemberPath="DisplayName"/>
@@ -435,10 +435,9 @@
 
                             <ComboBox x:Name="cbGenderCatKumite"
                                       Width="180"
-                                      ItemsSource="{Binding GenderOptions2}"
+                                      ItemsSource="{Binding GenderOption}"
                                       SelectedItem="{Binding SelectedGenderCatKumite, Mode=TwoWay}"
-                                      Style="{StaticResource comboboxStyle}"
-                                      DisplayMemberPath="DisplayName"/>
+                                      Style="{StaticResource comboboxStyle}"/>
                         </StackPanel>
                     </Grid>
 
@@ -510,7 +509,8 @@
                                  TextAlignment="Center"
                                  MaxLength="6"
                                  Text="{Binding EditingKumiteCategory.KumiteCatWeightMin, Mode=TwoWay,UpdateSourceTrigger=LostFocus, FallbackValue=0}"
-                                 Style="{StaticResource textBoxEnabled}"/>
+                                 Style="{StaticResource textBoxEnabled}"
+                                 PreviewTextInput="tbWeight_PreviewTextInput"/>
                         <TextBlock Text="Waga Max"
                                    Foreground="White"
                                    FontFamily="Montserrat"
@@ -530,6 +530,7 @@
                                  BorderThickness="0,0,0,1"  
                                  TextAlignment="Center"
                                  MaxLength="6"
+                                 PreviewTextInput="tbWeight_PreviewTextInput"
                                  Text="{Binding EditingKumiteCategory.KumiteCatWeightMax,  Mode=TwoWay,UpdateSourceTrigger=LostFocus, FallbackValue=0}"
                                  Style="{StaticResource textBoxEnabled}"/>
                     </StackPanel>

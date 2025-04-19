@@ -40,7 +40,7 @@ namespace KarateSystem
             services.AddScoped<IClubRepository, ClubRepository>();
             services.AddScoped<IMatRepository, MatRepository>();
             services.AddScoped<IDegreeRepository, DegreeRepository>();
-            services.AddScoped<ICataCategoryRepository, CataCategoryRepository>();
+            services.AddScoped<IKataCategoryRepository, KataCategoryRepository>();
             services.AddScoped<ICatKataDegreeRepository, CatKataDegreeRepository>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IKumiteCategoryRepository, KumiteCategoryRepository>();

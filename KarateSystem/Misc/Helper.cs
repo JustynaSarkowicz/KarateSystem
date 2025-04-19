@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
 namespace KarateSystem.Misc
@@ -12,16 +13,15 @@ namespace KarateSystem.Misc
         {
             return int.TryParse(text, out _);
         }
-        public static List<GenderOption> GenderOptions { get; } = new()
+        public static bool IsTextValidDecimal(string text)
         {
-            new GenderOption("Kobieta", false),
-            new GenderOption("Mężczyzna", true),
-            new GenderOption("Nie wybrano", null)
-        };
+            return Regex.IsMatch(text, @"^\d*([.]\d{0,2})?$");
+        }
         public static List<GenderOption2> GenderOptions2 { get; } = new()
         {
             new GenderOption2("Kobieta", false),
-            new GenderOption2("Mężczyzna", true)
+            new GenderOption2("Mężczyzna", true),
+            new GenderOption2("Nie wybrano", null)
         };
 
         public static string GetDisplayName(bool? isMale) =>
@@ -31,8 +31,7 @@ namespace KarateSystem.Misc
                 false => "Kobieta",
                 null => "Nie wybrano"
             };
-        public record GenderOption(string DisplayName, bool? Value);
-        public record GenderOption2(string DisplayName, bool Value);
+        public record GenderOption2(string DisplayName, bool? Value);
         public static string Decrypt(this string cipherText)
         {
             try

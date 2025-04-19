@@ -10,7 +10,7 @@ namespace KarateSystem.Repository.Interfaces
     public interface IKumiteCategoryRepository
     {
         Task<List<KumiteCategoryDto>> GetAllKumiteCategoryAsync();
-        Task<bool> UpdateKumiteCategoryAsync(KumiteCategoryDto kumiteCategory);
-        Task<bool> AddKumiteCategoryAsync(KumiteCategoryDto kumiteCategory);
+        Task UpdateKumiteCategoryAsync(KumiteCategoryDto kumiteCategory);
+        Task AddKumiteCategoryAsync(KumiteCategoryDto kumiteCategory);
     }
 }

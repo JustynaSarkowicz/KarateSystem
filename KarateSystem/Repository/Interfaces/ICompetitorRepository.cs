@@ -6,6 +6,6 @@ namespace KarateSystem.Repository.Interfaces;
 public interface ICompetitorRepository
 {
     Task<List<CompetitorDto>> GetAllCompetitorsAsync();
-    Task<bool> UpdateCompAsync(CompetitorDto competitor);
-    Task<bool> AddCompAsync(CompetitorDto competitor);
+    Task UpdateCompAsync(CompetitorDto competitor);
+    Task AddCompAsync(CompetitorDto competitor);
 }

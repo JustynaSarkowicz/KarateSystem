@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using static KarateSystem.Misc.Helper;
+using Enum = KarateSystem.Misc.Enum;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace KarateSystem.ViewModel
@@ -27,10 +28,12 @@ namespace KarateSystem.ViewModel
         private KataCategoryDto _editingKataCategory;
         private DegreeDto _selectedDegreeToAdd;
         private CatKataDegreeDto _selectedCatKataDegree;
-        private GenderOption? _selectedGenderCatKata;
-        private GenderOption2 _selectedGenderCatKumite;
+        private GenderOption2 _selectedGenderCatKata;
+        private Enum.Gender _selectedGenderCatKumite;
         private KumiteCategoryDto _selectedKumiteCategory;
         private KumiteCategoryDto _editingKumiteCategory;
+        public ObservableCollection<Enum.Gender> GenderOption { get; set; } =
+        new ObservableCollection<Enum.Gender>((Enum.Gender[])System.Enum.GetValues(typeof(Enum.Gender)));
 
         private ObservableCollection<KataCategoryDto> _kataCategories;
         private ObservableCollection<DegreeDto> _degrees;
@@ -38,7 +41,7 @@ namespace KarateSystem.ViewModel
         private ObservableCollection<KumiteCategoryDto> _kumiteCategories;
         private List<KumiteCategoryDto> _allKumiteCategories;
 
-        private readonly ICataCategoryRepository _cataCategoryRepository;
+        private readonly IKataCategoryRepository _kataCategoryRepository;
         private readonly IKumiteCategoryRepository _kumiteCategoryRepository;
         private readonly IDegreeRepository _degreeRepository;
         private readonly ICatKataDegreeRepository _catKataDegreeRepository;
@@ -163,7 +166,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(EditingKataCategory.CatKataDegrees));
             }
         }
-        public GenderOption? SelectedGenderCatKata
+        public GenderOption2 SelectedGenderCatKata
         {
             get => _selectedGenderCatKata;
             set
@@ -172,7 +175,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedGenderCatKata));
             }
         }
-        public GenderOption2 SelectedGenderCatKumite
+        public Enum.Gender SelectedGenderCatKumite
         {
             get => _selectedGenderCatKumite;
             set
@@ -202,13 +205,13 @@ namespace KarateSystem.ViewModel
             }
         }
         #endregion
-        public CategoryViewModel(ICataCategoryRepository cataCategoryRepository,
+        public CategoryViewModel(IKataCategoryRepository kataCategoryRepository,
             IDegreeRepository degreeRepository,
             ICatKataDegreeRepository catKataDegreeRepository,
             ISearchService searchService,
             IKumiteCategoryRepository kumiteCategoryRepository)
         {
-            _cataCategoryRepository = cataCategoryRepository;
+            _kataCategoryRepository = kataCategoryRepository;
             _degreeRepository = degreeRepository;
             _catKataDegreeRepository = catKataDegreeRepository;
             _searchService = searchService;
@@ -227,11 +230,11 @@ namespace KarateSystem.ViewModel
             UpdateKumiteCategoryCommand = new ViewModelCommand(ExecuteUpdateKumiteCategoryCommand, CanCancelKumiteCategory);
             AddKumiteCategoryCommand = new ViewModelCommand(ExecuteAddKumiteCategoryCommand);
 
-            _ = LoadAsync();
+            LoadAsync();
         }
-        private async Task LoadAsync()
+        private async void LoadAsync()
         {
-            _allKataCategories = await _cataCategoryRepository.GetAllKataCategoryAsync();
+            _allKataCategories = await _kataCategoryRepository.GetAllKataCategoryAsync();
             KataCategories = new ObservableCollection<KataCategoryDto>(_allKataCategories);
 
             _allKumiteCategories = await _kumiteCategoryRepository.GetAllKumiteCategoryAsync();
@@ -246,14 +249,11 @@ namespace KarateSystem.ViewModel
                 CatKataDegrees = new ObservableCollection<CatKataDegreeDto>()
             };
         }
+       
+        #region KataCategory
         private bool CanEditKataCategory(object obj) => SelectedKataCategory != null;
         private bool CanCancelKataCategory(object obj) => EditingKataCategory != null && SelectedKataCategory != null;
-        private bool CanEditKumiteCategory(object obj) => SelectedKumiteCategory != null;
-        private bool CanCancelKumiteCategory(object obj) => EditingKumiteCategory != null && SelectedKumiteCategory != null;
-        private bool CanAddDegree(object obj) => SelectedDegreeToAdd != null;
-        private bool CanRemoveDegree(object obj) => SelectedCatKataDegree != null;
 
-        #region KataCategory
         private void FilterCatKata()
         {
             KataCategories = string.IsNullOrWhiteSpace(SearchTextCatKata)
@@ -264,6 +264,7 @@ namespace KarateSystem.ViewModel
         private void ExecuteEditKataCategoryCommand(object obj)
         {
             if(SelectedKataCategory == null) return;
+
             EditingKataCategory = new KataCategoryDto
             {
                 KataCatId = SelectedKataCategory.KataCatId,
@@ -274,7 +275,7 @@ namespace KarateSystem.ViewModel
                 CatKataDegrees = new ObservableCollection<CatKataDegreeDto>(
                 SelectedKataCategory.CatKataDegrees ?? new List<CatKataDegreeDto>())
             };
-            SelectedGenderCatKata = GenderOptions.FirstOrDefault(g => g.Value == EditingKataCategory.KataCatGender);
+            SelectedGenderCatKata = GenderOptions2?.FirstOrDefault(g => g.Value == EditingKataCategory.KataCatGender);
             IsEditingExistingCatKata = true;
         }
         private void ExecuteCancelKataCategoryCommand(object obj)
@@ -289,55 +290,63 @@ namespace KarateSystem.ViewModel
         }
         private async void ExecuteAddKataCategoryCommand(object obj)
         {
-            if (EditingKataCategory == null)
-                return;
-
-            var result = await _cataCategoryRepository.AddKataCategoryAsync(EditingKataCategory);
-
-            if (!result)
+            try
             {
-                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione:\n- Nazwa\n- Zakres wiekowy (min <= max)\n- Płeć\n- Przynajmniej jeden stopień",
-                                "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!IsKataCatValid(EditingKataCategory)) return;
+
+                EditingKataCategory.KataCatGender = SelectedGenderCatKata.Value;
+
+                await _kataCategoryRepository.AddKataCategoryAsync(EditingKataCategory);
+
+                KataCategories = new ObservableCollection<KataCategoryDto>(await _kataCategoryRepository.GetAllKataCategoryAsync());
+                ExecuteCancelKataCategoryCommand(obj);
             }
-
-            var updatedList = await _cataCategoryRepository.GetAllKataCategoryAsync();
-            KataCategories = new ObservableCollection<KataCategoryDto>(updatedList);
-            EditingKataCategory = new KataCategoryDto
+            catch(Exception ex)
             {
-                CatKataDegrees = new ObservableCollection<CatKataDegreeDto>()
-            };
-            SelectedGenderCatKata = GenderOptions.FirstOrDefault(g => g.Value == null);
-            SelectedDegreeToAdd = null;
-            IsEditingExistingCatKata = false;
+                MessageBox.Show($"Wystąpił błąd podczas dodawania kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private async void ExecuteUpdateKataCategoryCommand(object obj)
         {
-            if (SelectedKataCategory == null || EditingKataCategory == null)
-                return;
-            if (!KataCategories.Contains(SelectedKataCategory)) return;
-            SelectedKataCategory.KataCatName = EditingKataCategory.KataCatName;
-            SelectedKataCategory.KataCatGender = EditingKataCategory.KataCatGender;
-            SelectedKataCategory.KataCatAgeMin = EditingKataCategory.KataCatAgeMin;
-            SelectedKataCategory.KataCatAgeMax = EditingKataCategory.KataCatAgeMax;
-            SelectedKataCategory.CatKataDegrees = EditingKataCategory.CatKataDegrees;
-            var succeed = await _cataCategoryRepository.UpdateKataCategoryAsync(SelectedKataCategory);
-            if (!succeed)
+            try
             {
-                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione:\n- Nazwa\n- Zakres wiekowy (min <= max)\n- Przynajmniej jeden stopień", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!IsKataCatValid(EditingKataCategory) || SelectedKataCategory == null) return;
+
+                SelectedKataCategory.KataCatName = EditingKataCategory.KataCatName;
+                SelectedKataCategory.KataCatGender = SelectedGenderCatKata.Value;
+                SelectedKataCategory.KataCatAgeMin = EditingKataCategory.KataCatAgeMin;
+                SelectedKataCategory.KataCatAgeMax = EditingKataCategory.KataCatAgeMax;
+                SelectedKataCategory.CatKataDegrees = EditingKataCategory.CatKataDegrees;
+
+                await _kataCategoryRepository.UpdateKataCategoryAsync(SelectedKataCategory);
+
+                KataCategories = new ObservableCollection<KataCategoryDto>(await _kataCategoryRepository.GetAllKataCategoryAsync());
+                ExecuteCancelKataCategoryCommand(obj);
             }
-            KataCategories = new ObservableCollection<KataCategoryDto>(_allKataCategories);
-            EditingKataCategory = new KataCategoryDto
+            catch(Exception ex)
             {
-                CatKataDegrees = new ObservableCollection<CatKataDegreeDto>()
-            };
-            SelectedGenderCatKata = GenderOptions.FirstOrDefault(g => g.Value == null);
-            IsEditingExistingCatKata = false;
+                MessageBox.Show($"Wystąpił błąd podczas aktualizacji kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private bool IsKataCatValid(KataCategoryDto kataCategoryDto)
+        {
+            if (string.IsNullOrWhiteSpace(kataCategoryDto.KataCatName) ||
+                kataCategoryDto.KataCatAgeMin < 0 ||
+                kataCategoryDto.KataCatAgeMax <= 0 ||
+                kataCategoryDto.KataCatAgeMin > kataCategoryDto.KataCatAgeMax ||
+                kataCategoryDto.CatKataDegrees == null || !kataCategoryDto.CatKataDegrees.Any())
+            {
+                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.\n", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
         }
         #endregion
 
-        #region KumiteCategory
+        #region KumiteCategory 
+        private bool CanEditKumiteCategory(object obj) => SelectedKumiteCategory != null;
+        private bool CanCancelKumiteCategory(object obj) => EditingKumiteCategory != null && SelectedKumiteCategory != null;
+
         private void FilterCatKumite()
         {
             KumiteCategories = string.IsNullOrWhiteSpace(SearchTextCatKumite)
@@ -348,6 +357,7 @@ namespace KarateSystem.ViewModel
         private void ExecuteEditKumiteCategoryCommand(object obj)
         {
             if(SelectedKumiteCategory == null) return;
+
             EditingKumiteCategory = new KumiteCategoryDto
             {
                 KumiteCatId = SelectedKumiteCategory.KumiteCatId,
@@ -358,61 +368,79 @@ namespace KarateSystem.ViewModel
                 KumiteCatWeightMin = SelectedKumiteCategory.KumiteCatWeightMin,
                 KumiteCatWeightMax = SelectedKumiteCategory.KumiteCatWeightMax
             };
-            SelectedGenderCatKumite = GenderOptions2.FirstOrDefault(g => g.Value == EditingKumiteCategory.KumiteCatGender);
+            SelectedGenderCatKumite = EditingKumiteCategory.KumiteCatGender ? Enum.Gender.Mężczyzna : Enum.Gender.Kobieta;
             IsEditingExistingCatKumite = true;
         }
         private void ExecuteCancelKumiteCategoryCommand(object obj)
         {
             EditingKumiteCategory = new KumiteCategoryDto();
-            SelectedGenderCatKumite = null;
+            SelectedGenderCatKumite = 0;
             IsEditingExistingCatKumite = false;
             SelectedKumiteCategory = null;
         }
         private async void ExecuteAddKumiteCategoryCommand(object obj)
         {
-            if (EditingKumiteCategory == null)
-                return;
-
-            var result = await _kumiteCategoryRepository.AddKumiteCategoryAsync(EditingKumiteCategory);
-
-            if (!result)
+            try
             {
-                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione:\n- Nazwa\n- Zakres wiekowy (min <= max)\n- Płeć\n- Zaker wagowy (min <= max)",
-                                "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+                if (!IsKumiteCatValid(EditingKumiteCategory)) return;
 
-            var updatedList = await _kumiteCategoryRepository.GetAllKumiteCategoryAsync();
-            KumiteCategories = new ObservableCollection<KumiteCategoryDto>(updatedList);
-            EditingKumiteCategory = new KumiteCategoryDto();
-            SelectedGenderCatKumite = GenderOptions2.FirstOrDefault(g => g.Value == true);
-            IsEditingExistingCatKumite = false;
+                EditingKumiteCategory.KumiteCatGender = SelectedGenderCatKumite == Enum.Gender.Mężczyzna;
+
+                await _kumiteCategoryRepository.AddKumiteCategoryAsync(EditingKumiteCategory);
+
+                KumiteCategories = new ObservableCollection<KumiteCategoryDto>(await _kumiteCategoryRepository.GetAllKumiteCategoryAsync());
+                ExecuteCancelKumiteCategoryCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawania kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private async void ExecuteUpdateKumiteCategoryCommand(object obj)
         {
-            if(SelectedKumiteCategory == null || EditingKumiteCategory == null)
-                return;
-            if (!KumiteCategories.Contains(SelectedKumiteCategory)) return;
-            SelectedKumiteCategory.KumiteCatName = EditingKumiteCategory.KumiteCatName;
-            SelectedKumiteCategory.KumiteCatGender = EditingKumiteCategory.KumiteCatGender;
-            SelectedKumiteCategory.KumiteCatAgeMin = EditingKumiteCategory.KumiteCatAgeMin;
-            SelectedKumiteCategory.KumiteCatAgeMax = EditingKumiteCategory.KumiteCatAgeMax;
-            SelectedKumiteCategory.KumiteCatWeightMin = EditingKumiteCategory.KumiteCatWeightMin;
-            SelectedKumiteCategory.KumiteCatWeightMax = EditingKumiteCategory.KumiteCatWeightMax;
-            var succeed = await _kumiteCategoryRepository.UpdateKumiteCategoryAsync(SelectedKumiteCategory);
-            if (!succeed)
+            try
             {
-                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione:\n- Nazwa\n- Zakres wiekowy (min <= max)\n- Przynajmniej jeden stopień", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!IsKumiteCatValid(EditingKumiteCategory) || SelectedKumiteCategory == null) return;
+
+                SelectedKumiteCategory.KumiteCatName = EditingKumiteCategory.KumiteCatName;
+                SelectedKumiteCategory.KumiteCatGender = SelectedGenderCatKumite == Enum.Gender.Mężczyzna;
+                SelectedKumiteCategory.KumiteCatAgeMin = EditingKumiteCategory.KumiteCatAgeMin;
+                SelectedKumiteCategory.KumiteCatAgeMax = EditingKumiteCategory.KumiteCatAgeMax;
+                SelectedKumiteCategory.KumiteCatWeightMin = EditingKumiteCategory.KumiteCatWeightMin;
+                SelectedKumiteCategory.KumiteCatWeightMax = EditingKumiteCategory.KumiteCatWeightMax;
+
+                await _kumiteCategoryRepository.UpdateKumiteCategoryAsync(SelectedKumiteCategory);
+
+                KumiteCategories = new ObservableCollection<KumiteCategoryDto>(await _kumiteCategoryRepository.GetAllKumiteCategoryAsync());
+                ExecuteCancelKumiteCategoryCommand(obj);
             }
-            KumiteCategories = new ObservableCollection<KumiteCategoryDto>(_allKumiteCategories);
-            EditingKumiteCategory = new KumiteCategoryDto();
-            SelectedGenderCatKumite = GenderOptions2.FirstOrDefault(g => g.Value == true);
-            IsEditingExistingCatKumite = false;
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas aktualizacji kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private bool IsKumiteCatValid(KumiteCategoryDto kumiteCategoryDto)
+        {
+            if (string.IsNullOrWhiteSpace(kumiteCategoryDto.KumiteCatName) ||
+                kumiteCategoryDto.KumiteCatWeightMin < 0 ||
+                kumiteCategoryDto.KumiteCatWeightMax <= 0 ||
+                kumiteCategoryDto.KumiteCatWeightMin > kumiteCategoryDto.KumiteCatWeightMax ||
+                kumiteCategoryDto.KumiteCatAgeMin < 0 ||
+                kumiteCategoryDto.KumiteCatAgeMax <= 0 ||
+                kumiteCategoryDto.KumiteCatAgeMin > kumiteCategoryDto.KumiteCatAgeMax)
+            {
+                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.\n", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
         }
         #endregion
 
         #region DegreeKataCategory
+        private bool CanAddDegree(object obj) => SelectedDegreeToAdd != null;
+        private bool CanRemoveDegree(object obj) => SelectedCatKataDegree != null;
+
         private void ExecuteAddDegreeCommand(object obj)
         {
             if (SelectedDegreeToAdd == null || EditingKataCategory == null) return;

@@ -4,6 +4,7 @@ using KarateSystem.Dto;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace KarateSystem.Repository
 {
@@ -17,32 +18,22 @@ namespace KarateSystem.Repository
             _dbContext = context;
             _mapper = mapper;
         }
-        public async Task<bool> AddCompAsync(CompetitorDto competitor)
+        public async Task AddCompAsync(CompetitorDto competitor)
         {
-            if (string.IsNullOrWhiteSpace(competitor.CompFirstName) ||
-                string.IsNullOrWhiteSpace(competitor.CompLastName) ||
-                competitor.CompWeight < 0 ||
-                competitor.CompDegreeId <= 0 ||
-                competitor.CompClubId <= 0)
-            {
-                return false;
-            }
             var existingComp = await _dbContext.Competitors
-                .FirstOrDefaultAsync(c => c.CompFirstName == competitor.CompFirstName &&
+                .AnyAsync(c => c.CompFirstName == competitor.CompFirstName &&
                                           c.CompLastName == competitor.CompLastName &&
-                                          c.CompDateOfBirth == competitor.CompDateOfBirth);
-            if (existingComp != null) return false;
+                                          c.CompDateOfBirth == competitor.CompDateOfBirth &&
+                                          c.CompId != competitor.CompId);
+            if (existingComp)
+            {
+                throw new Exception("Zawodnik o takim imieniu i nazwisku oraz dacie urodzenia już istnieje.");
+            }
+
             var newComp = _mapper.Map<Competitor>(competitor);
-            try
-            {
-                _dbContext.Competitors.Add(newComp);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            catch(Exception ex)
-            {
-                return false;
-            }
+
+            _dbContext.Competitors.Add(newComp);
+            await _dbContext.SaveChangesAsync();
         }
         public async Task<List<CompetitorDto>> GetAllCompetitorsAsync()
         {
@@ -62,19 +53,21 @@ namespace KarateSystem.Repository
 
             return _mapper.Map<List<CompetitorDto>>(entities);
         }
-        public async Task<bool> UpdateCompAsync(CompetitorDto competitor)
+        public async Task UpdateCompAsync(CompetitorDto competitor)
         {
             var existingComp = await _dbContext.Competitors
                 .FirstOrDefaultAsync(c => c.CompId == competitor.CompId);
-            if (existingComp == null) return false;
-            if (string.IsNullOrWhiteSpace(competitor.CompFirstName) ||
-                string.IsNullOrWhiteSpace(competitor.CompLastName) ||
-                competitor.CompWeight < 0 ||
-                competitor.CompDegreeId <= 0 ||
-                competitor.CompClubId <= 0)
-            {
-                return false;
-            }
+
+            if (existingComp == null)
+                throw new Exception("Nie znaleziono zawodnika do edycji.");
+            
+            var compTaken =  await _dbContext.Competitors
+                .AnyAsync(c => c.CompFirstName == competitor.CompFirstName &&
+                                          c.CompLastName == competitor.CompLastName &&
+                                          c.CompDateOfBirth == competitor.CompDateOfBirth &&
+                                          c.CompId != competitor.CompId);
+            if (compTaken)
+                throw new Exception("Zawodnik o takim imieniu i nazwisku oraz dacie urodzenia już istnieje.");
 
             existingComp.CompFirstName = competitor.CompFirstName;
             existingComp.CompLastName = competitor.CompLastName;
@@ -83,17 +76,9 @@ namespace KarateSystem.Repository
             existingComp.CompWeight = competitor.CompWeight;
             existingComp.CompDegreeId = competitor.CompDegreeId;
             existingComp.CompClubId = competitor.CompClubId;
-
-            try
-            {
-                _dbContext.Competitors.Update(existingComp);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            
+            _dbContext.Competitors.Update(existingComp);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

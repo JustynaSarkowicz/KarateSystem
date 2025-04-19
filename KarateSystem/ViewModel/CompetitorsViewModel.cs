@@ -7,7 +7,7 @@ using KarateSystem.Service.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using static KarateSystem.Misc.Helper;
+using Enum = KarateSystem.Misc.Enum;
 
 namespace KarateSystem.ViewModel
 {
@@ -18,7 +18,7 @@ namespace KarateSystem.ViewModel
         private bool _isEditingExisting;
         private CompetitorDto _selectedComp;
         private CompetitorDto _editingComp;
-        private GenderOption2 _selectedGenderComp; 
+        private Enum.Gender _selectedGenderComp; 
         private string _selectedFilterType;
         private string _selectedFilterValue;
         private TourCompetitorDto _selectedTourComp;
@@ -29,6 +29,8 @@ namespace KarateSystem.ViewModel
         private List<CompetitorDto> _allCompetitors;
         public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
         public ObservableCollection<string> FilterValues { get; set; } = new();
+        public ObservableCollection<Enum.Gender> GenderOption { get; set; } =
+        new ObservableCollection<Enum.Gender>((Enum.Gender[])System.Enum.GetValues(typeof(Enum.Gender)));
 
         private readonly ICompetitorRepository _competitorRepository;
         private readonly IDegreeRepository _degreeRepository;
@@ -112,7 +114,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(EditingComp));
             }
         }
-        public GenderOption2 SelectedGenderComp
+        public Enum.Gender SelectedGenderComp
         {
             get => _selectedGenderComp;
             set
@@ -167,11 +169,11 @@ namespace KarateSystem.ViewModel
             AddCompCommand = new ViewModelCommand(ExecuteAddCompCommand);
             FilterCommand = new ViewModelCommand(ExecuteFilter);
 
-            _ = LoadAsync();
+            LoadAsync();
         }
         private bool CanEditCompetitor(object obj) => SelectedCompetitor != null;
         private bool CanCancelCompetitor(object obj) => SelectedCompetitor != null && EditingComp != null;
-        private async Task LoadAsync()
+        private async void LoadAsync()
         {
             _allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
             Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
@@ -225,8 +227,6 @@ namespace KarateSystem.ViewModel
             Competitors = new ObservableCollection<CompetitorDto>(filtered);
         }
 
-
-
         private void ExecuteEditCompetitorCommand(object obj)
         {
             if (SelectedCompetitor == null) return;
@@ -244,7 +244,7 @@ namespace KarateSystem.ViewModel
                 TourCompetitors = new ObservableCollection<TourCompetitorDto>(
                 SelectedCompetitor.TourCompetitors ?? new List<TourCompetitorDto>())
             };
-            SelectedGenderComp = GenderOptions2.FirstOrDefault(g => g.Value == EditingComp.CompGender);
+            SelectedGenderComp = EditingComp.CompGender ? Enum.Gender.Mężczyzna : Enum.Gender.Kobieta;
             IsEditingExisting = true;
         }
         private void ExecuteCancelCompCommand(object obj)
@@ -256,46 +256,50 @@ namespace KarateSystem.ViewModel
             };
             IsEditingExisting = false;
             SelectedCompetitor = null;
-            SelectedGenderComp = null;
+            SelectedGenderComp = 0;
         }
 
         private async void ExecuteUpdateCompCommand(object obj)
         {
-            if (SelectedCompetitor == null || EditCompCommand == null) return;
-
-            if (!Competitors.Contains(SelectedCompetitor)) return;
-            
-            SelectedCompetitor.CompFirstName = EditingComp.CompFirstName;
-            SelectedCompetitor.CompLastName = EditingComp.CompLastName;
-            SelectedCompetitor.CompDateOfBirth = EditingComp.CompDateOfBirth;
-            SelectedCompetitor.CompGender = SelectedGenderComp?.Value ?? false;
-            SelectedCompetitor.CompWeight = EditingComp.CompWeight;
-            SelectedCompetitor.CompDegreeId = EditingComp.CompDegreeId;
-            SelectedCompetitor.CompClubId = EditingComp.CompClubId;
-            var result = await _competitorRepository.UpdateCompAsync(SelectedCompetitor);
-            if(!result)
+            try
             {
-                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!IsCompetitorValid(EditingComp) || SelectedCompetitor == null) return;
+
+                SelectedCompetitor.CompFirstName = EditingComp.CompFirstName;
+                SelectedCompetitor.CompLastName = EditingComp.CompLastName;
+                SelectedCompetitor.CompDateOfBirth = EditingComp.CompDateOfBirth;
+                SelectedCompetitor.CompGender = SelectedGenderComp == Enum.Gender.Mężczyzna; 
+                SelectedCompetitor.CompWeight = EditingComp.CompWeight;
+                SelectedCompetitor.CompDegreeId = EditingComp.CompDegreeId;
+                SelectedCompetitor.CompClubId = EditingComp.CompClubId;
+
+                await _competitorRepository.UpdateCompAsync(SelectedCompetitor);
+
+                Competitors = new ObservableCollection<CompetitorDto>(await _competitorRepository.GetAllCompetitorsAsync());
+                ExecuteCancelCompCommand(obj);
             }
-            ExecuteCancelCompCommand(obj);
-            _allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
-            Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas aktualizacji zawodnika: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private async void ExecuteAddCompCommand(object obj)
         {
-            if(EditingComp == null) return;
-            EditingComp.CompGender = SelectedGenderComp?.Value ?? false;
-            var result = await _competitorRepository.AddCompAsync(EditingComp);
-            if (!result)
+            try
             {
-                MessageBox.Show("Upewnij się, że wszystkie pola są poprawnie wypełnione", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            _allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
-            Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
+                if (!IsCompetitorValid(EditingComp)) return;
 
-            ExecuteCancelCompCommand(obj);
+                EditingComp.CompGender = SelectedGenderComp == Enum.Gender.Mężczyzna;
+
+                await _competitorRepository.AddCompAsync(EditingComp);
+                
+                Competitors = new ObservableCollection<CompetitorDto>(await _competitorRepository.GetAllCompetitorsAsync());
+                ExecuteCancelCompCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawania zawodnika: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void OnFilterTypeChanged()
         {
@@ -318,6 +322,19 @@ namespace KarateSystem.ViewModel
                         FilterValues.Add(club);
                     break;
             }
+        }
+        private bool IsCompetitorValid(CompetitorDto competitor)
+        {
+            if (string.IsNullOrWhiteSpace(competitor.CompFirstName) ||
+                string.IsNullOrWhiteSpace(competitor.CompLastName) ||
+                competitor.CompWeight < 0 ||
+                competitor.CompDegreeId <= 0 ||
+                competitor.CompClubId <= 0)
+            {
+                MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.\n", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
         }
     }
 }

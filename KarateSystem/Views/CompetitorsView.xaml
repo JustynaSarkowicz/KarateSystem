@@ -228,7 +228,8 @@
                                      BorderThickness="0,0,0,1"                             
                                      VerticalContentAlignment="Center"
                                      TextAlignment="Center"
-                                     Text="{Binding EditingComp.CompWeight, Mode=TwoWay,UpdateSourceTrigger=LostFocus, FallbackValue=0}"
+                                     Text="{Binding EditingComp.CompWeight, Mode=TwoWay, UpdateSourceTrigger=LostFocus, FallbackValue=0}"
+                                     PreviewTextInput="TbCompetitorWeight_PreviewTextInput"
                                      Style="{StaticResource textBoxEnabled}"/>
 
                             <DatePicker SelectedDate="{Binding EditingComp.CompDateOfBirth, UpdateSourceTrigger=PropertyChanged}"
@@ -237,10 +238,9 @@
                                         Margin="0,0,0,5"/>
                             <ComboBox x:Name="cbCompetitorGender"
                                       Width="180"
-                                      ItemsSource="{Binding GenderOptions2}"
+                                      ItemsSource="{Binding GenderOption}"
                                       SelectedItem="{Binding SelectedGenderComp, Mode=TwoWay}"
-                                      Style="{StaticResource comboboxStyle}"
-                                      DisplayMemberPath="DisplayName"/>
+                                      Style="{StaticResource comboboxStyle}"/>
 
                             <ComboBox x:Name="cbDegreeComp"
                                       Width="180"

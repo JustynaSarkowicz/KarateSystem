@@ -13,5 +13,10 @@ namespace KarateSystem.Misc
             Admin,
             Obsluga
         }
+        public enum Gender
+        {
+            Kobieta,
+            Mężczyzna
+        }
     }
 }

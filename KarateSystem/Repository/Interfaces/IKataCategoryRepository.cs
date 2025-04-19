@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace KarateSystem.Repository.Interfaces
 {
-    public interface ICataCategoryRepository
+    public interface IKataCategoryRepository
     {
         Task<List<KataCategoryDto>> GetAllKataCategoryAsync();
-        Task<bool> UpdateKataCategoryAsync(KataCategoryDto kataCategory);
-        Task<bool> AddKataCategoryAsync(KataCategoryDto kataCategory);
+        Task UpdateKataCategoryAsync(KataCategoryDto kataCategory);
+        Task AddKataCategoryAsync(KataCategoryDto kataCategory);
     }
 }

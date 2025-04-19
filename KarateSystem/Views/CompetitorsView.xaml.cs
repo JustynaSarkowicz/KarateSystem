@@ -19,5 +19,14 @@ namespace KarateSystem.Views
         { 
             InitializeComponent();
         }
+        private void TbCompetitorWeight_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            string currentText = textBox.Text;
+
+            string newText = currentText.Insert(textBox.SelectionStart, e.Text);
+
+            e.Handled = !Helper.IsTextValidDecimal(newText);
+        }
     }
 }

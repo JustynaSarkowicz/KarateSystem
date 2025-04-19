@@ -22,32 +22,19 @@ namespace KarateSystem.Repository
             _mapper = mapper;
         }
 
-        public async Task<bool> AddKumiteCategoryAsync(KumiteCategoryDto kumiteCategoryDto)
+        public async Task AddKumiteCategoryAsync(KumiteCategoryDto kumiteCategoryDto)
         {
-            if (string.IsNullOrWhiteSpace(kumiteCategoryDto.KumiteCatName) ||
-                kumiteCategoryDto.KumiteCatWeightMin < 0 ||
-                kumiteCategoryDto.KumiteCatWeightMax <= 0 ||
-                kumiteCategoryDto.KumiteCatWeightMin > kumiteCategoryDto.KumiteCatWeightMax ||
-                kumiteCategoryDto.KumiteCatAgeMin < 0 ||
-                kumiteCategoryDto.KumiteCatAgeMax <= 0 ||
-                kumiteCategoryDto.KumiteCatAgeMin > kumiteCategoryDto.KumiteCatAgeMax)
+            var existingKumiteCat = await _dbContext.KumiteCategories
+                .AnyAsync(c => c.KumiteCatId != kumiteCategoryDto.KumiteCatId && c.KumiteCatName == kumiteCategoryDto.KumiteCatName);
+            if (existingKumiteCat)
             {
-                return false;
+                throw new Exception("Kategoria Kumite o takiej nazwie już istnieje.");
             }
-            var existing = await _dbContext.KumiteCategories
-                .FirstOrDefaultAsync(c => c.KumiteCatId == kumiteCategoryDto.KumiteCatId || c.KumiteCatName == kumiteCategoryDto.KumiteCatName);
-            if (existing != null) return false;
+
             var kumiteCategory = _mapper.Map<KumiteCategory>(kumiteCategoryDto);
-            try
-            {
-                _dbContext.KumiteCategories.Add(kumiteCategory);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            
+            _dbContext.KumiteCategories.Add(kumiteCategory);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<List<KumiteCategoryDto>> GetAllKumiteCategoryAsync()
@@ -56,23 +43,19 @@ namespace KarateSystem.Repository
             return _mapper.Map<List<KumiteCategoryDto>>(entities);
         }
 
-        public async Task<bool> UpdateKumiteCategoryAsync(KumiteCategoryDto kumiteCategoryDto)
+        public async Task UpdateKumiteCategoryAsync(KumiteCategoryDto kumiteCategoryDto)
         {
             var existingKumiteCategory = await _dbContext.KumiteCategories
                 .FirstOrDefaultAsync(c => c.KumiteCatId == kumiteCategoryDto.KumiteCatId);
 
-            if (existingKumiteCategory == null) return false;
+            if(existingKumiteCategory == null)
+                throw new Exception("Nie znaleziono kategorii kumite do edycji.");
+            
+            var catKumiteTaken = await _dbContext.KumiteCategories
+                .AnyAsync(c => c.KumiteCatName == kumiteCategoryDto.KumiteCatName && c.KumiteCatId != kumiteCategoryDto.KumiteCatId);
 
-            if (string.IsNullOrWhiteSpace(kumiteCategoryDto.KumiteCatName) ||
-                kumiteCategoryDto.KumiteCatWeightMin < 0 ||
-                kumiteCategoryDto.KumiteCatWeightMax <= 0 ||
-                kumiteCategoryDto.KumiteCatWeightMin > kumiteCategoryDto.KumiteCatWeightMax ||
-                kumiteCategoryDto.KumiteCatAgeMin < 0 ||
-                kumiteCategoryDto.KumiteCatAgeMax <= 0 ||
-                kumiteCategoryDto.KumiteCatAgeMin > kumiteCategoryDto.KumiteCatAgeMax)
-            {
-                return false;
-            }
+            if (catKumiteTaken)
+                throw new Exception("Kategoria Kumite o takiej nazwie już istnieje.");
 
             existingKumiteCategory.KumiteCatName = kumiteCategoryDto.KumiteCatName;
             existingKumiteCategory.KumiteCatGender = kumiteCategoryDto.KumiteCatGender;
@@ -80,17 +63,9 @@ namespace KarateSystem.Repository
             existingKumiteCategory.KumiteCatAgeMax = kumiteCategoryDto.KumiteCatAgeMax;
             existingKumiteCategory.KumiteCatWeightMin = kumiteCategoryDto.KumiteCatWeightMin;
             existingKumiteCategory.KumiteCatWeightMax = kumiteCategoryDto.KumiteCatWeightMax;
-            
-            try
-            {
-                _dbContext.KumiteCategories.Update(existingKumiteCategory);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+
+            _dbContext.KumiteCategories.Update(existingKumiteCategory);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace KarateSystem.Repository
 
         public async Task AddMatAsync(MatDto matDto)
         {
-            var existingMat = await _dbContext.Mats.AnyAsync(c => c.MatId == matDto.MatId || c.MatName == matDto.MatName);
+            var existingMat = await _dbContext.Mats.AnyAsync(c => c.MatId != matDto.MatId || c.MatName == matDto.MatName);
             
             if (existingMat)
             {
