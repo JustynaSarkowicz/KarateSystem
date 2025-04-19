@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KarateSystem.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace KarateSystem.Repository.Interfaces
 {
-    internal interface ITourCatKumiteRepository
+    public interface ITourCatKumiteRepository
     {
+        Task<List<TourCatKumiteDto>> GetCatKumiteByIdTourAsync(int tourId);
     }
 }

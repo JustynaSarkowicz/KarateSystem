@@ -48,6 +48,8 @@ namespace KarateSystem
             services.AddScoped<ITourCompetitorRepository, TourCompetitorRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITournamentRepository, TournamentRepository>();
+            services.AddScoped<ITourCatKataRepository, TourCatKataRepository>();
+            services.AddScoped<ITourCatKumiteRepository, TourCatKumiteRepository>();
             services.AddScoped<CompetitorsViewModel>();
             services.AddScoped<ClubsDegreesMatsViewModel>();
             services.AddScoped<CategoryViewModel>();

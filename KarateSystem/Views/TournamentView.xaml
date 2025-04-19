@@ -401,12 +401,12 @@
                           Grid.Row="1"
                           Grid.Column="0"
                           Margin="0,0,20,0"
-                              ItemsSource="{Binding }">
+                              ItemsSource="{Binding CatKataTour}">
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Binding="{Binding KataCatId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
                                     <DataGridTextColumn Binding="{Binding KataCatName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
-                                    <DataGridTextColumn Binding="{Binding KataCatGenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
+                                    <DataGridTextColumn Binding="{Binding GenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
                                     <DataGridTextColumn Binding="{Binding KataCatAgeMin, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
                                     <DataGridTextColumn Binding="{Binding KataCatAgeMax, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
                                     <DataGridTextColumn Binding="{Binding DegreesDisplay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Stopnie"/>
@@ -471,12 +471,13 @@
                           Style="{DynamicResource DataGridStyle1}"
                           Grid.Row="1"
                           Grid.Column="1"
-                          Margin="0,0,0,0">
+                          Margin="0,0,0,0"
+                              ItemsSource="{Binding CatKumiteTour}">
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Binding="{Binding KumiteCatId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat="" Width="50"/>
                                     <DataGridTextColumn Binding="{Binding KumiteCatName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
-                                    <DataGridTextColumn Binding="{Binding KumCatGenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
+                                    <DataGridTextColumn Binding="{Binding GenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
                                     <DataGridTextColumn Binding="{Binding KumiteCatAgeMin, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
                                     <DataGridTextColumn Binding="{Binding KumiteCatAgeMax, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
                                     <DataGridTextColumn Binding="{Binding KumiteCatWeightMin, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga Min"/>
