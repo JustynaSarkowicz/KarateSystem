@@ -10,5 +10,6 @@ namespace KarateSystem.Repository.Interfaces
     public interface ITourCatKataRepository
     {
         Task<List<TourCatKataDto>> GetCatKataByIdTourAsync(int tourId);
+        Task DeleteCatKataFromTour(int tourCatKataId);
     }
 }

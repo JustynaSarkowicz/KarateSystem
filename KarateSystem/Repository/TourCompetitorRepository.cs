@@ -40,5 +40,15 @@ namespace KarateSystem.Repository
 
             return _mapper.Map<List<TourCompetitorDto>>(tourCompetitors);
         }
+
+        public async Task DeleteTourComp(int tourCompId)
+        {
+            var tourComp = await _context.TourCompetitors.FindAsync(tourCompId);
+            if (tourComp == null) 
+                throw new Exception("Nie znaleziono zawodnika w turnieju do usunięcia.");
+
+            _context.TourCompetitors.Remove(tourComp);
+            await _context.SaveChangesAsync();
+        }
     }
 }

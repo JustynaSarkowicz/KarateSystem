@@ -30,5 +30,14 @@ namespace KarateSystem.Repository
 
             return _mapper.Map<List<TourCatKumiteDto>>(tourCatKumite);
         }
+        public async Task DeleteCatKumiteFromTour(int tourCatKumiteId)
+        {
+            var tourCatKumite = await _dbContext.TourCatKumites.FindAsync(tourCatKumiteId);
+            if (tourCatKumite == null)
+                throw new Exception("Nie znaleziono kategorii kumite w turnieju do usunięcia.");
+
+            _dbContext.TourCatKumites.Remove(tourCatKumite);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

@@ -21,12 +21,14 @@ namespace KarateSystem.ViewModel
         private string _searchTextTour;
         private string _searchTextTourComp;
         private bool _isEditingExisting;
+        private string _selectedFilterType;
+        private string _selectedFilterValue;
         private TournamentDto _selectedTour;
         private TournamentDto _editingTour;
         private StatusOption _selectedStatus;
         private TourCompetitorDto _selectedCompetitorTour;
-        private TourCompetitorDto _selectedCatKataTour;
-        private TourCompetitorDto _selectedCatKumiteTour;
+        private TourCatKataDto _selectedCatKataTour;
+        private TourCatKumiteDto _selectedCatKumiteTour;
 
         private ObservableCollection<TournamentDto> _tournaments;
         private List<TournamentDto> _allTournaments;
@@ -35,6 +37,8 @@ namespace KarateSystem.ViewModel
         private ObservableCollection<TourCatKataDto> _catKataTour;
         private ObservableCollection<TourCatKumiteDto> _catKumiteTour;
         public ObservableCollection<StatusOption> StatusOptions { get; set; } = new(StatusOptionsList);
+        public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
+        public ObservableCollection<string> FilterValues { get; set; } = new();
 
         private readonly ITournamentRepository _tournamentRepository;
         private readonly ITourCompetitorRepository _tourCompetitorRepository;
@@ -48,9 +52,32 @@ namespace KarateSystem.ViewModel
         public ICommand EditTourCommand { get; }
         public ICommand CancelTourCommand { get; }
         public ICommand UpdateTourCommand { get; }
+        public ICommand FilterCompCommand { get; }
+        public ICommand DeleteCompFromTourCommand { get; }
+        public ICommand DeleteCatKataFromTourCommand { get; }
+        public ICommand DeleteCatKumiteFromTourCommand { get; }
         #endregion
 
         #region Properties
+        public string SelectedFilterType
+        {
+            get => _selectedFilterType;
+            set
+            {
+                _selectedFilterType = value;
+                OnPropertyChanged(nameof(SelectedFilterType));
+                OnFilterTypeChanged();
+            }
+        }
+        public string SelectedFilterValue
+        {
+            get => _selectedFilterValue;
+            set
+            {
+                _selectedFilterValue = value;
+                OnPropertyChanged(nameof(SelectedFilterValue));
+            }
+        }
         public ObservableCollection<TourCatKataDto> CatKataTour
         {
             get => _catKataTour;
@@ -69,7 +96,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(CatKumiteTour));
             }
         }
-        public TourCompetitorDto SelectedCatKataTour
+        public TourCatKataDto SelectedCatKataTour
         {
             get => _selectedCatKataTour;
             set
@@ -78,7 +105,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedCatKataTour));
             }
         }
-        public TourCompetitorDto SelectedCatKumiteTour
+        public TourCatKumiteDto SelectedCatKumiteTour
         {
             get => _selectedCatKumiteTour;
             set
@@ -202,6 +229,12 @@ namespace KarateSystem.ViewModel
             CancelTourCommand = new ViewModelCommand(ExecuteCancelTourCommand);
             UpdateTourCommand = new ViewModelCommand(ExecuteUpdateTourCommand, CanCancelTour);
             AddTourCommand = new ViewModelCommand(ExecuteAddTourCommand);
+
+            FilterCompCommand = new ViewModelCommand(ExecuteCompFilter);
+            DeleteCompFromTourCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCommand, CanDeleteComp);
+
+            DeleteCatKataFromTourCommand = new ViewModelCommand(ExecuteDeleteCatKataFromTourCommand, CanDeleteCatKata);
+            DeleteCatKumiteFromTourCommand = new ViewModelCommand(ExecuteDeleteCatKumiteFromTourCommand, CanDeleteCatKumite);
 
             LoadAsync();
         }
@@ -336,12 +369,117 @@ namespace KarateSystem.ViewModel
         #endregion
 
         #region Competitors
+        private bool CanDeleteComp(object obj) => SelectedTour != null && SelectedCompetitorTour != null;
+        private async void ExecuteDeleteCompFromTourCommand(object obj)
+        {
+            if (SelectedCompetitorTour == null) return;
+            try
+            {
+                await _tourCompetitorRepository.DeleteTourComp(SelectedCompetitorTour.TourCompId);
+                CompetitorsTour = new ObservableCollection<TourCompetitorDto>(
+                    await _tourCompetitorRepository.GetTourCompetitorsByIdTourAsync(SelectedTour.TourId));
+                SelectedCompetitorTour = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania zawodnika: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void FilterCompTour()
         {
             CompetitorsTour = string.IsNullOrWhiteSpace(SearchTextTourComp)
                 ? new ObservableCollection<TourCompetitorDto>(_allCompetitorsTour)
                 : new ObservableCollection<TourCompetitorDto>(
                     _searchService.SearchInCollection(_allCompetitorsTour, SearchTextTourComp, "CompFirstName", "CompLastName"));
+        }
+        private void OnFilterTypeChanged()
+        {
+            FilterValues.Clear();
+
+            switch (SelectedFilterType)
+            {
+                case "Płeć":
+                    FilterValues.Add("Mężczyzna");
+                    FilterValues.Add("Kobieta");
+                    break;
+
+                case "Stopień":
+                    foreach (var degree in _allCompetitorsTour.Select(c => c.DegreeName).Distinct())
+                        FilterValues.Add(degree);
+                    break;
+
+                case "Klub":
+                    foreach (var club in _allCompetitorsTour.Select(c => c.ClubName).Distinct())
+                        FilterValues.Add(club);
+                    break;
+            }
+        }
+        private void ExecuteCompFilter(object obj)
+        {
+            if (string.IsNullOrEmpty(SelectedFilterType) || string.IsNullOrEmpty(SelectedFilterValue) || SelectedFilterType == "")
+            {
+                CompetitorsTour = new ObservableCollection<TourCompetitorDto>(_allCompetitorsTour);
+                return;
+            }
+
+            IEnumerable<TourCompetitorDto> filtered = _allCompetitorsTour;
+
+            switch (SelectedFilterType)
+            {
+                case "Płeć":
+                    bool isMale = SelectedFilterValue == "Mężczyzna";
+                    filtered = filtered.Where(c => c.CompGender == isMale);
+                    break;
+
+                case "Stopień":
+                    filtered = filtered.Where(c => c.DegreeName == SelectedFilterValue);
+                    break;
+
+                case "Klub":
+                    filtered = filtered.Where(c => c.ClubName == SelectedFilterValue);
+                    break;
+            }
+
+            CompetitorsTour = new ObservableCollection<TourCompetitorDto>(filtered);
+        }
+        #endregion
+
+        #region Category Kata
+        private bool CanDeleteCatKata(object obj) => SelectedTour != null && SelectedCatKataTour != null;
+        private async void ExecuteDeleteCatKataFromTourCommand(object obj)
+        {
+            if (SelectedCatKataTour == null) return;
+            try
+            {
+                await _tourCatKataRepository.DeleteCatKataFromTour(SelectedCatKataTour.TourCatKataId);
+                CatKataTour = new ObservableCollection<TourCatKataDto>(
+                    await _tourCatKataRepository.GetCatKataByIdTourAsync(SelectedTour.TourId));
+                SelectedCatKataTour = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        #endregion
+
+        #region Category Kumite
+        private bool CanDeleteCatKumite(object obj) => SelectedTour != null && SelectedCatKumiteTour != null;
+        private async void ExecuteDeleteCatKumiteFromTourCommand(object obj)
+        {
+            if (SelectedCatKumiteTour == null) return;
+            try
+            {
+                await _tourCatKumiteRepository.DeleteCatKumiteFromTour(SelectedCatKumiteTour.TourCatKumiteId);
+                CatKumiteTour = new ObservableCollection<TourCatKumiteDto>(
+                    await _tourCatKumiteRepository.GetCatKumiteByIdTourAsync(SelectedTour.TourId));
+                SelectedCatKumiteTour = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #endregion
     }
