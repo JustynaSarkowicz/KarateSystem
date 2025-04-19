@@ -20,6 +20,7 @@ namespace KarateSystem.ViewModel
         private readonly ClubsDegreesMatsViewModel _clubsDegreesMatsViewModel;
         private readonly CategoryViewModel _categoryViewModel;
         private readonly SettingsViewModel _settingsViewModel;
+        private readonly TournamentViewModel _tournamentViewModel;
 
         private readonly IUserRepository _userRepository;
         #endregion
@@ -91,6 +92,7 @@ namespace KarateSystem.ViewModel
             ClubsDegreesMatsViewModel clubsDegreesMatsViewModel,
             CategoryViewModel categoryViewModel,
             SettingsViewModel settingsViewModel,
+            TournamentViewModel tournamentViewModel,
             IUserRepository userRepository)
         {
             _competitorsViewModel = competitorsViewModel;
@@ -98,6 +100,7 @@ namespace KarateSystem.ViewModel
             _categoryViewModel = categoryViewModel;
             _settingsViewModel = settingsViewModel;
             _userRepository = userRepository;
+            _tournamentViewModel = tournamentViewModel;
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowCompetitorViewCommand = new ViewModelCommand(ExecuteShowCompetitorViewCommand);
@@ -106,6 +109,7 @@ namespace KarateSystem.ViewModel
             ShowTournamentViewCommand = new ViewModelCommand(ExecuteShowTournamentViewCommand);
             ShowKataKumiteViewCommand = new ViewModelCommand(ExecuteShowKataKumiteViewCommand);
             ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
+
             LoadCurrentUserData();
             ExecuteShowHomeViewCommand(null);
         }
@@ -161,7 +165,7 @@ namespace KarateSystem.ViewModel
         }
         private void ExecuteShowTournamentViewCommand(object obj)
         {
-            CurrentChildView = new TournamentViewModel();
+            CurrentChildView = _tournamentViewModel;
             Caption = "Turnieje";
             Icon = IconChar.Trophy;
         }

@@ -455,7 +455,8 @@
                 <ControlTemplate TargetType="{x:Type TextBox}">
                     <Border x:Name="TxtBorder"
                             BorderBrush="Transparent"
-                            BorderThickness="0">
+                            BorderThickness="0"
+                            Width="{TemplateBinding Width}">
                         <Grid>
                             <ScrollViewer x:Name="PART_ContentHost"
                                           Focusable="False"
@@ -478,7 +479,7 @@
                         <Border x:Name="Border"
                                 Grid.ColumnSpan="1"
                                 Height="30"
-                                Width="180"
+                                Width="{TemplateBinding Width}"
                                 BorderThickness="1"
                                 BorderBrush="White"
                                 CornerRadius="5"

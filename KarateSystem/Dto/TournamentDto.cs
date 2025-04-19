@@ -1,4 +1,5 @@
-﻿using KarateSystem.Models;
+﻿using KarateSystem.Misc;
+using KarateSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,10 @@ namespace KarateSystem.Dto
         public string TourPlace { get; set; }
         public DateTime TourDate { get; set; }
         public int Status { get; set; }
-        public ICollection<TourCompetitor> TourCompetitors { get; set; } = new List<TourCompetitor>();
-        public ICollection<TourCatKata> TourCatKatas { get; set; } = new List<TourCatKata>();
-        public ICollection<TourCatKumite> TourCatKumites { get; set; } = new List<TourCatKumite>();
+        public string StatusDisplay => Helper.StatusOptionsList
+            .FirstOrDefault(opt => opt.Value == Status)?.DisplayName ?? "Nieznany";
+        public ICollection<TourCompetitorDto> TourCompetitors { get; set; } = new List<TourCompetitorDto>();
+        public ICollection<TourCatKataDto> TourCatKatas { get; set; } = new List<TourCatKataDto>();
+        public ICollection<TourCatKumiteDto> TourCatKumites { get; set; } = new List<TourCatKumiteDto>();
     }
 }

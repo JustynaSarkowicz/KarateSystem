@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace KarateSystem.Misc
 {
@@ -32,6 +33,15 @@ namespace KarateSystem.Misc
                 null => "Nie wybrano"
             };
         public record GenderOption2(string DisplayName, bool? Value);
+        public static List<StatusOption> StatusOptionsList { get; } = new()
+        {       
+           new StatusOption("Rejestracja otwarta", 0),
+           new StatusOption("Rejestracja zamknięta", 1),
+           new StatusOption("Otwarty", 2),
+           new StatusOption("Zakończony", 3)
+        };
+
+        public record StatusOption(string DisplayName, int Value);
         public static string Decrypt(this string cipherText)
         {
             try

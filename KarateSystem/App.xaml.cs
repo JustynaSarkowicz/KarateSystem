@@ -15,6 +15,7 @@ using System.Data;
 using System.IO;
 using AutoMapper;
 using System.Windows;
+using System.Windows.Input;
 
 namespace KarateSystem
 {
@@ -46,12 +47,14 @@ namespace KarateSystem
             services.AddScoped<IKumiteCategoryRepository, KumiteCategoryRepository>();
             services.AddScoped<ITourCompetitorRepository, TourCompetitorRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITournamentRepository, TournamentRepository>();
             services.AddScoped<CompetitorsViewModel>();
             services.AddScoped<ClubsDegreesMatsViewModel>();
             services.AddScoped<CategoryViewModel>();
             services.AddScoped<SettingsViewModel>();
             services.AddScoped<MainViewModel>();
             services.AddScoped<LoginViewModel>();
+            services.AddScoped<TournamentViewModel>();
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddScoped<MainWindow>(provider => new MainWindow()
