@@ -41,19 +41,7 @@ namespace KarateSystem.Repository
 
         public async Task<List<TournamentDto>> GetAllTournamentsAsync()
         {
-            var entities = await _dbContext.Tournaments
-                    .Include(t => t.TourCompetitors)
-                        .ThenInclude(tc => tc.Competitor)
-                            .ThenInclude(c => c.Club)
-                    .Include(t => t.TourCompetitors)
-                        .ThenInclude(tc => tc.Competitor)
-                            .ThenInclude(c => c.Degree)
-                    .Include(t => t.TourCatKatas)
-                        .ThenInclude(tc => tc.KataCategory)
-                    .Include(t => t.TourCatKumites)
-                        .ThenInclude(tc => tc.KumiteCategory)
-                    .AsNoTracking()
-                    .ToListAsync();
+            var entities = await _dbContext.Tournaments.AsNoTracking().ToListAsync();
 
             return _mapper.Map<List<TournamentDto>>(entities);
         }

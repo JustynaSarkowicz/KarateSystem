@@ -345,7 +345,7 @@
                                   Height="180"
                                   VerticalAlignment="Top"
                                   Grid.Row="1"
-                                  ItemsSource="{Binding EditingComp.TourCompetitors}"
+                                  ItemsSource="{Binding TournamentsComp}"
                                   SelectedItem="{Binding SelectedTourComp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                             <DataGrid.Columns>

@@ -5,6 +5,7 @@ using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using KarateSystem.Service.Interfaces;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Enum = KarateSystem.Misc.Enum;
@@ -24,6 +25,7 @@ namespace KarateSystem.ViewModel
         private TourCompetitorDto _selectedTourComp;
 
         private ObservableCollection<CompetitorDto> _competitors;
+        private ObservableCollection<TourCompetitorDto> _tourCompetitors;
         private ObservableCollection<DegreeDto> _degrees;
         private ObservableCollection<ClubDto> _clubs;
         private List<CompetitorDto> _allCompetitors;
@@ -36,6 +38,7 @@ namespace KarateSystem.ViewModel
         private readonly IDegreeRepository _degreeRepository;
         private readonly IClubRepository _clubRepository;
         private readonly ISearchService _searchService;
+        private readonly ITourCompetitorRepository _tourCompetitorRepository;
         #endregion
 
         #region Commands
@@ -47,6 +50,15 @@ namespace KarateSystem.ViewModel
         #endregion
 
         #region Properties
+        public ObservableCollection<TourCompetitorDto> TournamentsComp
+        {
+            get => _tourCompetitors;
+            set
+            {
+                _tourCompetitors = value;
+                OnPropertyChanged(nameof(TournamentsComp));
+            }
+        }
         public bool IsEditingExisting
         {
             get => _isEditingExisting;
@@ -101,8 +113,6 @@ namespace KarateSystem.ViewModel
             {
                 _selectedTourComp = value;
                 OnPropertyChanged(nameof(SelectedTourComp));
-                OnPropertyChanged(nameof(SelectedTourComp.KataCatName));
-                OnPropertyChanged(nameof(SelectedTourComp.KumiteCatName));
             }
         }
         public CompetitorDto EditingComp
@@ -156,12 +166,14 @@ namespace KarateSystem.ViewModel
         public CompetitorsViewModel(ICompetitorRepository competitorRepository,
             ISearchService searchService,
             IDegreeRepository degreeRepository,
-            IClubRepository clubRepository)
+            IClubRepository clubRepository,
+            ITourCompetitorRepository tourCompetitorRepository)
         {
             _competitorRepository = competitorRepository;
             _searchService = searchService;
             _degreeRepository = degreeRepository;
             _clubRepository = clubRepository;
+            _tourCompetitorRepository = tourCompetitorRepository;
 
             EditCompCommand = new ViewModelCommand(ExecuteEditCompetitorCommand, CanEditCompetitor);
             CancelCompCommand = new ViewModelCommand(ExecuteCancelCompCommand);
@@ -227,7 +239,7 @@ namespace KarateSystem.ViewModel
             Competitors = new ObservableCollection<CompetitorDto>(filtered);
         }
 
-        private void ExecuteEditCompetitorCommand(object obj)
+        private async void ExecuteEditCompetitorCommand(object obj)
         {
             if (SelectedCompetitor == null) return;
 
@@ -245,6 +257,8 @@ namespace KarateSystem.ViewModel
                 SelectedCompetitor.TourCompetitors ?? new List<TourCompetitorDto>())
             };
             SelectedGenderComp = EditingComp.CompGender ? Enum.Gender.Mężczyzna : Enum.Gender.Kobieta;
+            TournamentsComp = new ObservableCollection<TourCompetitorDto>(
+                await _tourCompetitorRepository.GetCompetitorToursByIdCompAsync(SelectedCompetitor.CompId));
             IsEditingExisting = true;
         }
         private void ExecuteCancelCompCommand(object obj)
@@ -257,6 +271,7 @@ namespace KarateSystem.ViewModel
             IsEditingExisting = false;
             SelectedCompetitor = null;
             SelectedGenderComp = 0;
+            TournamentsComp = new ObservableCollection<TourCompetitorDto>();
         }
 
         private async void ExecuteUpdateCompCommand(object obj)

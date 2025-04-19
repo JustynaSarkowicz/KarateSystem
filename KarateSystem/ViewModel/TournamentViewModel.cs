@@ -37,7 +37,7 @@ namespace KarateSystem.ViewModel
         public ObservableCollection<StatusOption> StatusOptions { get; set; } = new(StatusOptionsList);
 
         private readonly ITournamentRepository _tournamentRepository;
-        //private readonly ICompetitorRepository _competitorRepository;
+        private readonly ITourCompetitorRepository _tourCompetitorRepository;
         private readonly ISearchService _searchService;
         #endregion
 
@@ -167,10 +167,12 @@ namespace KarateSystem.ViewModel
         #endregion
 
         public TournamentViewModel(ITournamentRepository tournamentRepository,
-            ISearchService searchService)
+            ISearchService searchService,
+            ITourCompetitorRepository tourCompetitorRepository)
         {
             _tournamentRepository = tournamentRepository;
             _searchService = searchService;
+            _tourCompetitorRepository = tourCompetitorRepository;
 
             EditTourCommand = new ViewModelCommand(ExecuteEditTourCommand, CanEditTour);
             CancelTourCommand = new ViewModelCommand(ExecuteCancelTourCommand);
@@ -188,14 +190,10 @@ namespace KarateSystem.ViewModel
             EditingTour = new TournamentDto
             {
                 TourDate = DateTime.Now,
-                TourCompetitors = new ObservableCollection<TourCompetitorDto>()
+                TourCompetitors = new ObservableCollection<TourCompetitorDto>(),
+                TourCatKatas = new ObservableCollection<TourCatKataDto>(),
+                TourCatKumites = new ObservableCollection<TourCatKumiteDto>()
             };
-
-            _allCompetitorsTour = new ObservableCollection<TourCompetitorDto>();
-            CompetitorsTour = _allCompetitorsTour;
-
-            //CatKataTour = new ObservableCollection<TourCompetitorDto>();
-            //CatKumiteTour = new ObservableCollection<TourCompetitorDto>();
         }
 
         #region TournamentDetails
@@ -210,7 +208,7 @@ namespace KarateSystem.ViewModel
                     _searchService.SearchInCollection(_allTournaments, SearchTextTour, "TourName", "TourPlace"));
         }
 
-        private void ExecuteEditTourCommand(object obj)
+        private async void ExecuteEditTourCommand(object obj)
         {
             if (SelectedTour == null) return;
 
@@ -225,10 +223,11 @@ namespace KarateSystem.ViewModel
                     SelectedTour.TourCompetitors ?? new List<TourCompetitorDto>())
             };
             SelectedStatus = StatusOptions.FirstOrDefault(opt => opt.Value == EditingTour.Status);
-            _allCompetitorsTour = new ObservableCollection<TourCompetitorDto>(SelectedTour.TourCompetitors);
+
+            _allCompetitorsTour = new ObservableCollection<TourCompetitorDto>(
+                await _tourCompetitorRepository.GetTourCompetitorsByIdTourAsync(SelectedTour.TourId));
             CompetitorsTour = _allCompetitorsTour;
-            //CatKataTour = new ObservableCollection<TourCompetitorDto>(SelectedTour.TourCatKatas);
-            //CatKumiteTour = new ObservableCollection<TourCompetitorDto>(SelectedTour.TourCatKumites);
+
             IsEditingExisting = true;
         }
         private void ExecuteCancelTourCommand(object obj)
@@ -236,7 +235,9 @@ namespace KarateSystem.ViewModel
             EditingTour = new TournamentDto
             {
                 TourDate = DateTime.Now,
-                TourCompetitors = new ObservableCollection<TourCompetitorDto>()
+                TourCompetitors = new ObservableCollection<TourCompetitorDto>(),
+                TourCatKatas = new ObservableCollection<TourCatKataDto>(),
+                TourCatKumites = new ObservableCollection<TourCatKumiteDto>()
             };
             SelectedTour = null;
             SelectedStatus = null;
