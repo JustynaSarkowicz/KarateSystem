@@ -16,6 +16,7 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
+        public event EventHandler DegreesChanged;
 
         public DegreeRepository(ApplicationDbContext context, IMapper mapper)
         {
@@ -36,6 +37,7 @@ namespace KarateSystem.Repository
 
             _dbContext.Degrees.Add(degree);
             await _dbContext.SaveChangesAsync();
+            DegreesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<List<DegreeDto>> GetAllDegreeAsync()
@@ -60,6 +62,7 @@ namespace KarateSystem.Repository
 
             _mapper.Map(degreeDto, existingDegree);
             await _dbContext.SaveChangesAsync();
+            DegreesChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

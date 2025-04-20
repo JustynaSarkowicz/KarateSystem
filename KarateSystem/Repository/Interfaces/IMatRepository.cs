@@ -12,6 +12,7 @@ namespace KarateSystem.Repository.Interfaces
     {
         Task<List<MatDto>> GetAllMatAsync();
         Task UpdateMatAsync(MatDto matDto);
-        Task AddMatAsync(MatDto matDto);
+        Task AddMatAsync(MatDto matDto); 
+        event EventHandler MatsChanged;
     }
 }

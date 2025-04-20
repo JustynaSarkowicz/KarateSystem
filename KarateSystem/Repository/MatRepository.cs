@@ -16,6 +16,7 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
+        public event EventHandler MatsChanged;
 
         public MatRepository(ApplicationDbContext context, IMapper mapper)
         {
@@ -36,6 +37,7 @@ namespace KarateSystem.Repository
 
             _dbContext.Mats.Add(newMat);
             await _dbContext.SaveChangesAsync();
+            MatsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<List<MatDto>> GetAllMatAsync()
@@ -59,6 +61,7 @@ namespace KarateSystem.Repository
 
             _mapper.Map(matDto, existingMat);
             await _dbContext.SaveChangesAsync();
+            MatsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

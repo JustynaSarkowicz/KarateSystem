@@ -13,5 +13,6 @@ namespace KarateSystem.Repository.Interfaces
         Task<List<DegreeDto>> GetAllDegreeAsync();
         Task UpdateDegreeAsync(DegreeDto degreeDto);
         Task AddDegreeAsync(DegreeDto degreeDto);
+        event EventHandler DegreesChanged;
     }
 }

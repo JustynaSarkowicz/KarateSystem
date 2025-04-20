@@ -17,6 +17,7 @@ namespace KarateSystem.Repository
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ICatKataDegreeRepository _catKataDegreeRepository;
+        public event EventHandler KataCatChanged;
 
         public KataCategoryRepository(ApplicationDbContext context, IMapper mapper, ICatKataDegreeRepository catKataDegreeRepository)
         {
@@ -45,6 +46,8 @@ namespace KarateSystem.Repository
             
             _dbContext.KataCategories.Add(kataCategory);
             await _dbContext.SaveChangesAsync();
+
+            KataCatChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<List<KataCategoryDto>> GetAllKataCategoryAsync()
@@ -93,6 +96,8 @@ namespace KarateSystem.Repository
             }
 
             await _dbContext.SaveChangesAsync();
+
+            KataCatChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

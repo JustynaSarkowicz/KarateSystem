@@ -12,6 +12,7 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
+        public event EventHandler CompChanged;
 
         public CompetitorRepository(ApplicationDbContext context, IMapper mapper)
         {
@@ -34,6 +35,8 @@ namespace KarateSystem.Repository
 
             _dbContext.Competitors.Add(newComp);
             await _dbContext.SaveChangesAsync();
+
+            CompChanged?.Invoke(this, EventArgs.Empty);
         }
         public async Task<List<CompetitorDto>> GetAllCompetitorsAsync()
         {
@@ -71,6 +74,7 @@ namespace KarateSystem.Repository
             
             _dbContext.Competitors.Update(existingComp);
             await _dbContext.SaveChangesAsync();
+            CompChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

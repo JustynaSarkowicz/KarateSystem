@@ -13,5 +13,6 @@ namespace KarateSystem.Repository.Interfaces
         Task<List<KataCategoryDto>> GetAllKataCategoryAsync();
         Task UpdateKataCategoryAsync(KataCategoryDto kataCategory);
         Task AddKataCategoryAsync(KataCategoryDto kataCategory);
+        event EventHandler KataCatChanged;
     }
 }

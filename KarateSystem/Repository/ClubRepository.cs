@@ -16,6 +16,7 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
+        public event EventHandler ClubsChanged;
 
         public ClubRepository(ApplicationDbContext context, IMapper mapper)
         {
@@ -50,6 +51,8 @@ namespace KarateSystem.Repository
 
             _mapper.Map(clubDto, existingClub);
             await _dbContext.SaveChangesAsync();
+
+            ClubsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task AddClubAsync(ClubDto clubDto)
@@ -65,6 +68,8 @@ namespace KarateSystem.Repository
 
             _dbContext.Clubs.Add(newClub);
             await _dbContext.SaveChangesAsync();
+
+            ClubsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

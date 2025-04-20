@@ -227,6 +227,9 @@ namespace KarateSystem.ViewModel
             UpdateKumiteCategoryCommand = new ViewModelCommand(ExecuteUpdateKumiteCategoryCommand, CanCancelKumiteCategory);
             AddKumiteCategoryCommand = new ViewModelCommand(ExecuteAddKumiteCategoryCommand);
 
+            WeakEventManager<IDegreeRepository, EventArgs>
+            .AddHandler(_degreeRepository, nameof(IDegreeRepository.DegreesChanged), OnDegreesChanged);
+
             LoadAsync();
         }
         private async void LoadAsync()
@@ -246,7 +249,16 @@ namespace KarateSystem.ViewModel
                 CatKataDegrees = new ObservableCollection<CatKataDegreeDto>()
             };
         }
-       
+
+        private async void OnDegreesChanged(object sender, EventArgs e)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                var degrees = await _degreeRepository.GetAllDegreeAsync();
+                Degrees = new ObservableCollection<DegreeDto>(degrees);
+            });
+        }
+
         #region KataCategory
         private bool CanEditKataCategory(object obj) => SelectedKataCategory != null;
         private bool CanCancelKataCategory(object obj) => EditingKataCategory != null && SelectedKataCategory != null;

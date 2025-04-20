@@ -179,6 +179,11 @@ namespace KarateSystem.ViewModel
             AddCompCommand = new ViewModelCommand(ExecuteAddCompCommand);
             FilterCommand = new ViewModelCommand(ExecuteFilter);
 
+            WeakEventManager<IDegreeRepository, EventArgs>
+            .AddHandler(_degreeRepository, nameof(IDegreeRepository.DegreesChanged), OnDegreesChanged);
+            WeakEventManager<IClubRepository, EventArgs>
+                .AddHandler(_clubRepository, nameof(IClubRepository.ClubsChanged), OnClubsChanged);
+
             LoadAsync();
         }
         private bool CanEditCompetitor(object obj) => SelectedCompetitor != null;
@@ -201,6 +206,25 @@ namespace KarateSystem.ViewModel
                 TourCompetitors = new ObservableCollection<TourCompetitorDto>()
             };
         }
+
+        #region UpdateComboboxes
+        private async void OnDegreesChanged(object sender, EventArgs e)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                var degrees = await _degreeRepository.GetAllDegreeAsync();
+                Degrees = new ObservableCollection<DegreeDto>(degrees);
+            });
+        }
+        private async void OnClubsChanged(object sender, EventArgs e)
+        {
+            await Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                var clubs = await _clubRepository.GetAllClubsAsync();
+                Clubs = new ObservableCollection<ClubDto>(clubs);
+            });
+        }
+        #endregion
         private void FilterComp()
         {
             Competitors = string.IsNullOrWhiteSpace(SearchTextComp)
