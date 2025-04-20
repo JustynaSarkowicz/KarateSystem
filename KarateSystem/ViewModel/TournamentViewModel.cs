@@ -29,6 +29,10 @@ namespace KarateSystem.ViewModel
         private TourCompetitorDto _selectedCompetitorTour;
         private TourCatKataDto _selectedCatKataTour;
         private TourCatKumiteDto _selectedCatKumiteTour;
+        private KataCategoryDto _selectedKataCategory;
+        private KumiteCategoryDto _selectedKumiteCategory;
+        private MatDto _selectedKataCategoryMat;
+        private MatDto _selectedKumiteCategoryMat;
 
         private ObservableCollection<TournamentDto> _tournaments;
         private List<TournamentDto> _allTournaments;
@@ -36,6 +40,9 @@ namespace KarateSystem.ViewModel
         private ObservableCollection<TourCompetitorDto> _competitorsTour;
         private ObservableCollection<TourCatKataDto> _catKataTour;
         private ObservableCollection<TourCatKumiteDto> _catKumiteTour;
+        private ObservableCollection<KataCategoryDto> _kataCategory;
+        private ObservableCollection<KumiteCategoryDto> _kumiteCategory;
+        private ObservableCollection<MatDto> _mats;
         public ObservableCollection<StatusOption> StatusOptions { get; set; } = new(StatusOptionsList);
         public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
         public ObservableCollection<string> FilterValues { get; set; } = new();
@@ -45,6 +52,9 @@ namespace KarateSystem.ViewModel
         private readonly ISearchService _searchService;
         private readonly ITourCatKumiteRepository _tourCatKumiteRepository;
         private readonly ITourCatKataRepository _tourCatKataRepository;
+        private readonly IKataCategoryRepository _kataCategoryRepository;
+        private readonly IKumiteCategoryRepository _kumiteCategoryRepository;
+        private readonly IMatRepository _matRepository;
         #endregion
 
         #region Commands
@@ -56,9 +66,74 @@ namespace KarateSystem.ViewModel
         public ICommand DeleteCompFromTourCommand { get; }
         public ICommand DeleteCatKataFromTourCommand { get; }
         public ICommand DeleteCatKumiteFromTourCommand { get; }
+        public ICommand AddCatKataFromTourCommand { get; }
+        public ICommand AddCatKumiteFromTourCommand { get; }
         #endregion
 
         #region Properties
+        public MatDto SelectedKataCategoryMat
+        {
+            get => _selectedKataCategoryMat;
+            set
+            {
+                _selectedKataCategoryMat = value;
+                OnPropertyChanged(nameof(SelectedKataCategoryMat));
+            }
+        }
+        public MatDto SelectedKumiteCategoryMat
+        {
+            get => _selectedKumiteCategoryMat;
+            set
+            {
+                _selectedKumiteCategoryMat = value;
+                OnPropertyChanged(nameof(SelectedKumiteCategoryMat));
+            }
+        }
+        public ObservableCollection<MatDto> Mats
+        {
+            get => _mats;
+            set
+            {
+                _mats = value;
+                OnPropertyChanged(nameof(Mats));
+            }
+        }
+        public KataCategoryDto SelectedKataCategory
+        {
+            get => _selectedKataCategory;
+            set
+            {
+                _selectedKataCategory = value;
+                OnPropertyChanged(nameof(SelectedKataCategory));
+            }
+        }
+        public KumiteCategoryDto SelectedKumiteCategory
+        {
+            get => _selectedKumiteCategory;
+            set
+            {
+                _selectedKumiteCategory = value;
+                OnPropertyChanged(nameof(SelectedKumiteCategory));
+            }
+        }
+        public ObservableCollection<KataCategoryDto> KataCategories
+        {
+            get => _kataCategory;
+            set
+            {
+                _kataCategory = value;
+                OnPropertyChanged(nameof(KataCategories));
+            }
+        }
+        public ObservableCollection<KumiteCategoryDto> KumiteCategories
+        {
+            get => _kumiteCategory;
+            set
+            {
+                _kumiteCategory = value;
+                OnPropertyChanged(nameof(KumiteCategories));
+            }
+        }
         public string SelectedFilterType
         {
             get => _selectedFilterType;
@@ -217,13 +292,19 @@ namespace KarateSystem.ViewModel
             ISearchService searchService,
             ITourCompetitorRepository tourCompetitorRepository,
             ITourCatKumiteRepository tourCatKumiteRepository,
-            ITourCatKataRepository tourCatKataRepository)
+            ITourCatKataRepository tourCatKataRepository,
+            IKataCategoryRepository kataCategoryRepository,
+            IKumiteCategoryRepository kumiteCategoryRepository,
+            IMatRepository matRepository)
         {
             _tournamentRepository = tournamentRepository;
             _searchService = searchService;
             _tourCompetitorRepository = tourCompetitorRepository;
             _tourCatKumiteRepository = tourCatKumiteRepository;
             _tourCatKataRepository = tourCatKataRepository;
+            _kataCategoryRepository = kataCategoryRepository;
+            _kumiteCategoryRepository = kumiteCategoryRepository;
+            _matRepository = matRepository;
 
             EditTourCommand = new ViewModelCommand(ExecuteEditTourCommand, CanEditTour);
             CancelTourCommand = new ViewModelCommand(ExecuteCancelTourCommand);
@@ -235,6 +316,8 @@ namespace KarateSystem.ViewModel
 
             DeleteCatKataFromTourCommand = new ViewModelCommand(ExecuteDeleteCatKataFromTourCommand, CanDeleteCatKata);
             DeleteCatKumiteFromTourCommand = new ViewModelCommand(ExecuteDeleteCatKumiteFromTourCommand, CanDeleteCatKumite);
+            AddCatKataFromTourCommand = new ViewModelCommand(ExecuteAddCatKataToTourCommand, CanAddCatKata);
+            AddCatKumiteFromTourCommand = new ViewModelCommand(ExecuteAddCatKumiteToTourCommand, CanAddCatKumite);
 
             LoadAsync();
         }
@@ -243,6 +326,10 @@ namespace KarateSystem.ViewModel
         {
             _allTournaments = await _tournamentRepository.GetAllTournamentsAsync();
             Tournaments = new ObservableCollection<TournamentDto>(_allTournaments);
+
+            KataCategories = new ObservableCollection<KataCategoryDto>(await _kataCategoryRepository.GetAllKataCategoryAsync());
+            KumiteCategories = new ObservableCollection<KumiteCategoryDto>(await _kumiteCategoryRepository.GetAllKumiteCategoryAsync());
+            Mats = new ObservableCollection<MatDto>(await _matRepository.GetAllMatAsync());
 
             EditingTour = new TournamentDto
             {
@@ -286,14 +373,14 @@ namespace KarateSystem.ViewModel
             SelectedStatus = StatusOptions.FirstOrDefault(opt => opt.Value == EditingTour.Status);
 
             _allCompetitorsTour = new ObservableCollection<TourCompetitorDto>(
-                await _tourCompetitorRepository.GetTourCompetitorsByIdTourAsync(SelectedTour.TourId));
+                await _tourCompetitorRepository.GetTourCompetitorsByIdTourAsync(EditingTour.TourId));
             CompetitorsTour = _allCompetitorsTour;
 
             CatKataTour = new ObservableCollection<TourCatKataDto>(
-                await _tourCatKataRepository.GetCatKataByIdTourAsync(SelectedTour.TourId));
+                await _tourCatKataRepository.GetCatKataByIdTourAsync(EditingTour.TourId));
 
             CatKumiteTour = new ObservableCollection<TourCatKumiteDto>(
-                await _tourCatKumiteRepository.GetCatKumiteByIdTourAsync(SelectedTour.TourId));
+                await _tourCatKumiteRepository.GetCatKumiteByIdTourAsync(EditingTour.TourId));
 
             IsEditingExisting = true;
         }
@@ -301,16 +388,17 @@ namespace KarateSystem.ViewModel
         {
             EditingTour = new TournamentDto
             {
-                TourDate = DateTime.Now,
-                TourCompetitors = new ObservableCollection<TourCompetitorDto>(),
-                TourCatKatas = new ObservableCollection<TourCatKataDto>(),
-                TourCatKumites = new ObservableCollection<TourCatKumiteDto>()
+                TourDate = DateTime.Now
             };
             CompetitorsTour = new ObservableCollection<TourCompetitorDto>();
             CatKataTour = new ObservableCollection<TourCatKataDto>();
             CatKumiteTour = new ObservableCollection<TourCatKumiteDto>();
             SelectedTour = null;
             SelectedStatus = null;
+            SelectedKumiteCategory = null;
+            SelectedKataCategory = null;
+            SelectedKataCategoryMat = null;
+            SelectedKumiteCategoryMat = null;
             IsEditingExisting = false;
         }
         private async void ExecuteUpdateTourCommand(object obj)
@@ -445,10 +533,11 @@ namespace KarateSystem.ViewModel
         #endregion
 
         #region Category Kata
-        private bool CanDeleteCatKata(object obj) => SelectedTour != null && SelectedCatKataTour != null;
+        private bool CanDeleteCatKata(object obj) => EditingTour != null && SelectedCatKataTour != null;
+        private bool CanAddCatKata(object obj) => EditingTour != null && SelectedKataCategory != null && SelectedKataCategoryMat != null;
         private async void ExecuteDeleteCatKataFromTourCommand(object obj)
         {
-            if (SelectedCatKataTour == null) return;
+            if (SelectedCatKataTour == null || EditingTour == null) return;
             try
             {
                 await _tourCatKataRepository.DeleteCatKataFromTour(SelectedCatKataTour.TourCatKataId);
@@ -462,10 +551,45 @@ namespace KarateSystem.ViewModel
             }
         }
 
+        private async void ExecuteAddCatKataToTourCommand(object obj)
+        {
+            if (SelectedKataCategory == null || SelectedKataCategoryMat == null || EditingTour == null) return;
+            try
+            {
+                var existingCatKata = CatKataTour
+                    .Any(c => c.KataCatId == SelectedKataCategory.KataCatId);
+
+                if (existingCatKata)
+                {
+                    MessageBox.Show("Kategoria kata już istnieje w turnieju.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    SelectedKataCategoryMat = null;
+                    SelectedKataCategory = null;
+                    return;
+                }
+
+                var newCatKata = new TourCatKataDto
+                {
+                    TourId = EditingTour.TourId,
+                    KataCatId = SelectedKataCategory.KataCatId,
+                    MatId = SelectedKataCategoryMat.MatId
+                };
+
+                await _tourCatKataRepository.AddCatKataToTour(newCatKata);
+                CatKataTour = new ObservableCollection<TourCatKataDto>(
+                    await _tourCatKataRepository.GetCatKataByIdTourAsync(EditingTour.TourId));
+                SelectedKataCategoryMat = null;
+                SelectedKataCategory = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawania kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         #endregion
 
         #region Category Kumite
-        private bool CanDeleteCatKumite(object obj) => SelectedTour != null && SelectedCatKumiteTour != null;
+        private bool CanDeleteCatKumite(object obj) => EditingTour != null && SelectedCatKumiteTour != null;
+        private bool CanAddCatKumite(object obj) => EditingTour != null && SelectedKumiteCategory != null && SelectedKumiteCategoryMat != null;
         private async void ExecuteDeleteCatKumiteFromTourCommand(object obj)
         {
             if (SelectedCatKumiteTour == null) return;
@@ -479,6 +603,37 @@ namespace KarateSystem.ViewModel
             catch (Exception ex)
             {
                 MessageBox.Show($"Wystąpił błąd podczas usuwania kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void ExecuteAddCatKumiteToTourCommand(object obj)
+        {
+            if (SelectedKumiteCategory == null || SelectedKumiteCategoryMat == null || EditingTour == null) return;
+            try
+            {
+                var existingCatKumite = CatKumiteTour
+                    .Any(c => c.KumiteCatId == SelectedKumiteCategory.KumiteCatId);
+                if (existingCatKumite)
+                {
+                    MessageBox.Show("Kategoria kumite już istnieje w turnieju.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    SelectedKumiteCategoryMat = null;
+                    SelectedKumiteCategory = null;
+                    return;
+                }
+                var newCatKumite = new TourCatKumiteDto
+                {
+                    TourId = EditingTour.TourId,
+                    KumiteCatId = SelectedKumiteCategory.KumiteCatId,
+                    MatId = SelectedKumiteCategoryMat.MatId
+                };
+                await _tourCatKumiteRepository.AddCatKumiteToTour(newCatKumite);
+                CatKumiteTour = new ObservableCollection<TourCatKumiteDto>(
+                    await _tourCatKumiteRepository.GetCatKumiteByIdTourAsync(EditingTour.TourId));
+                SelectedKumiteCategoryMat = null;
+                SelectedKumiteCategory = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawania kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion

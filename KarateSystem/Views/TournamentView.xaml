@@ -7,42 +7,43 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="1200" d:DesignWidth="1050">
+             d:DesignHeight="1550" d:DesignWidth="1050">
+
+    <!-- Główny kontener zakładek -->
     <TabControl Background="Transparent"
                 Margin="-15,0,0,-15"
                 BorderThickness="0,5,0,0"
                 BorderBrush="#5D83B1">
-        <TabItem Header="Dodaj/Edytuj"
-                 Style="{StaticResource tabItem}">
-    <ScrollViewer Margin="0,0,0,0"
-              Style="{StaticResource CustomScrollViewer}">
-        <Grid Margin="10,10,10,0"
-              Height="1150">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="220"/>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="320"/>
-                <RowDefinition Height="420"/>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
 
-                        <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Top"
-                            Grid.Column="0">
+        <!-- Pierwsza zakładka - Dodaj/Edytuj -->
+        <TabItem Header="Dodaj/Edytuj" Style="{StaticResource tabItem}">
+            <ScrollViewer Margin="0,0,0,0" Style="{StaticResource CustomScrollViewer}">
+                <Grid Margin="10,10,10,0" Height="1550">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="220"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="320"/>
+                        <RowDefinition Height="420"/>
+                        <RowDefinition Height="420"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Nagłówek i wyszukiwarka turniejów -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Grid.Column="0">
                             <TextBlock Text="Lista Turniejów"
-                               Foreground="White"
-                               FontFamily="Montserrat"
-                               FontSize="18"
-                               FontWeight="Medium"
-                               VerticalAlignment="Center"
-                               Margin="0,0,20,0"/>
+                                       Foreground="White"
+                                       FontFamily="Montserrat"
+                                       FontSize="18"
+                                       FontWeight="Medium"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,20,0"/>
                             <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
 
                             <TextBox x:Name="tbSearchTour"
@@ -52,87 +53,92 @@
                                      Style="{StaticResource TransparentHintTextBox}"/>
                         </StackPanel>
                     </Grid>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="350"/>
-                </Grid.ColumnDefinitions>
-                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                          CellStyle="{DynamicResource DataGridCellStyle1}" 
-                          Style="{DynamicResource DataGridStyle1}"
-                          Grid.Column="0"
-                          ItemsSource="{Binding Tournaments}"
-                          SelectedItem="{Binding SelectedTour}">
 
-                    <DataGrid.Columns>
+                    <!-- Lista turniejów i szczegóły -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="350"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- DataGrid z listą turniejów -->
+                        <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                                  CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                  Style="{DynamicResource DataGridStyle1}"
+                                  Grid.Column="0"
+                                  ItemsSource="{Binding Tournaments}"
+                                  SelectedItem="{Binding SelectedTour}">
+                            <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding TourId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" Width="50"/>
                                 <DataGridTextColumn Binding="{Binding TourName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
                                 <DataGridTextColumn Binding="{Binding TourPlace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Miejsce"/>
                                 <DataGridTextColumn Binding="{Binding TourDate, StringFormat='dd.MM.yyyy', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Data"/>
                                 <DataGridTextColumn Binding="{Binding StatusDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Status" Width="150"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Grid Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition />
-                        <RowDefinition Height="50"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="1"
-                               Text="Szczegóły"
-                               Foreground="White"
-                               FontFamily="Montserrat"
-                               FontSize="16"
-                               FontWeight="Medium"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
-                    <StackPanel Grid.Column="0"
-                                Grid.Row="1">
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                        <TextBlock Text="Nazwa"
-                               Foreground="White"
-                               FontFamily="Montserrat"
-                               FontSize="14"
-                               FontWeight="Medium"
-                               Margin="0,10,0,20"
-                               HorizontalAlignment="Center"/>
-                        <TextBlock Text="Miejsce"
-                               Foreground="White"
-                               FontFamily="Montserrat"
-                               FontSize="14"
-                               FontWeight="Medium"
-                               Margin="0,0,0,20"
-                               HorizontalAlignment="Center"/>
-                        <TextBlock Text="Data"
-                               Foreground="White"
-                               FontFamily="Montserrat"
-                               FontSize="14"
-                               FontWeight="Medium"
-                               Margin="0,0,0,20"
-                               HorizontalAlignment="Center"/>
-                        <TextBlock Text="Status"
-                               Foreground="White"
-                               FontFamily="Montserrat"
-                               FontSize="14"
-                               FontWeight="Medium"
-                               Margin="0,0,0,20"
-                               HorizontalAlignment="Center"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1"
-                                Grid.Row="1">
+                        <!-- Panel szczegółów turnieju -->
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition />
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBox x:Name="tbTourName"
+                            <TextBlock Grid.Row="0" Grid.Column="1"
+                                       Text="Szczegóły"
+                                       Foreground="White"
+                                       FontFamily="Montserrat"
+                                       FontSize="16"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                            <!-- Etykiety pól -->
+                            <StackPanel Grid.Column="0" Grid.Row="1">
+                                <TextBlock Text="Nazwa"
+                                           Foreground="White"
+                                           FontFamily="Montserrat"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           Margin="0,10,0,20"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="Miejsce"
+                                           Foreground="White"
+                                           FontFamily="Montserrat"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           Margin="0,0,0,20"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="Data"
+                                           Foreground="White"
+                                           FontFamily="Montserrat"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           Margin="0,0,0,20"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="Status"
+                                           Foreground="White"
+                                           FontFamily="Montserrat"
+                                           FontSize="14"
+                                           FontWeight="Medium"
+                                           Margin="0,0,0,20"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Pola edycji -->
+                            <StackPanel Grid.Column="1" Grid.Row="1">
+                                <TextBox x:Name="tbTourName"
                                          Background="Transparent"
                                          Width="250"
-                                 Text="{Binding EditingTour.TourName, UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding EditingTour.TourName, UpdateSourceTrigger=PropertyChanged}"
                                          Height="19"
-                                 FontSize="14"
+                                         FontSize="14"
                                          Margin="0,8,0,20"
                                          FontWeight="Medium"
                                          FontFamily="Montserrat"                            
@@ -141,11 +147,12 @@
                                          BorderBrush="White"
                                          BorderThickness="0,0,0,1"                             
                                          VerticalContentAlignment="Center"
-                                 TextAlignment="Center"
+                                         TextAlignment="Center"
                                          Style="{StaticResource textBoxEnabled}"/>
-                        <TextBox x:Name="tbTourPlace"
+
+                                <TextBox x:Name="tbTourPlace"
                                          Background="Transparent"
-                                 Text="{Binding EditingTour.TourPlace, UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding EditingTour.TourPlace, UpdateSourceTrigger=PropertyChanged}"
                                          TextAlignment="Center"
                                          Width="250"
                                          Height="19"
@@ -158,95 +165,99 @@
                                          BorderThickness="0,0,0,1"                             
                                          VerticalContentAlignment="Center"
                                          Style="{StaticResource textBoxEnabled}"/>
+
                                 <DatePicker SelectedDate="{Binding EditingTour.TourDate, UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource DatePickerStyle}"
                                             Width="250"
                                             Margin="0,0,0,10"/>
+
                                 <ComboBox x:Name="cbCompetitorGender"
                                           Width="250"
                                           ItemsSource="{Binding StatusOptions}"
                                           SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
                                           DisplayMemberPath="DisplayName"
                                           Style="{StaticResource comboboxStyle}"/>
-
                             </StackPanel>
-                    <StackPanel Grid.Row="2"
-                                Grid.ColumnSpan="2"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Center">
+
+                            <!-- Przyciski akcji -->
+                            <StackPanel Grid.Row="2" Grid.ColumnSpan="2"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Center">
                                 <Button x:Name="btnSaveTour"
-                                Width="70"
-                                Command="{Binding UpdateTourCommand}"
+                                        Width="70"
+                                        Command="{Binding UpdateTourCommand}"
                                         IsEnabled="{Binding IsEditingExisting}"
-                                Content="Zapisz"
-                                Margin="0,0,3,0"
-                                FontSize="12"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                BorderThickness="0"
-                                Foreground="White"
-                                Style="{StaticResource contentButton}"/>
+                                        Content="Zapisz"
+                                        Margin="0,0,3,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Style="{StaticResource contentButton}"/>
+
                                 <Button x:Name="btnCancelTour"
-                                Width="70"
-                                Command="{Binding CancelTourCommand}"                            
-                                Content="Anuluj"
-                                Margin="0,0,3,0"
-                                FontSize="12"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                BorderThickness="0"
-                                Foreground="White"
-                                Style="{StaticResource contentButton}"/>
+                                        Width="70"
+                                        Command="{Binding CancelTourCommand}"                            
+                                        Content="Anuluj"
+                                        Margin="0,0,3,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Style="{StaticResource contentButton}"/>
 
                                 <Button x:Name="btnEditTour"
-                                Width="70"
-                                Command="{Binding EditTourCommand}"                            
-                                Content="Edytuj"
-                                Margin="0,0,3,0"
-                                FontSize="12"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                BorderThickness="0"
-                                Foreground="White"
-                                Style="{StaticResource contentButton}">
-                        </Button>
-                        <Button x:Name="btnAddNewTour"
-                                Width="70"
-                                Command="{Binding AddTourCommand}" 
-                                IsEnabled="{Binding IsAddingNew}"
-                                Content="Dodaj"
-                                Margin="0,0,3,0"
-                                FontSize="12"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                BorderThickness="0"
-                                Foreground="White"
-                                Style="{StaticResource contentButton}">
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-            <Border Grid.Row="2"
-                    BorderThickness="0,1,0,0"
-                    BorderBrush="#5D83B1"
-                    Margin="0,5,0,0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
+                                        Width="70"
+                                        Command="{Binding EditTourCommand}"                            
+                                        Content="Edytuj"
+                                        Margin="0,0,3,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Style="{StaticResource contentButton}"/>
+
+                                <Button x:Name="btnAddNewTour"
+                                        Width="70"
+                                        Command="{Binding AddTourCommand}" 
+                                        IsEnabled="{Binding IsAddingNew}"
+                                        Content="Dodaj"
+                                        Margin="0,0,3,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Style="{StaticResource contentButton}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+
+                    <!-- Separator -->
+                    <Border Grid.Row="2"
+                            BorderThickness="0,1,0,0"
+                            BorderBrush="#5D83B1"
+                            Margin="0,5,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
 
                             <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Bottom"
-                            Margin="0,0,0,10"
-                            Grid.Column="0">
+                                       VerticalAlignment="Bottom"
+                                       Margin="0,0,0,10"
+                                       Grid.Column="0">
                                 <TextBlock Text="Lista Zawodników"
-                               Foreground="White"
-                               FontFamily="Montserrat"
-                               FontSize="18"
-                               FontWeight="Medium"
-                               VerticalAlignment="Center"
-                               Margin="0,0,20,0"/>
+                                           Foreground="White"
+                                           FontFamily="Montserrat"
+                                           FontSize="18"
+                                           FontWeight="Medium"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,20,0"/>
                                 <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
 
                                 <TextBox x:Name="tbSearchTourComp"
@@ -256,63 +267,64 @@
                                          Style="{StaticResource TransparentHintTextBox}"/>
                             </StackPanel>
                         </Grid>
-            </Border>
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Top"
-                            Grid.Column="0">
-                    <TextBlock Text="Kategoria"
-                               FontSize="16"
-                               FontFamily="Montserrat"
-                               Foreground="White"/>
+                    </Border>
+
+                    <!-- Filtrowanie zawodników -->
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Grid.Column="0">
+                            <TextBlock Text="Kategoria"
+                                       FontSize="16"
+                                       FontFamily="Montserrat"
+                                       Foreground="White"/>
+
                             <ComboBox x:Name="cbFilterCategories"
-                              Width="150"
-                              Style="{StaticResource comboboxStyle}"
-                              Margin="5, 0,0 ,0"
-                              ItemsSource="{Binding FilterTypes}"
-                              SelectedItem="{Binding SelectedFilterType, Mode=TwoWay}"/>
+                                      Width="150"
+                                      Style="{StaticResource comboboxStyle}"
+                                      Margin="5, 0,0 ,0"
+                                      ItemsSource="{Binding FilterTypes}"
+                                      SelectedItem="{Binding SelectedFilterType, Mode=TwoWay}"/>
 
                             <ComboBox x:Name="cbCategoriesDetails"
-                              Width="150"
-                              Style="{StaticResource comboboxStyle}"
-                              Margin="5, 0,0 ,0" 
+                                      Width="150"
+                                      Style="{StaticResource comboboxStyle}"
+                                      Margin="5, 0,0 ,0" 
                                       ItemsSource="{Binding FilterValues}"
-                              SelectedItem="{Binding SelectedFilterValue, Mode=TwoWay}"/>
-
-
+                                      SelectedItem="{Binding SelectedFilterValue, Mode=TwoWay}"/>
                         </StackPanel>
 
-                <Button x:Name="btnFilterTourCompetitor"
-                        Grid.Column="1"
-                        Command="{Binding FilterCompCommand}"                            
-                        Content="Filtruj"                            
-                        FontSize="12"
-                        FontFamily="Montserrat"
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Foreground="White"
-                        VerticalAlignment="Top"
-                        Style="{StaticResource contentButton}">
-                </Button>
-            </Grid>
-            <Grid Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="120"/>
-                </Grid.ColumnDefinitions>
-                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                          CellStyle="{DynamicResource DataGridCellStyle1}" 
-                          Style="{DynamicResource DataGridStyle1}"
-                          Grid.Column="0"
-                          ItemsSource="{Binding CompetitorsTour}"
-                          SelectedItem="{Binding SelectedCompetitorTour}">
+                        <Button x:Name="btnFilterTourCompetitor"
+                                Grid.Column="1"
+                                Command="{Binding FilterCompCommand}"                            
+                                Content="Filtruj"                            
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                VerticalAlignment="Top"
+                                Style="{StaticResource contentButton}"/>
+                    </Grid>
 
-                    <DataGrid.Columns>
+                    <!-- Lista zawodników -->
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                                  CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                  Style="{DynamicResource DataGridStyle1}"
+                                  Grid.Column="0"
+                                  ItemsSource="{Binding CompetitorsTour}"
+                                  SelectedItem="{Binding SelectedCompetitorTour}">
+                            <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{Binding CompId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" Width="50"/>
                                 <DataGridTextColumn Binding="{Binding CompFirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Imię" Width="150"/>
                                 <DataGridTextColumn Binding="{Binding CompLastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwisko" Width="150"/>
@@ -324,72 +336,69 @@
                                 <DataGridTextColumn Binding="{Binding ClubName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Klub" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                <StackPanel Grid.Column="1"
-                            Orientation="Vertical"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Margin="0,0,0,5">
-                    <Button x:Name="btnTourAddComp"
-                            Width="70"
-                            Command="{Binding LoginCommand}"                            
-                            Content="Dodaj"
-                            Click="btnTourAddComp_Click"
-                            Margin="5,0,0,0"
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            Style="{StaticResource contentButton}"/>
-                    
-                    <Button x:Name="btnTourDeleteComp"
-                            Width="70"
-                            Command="{Binding DeleteCompFromTourCommand}"                            
-                            Content="Usuń"
-                            Margin="5,5,0,0"
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            Style="{StaticResource contentButton}"/>
-                    
-                </StackPanel>
-            </Grid>
-            <Border Grid.Row="5"
-                    Margin="0,5,0,0"
-                    BorderThickness="0,1,0,0"
-                    BorderBrush="#5D83B1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="320"/>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
 
-                    <TextBlock Text="Kategoria Kata"
-                           Grid.Row="0"
-                           Grid.Column="0"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                          CellStyle="{DynamicResource DataGridCellStyle1}" 
-                          Style="{DynamicResource DataGridStyle1}"
-                          Grid.Row="1"
-                          Grid.Column="0"
-                          Margin="0,0,20,0"
-                              ItemsSource="{Binding CatKataTour}"
-                              SelectedItem="{Binding SelectedCatKataTour}">
+                        <!-- Przyciski akcji dla zawodników -->
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Vertical"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Margin="0,0,0,5">
+                            <Button x:Name="btnTourAddComp"
+                                    Width="70"
+                                    Command="{Binding LoginCommand}"                            
+                                    Content="Dodaj"
+                                    Click="btnTourAddComp_Click"
+                                    Margin="5,0,0,0"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    IsEnabled="{Binding IsEditingExisting}"
+                                    Style="{StaticResource contentButton}"/>
 
+                            <Button x:Name="btnTourDeleteComp"
+                                    Width="70"
+                                    Command="{Binding DeleteCompFromTourCommand}"                            
+                                    Content="Usuń"
+                                    Margin="5,5,0,0"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    Style="{StaticResource contentButton}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Sekcja kategorii Kata -->
+                    <Border Grid.Row="5" Margin="0,5,0,0" BorderThickness="0,1,0,0" BorderBrush="#5D83B1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="320"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Kategoria Kata"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       Foreground="White"
+                                       FontFamily="Montserrat"
+                                       FontSize="16"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                                      CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                      Style="{DynamicResource DataGridStyle1}"
+                                      Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="0,0,20,0"
+                                      ItemsSource="{Binding CatKataTour}"
+                                      SelectedItem="{Binding SelectedCatKataTour}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Binding="{Binding KataCatId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
                                     <DataGridTextColumn Binding="{Binding KataCatName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
@@ -397,69 +406,89 @@
                                     <DataGridTextColumn Binding="{Binding KataCatAgeMin, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Min"/>
                                     <DataGridTextColumn Binding="{Binding KataCatAgeMax, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
                                     <DataGridTextColumn Binding="{Binding DegreesDisplay, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Stopnie"/>
+                                    <DataGridTextColumn Binding="{Binding MatName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Mata"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                    <StackPanel Margin="0,10,0,0"
-                            Grid.Row="2"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Top"
-                            Grid.Column="0">
-                        <ComboBox x:Name="cbFilterTourCatKata"
-                                    Width="325"
-                                    Style="{StaticResource comboboxStyle}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <Button x:Name="btnTourAddCatKata"
-                            Width="70"
-                            Command="{Binding LoginCommand}"                            
-                            Content="Dodaj"
-                            Margin="10,0,0,0"
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            Style="{StaticResource contentButton}"/>
 
-                        <Button x:Name="btnTourDeleteCatKata"
-                            Width="70"
-                            Command="{Binding DeleteCatKataFromTourCommand}"                            
-                            Content="Usuń"
-                            Margin="10,0,0,0"
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            Style="{StaticResource contentButton}"/>
-                    </StackPanel>
-                    <TextBlock Text="Kategoria Kumite"
-                           Grid.Row="0"
-                           Grid.Column="1"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                          CellStyle="{DynamicResource DataGridCellStyle1}" 
-                          Style="{DynamicResource DataGridStyle1}"
-                          Grid.Row="1"
-                          Grid.Column="1"
-                          Margin="0,0,0,0"
-                              ItemsSource="{Binding CatKumiteTour}"
-                              SelectedItem="{Binding SelectedCatKumiteTour}">
+                            <StackPanel Margin="0,10,0,0" Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Top" Grid.Column="0">
+                                <TextBlock Text="Kategoria kata: "
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,5,0"/>
 
+                                <ComboBox x:Name="cbChoseTourCatKata"
+                                          Width="325"
+                                          Style="{StaticResource comboboxStyle}"
+                                          ItemsSource="{Binding KataCategories}"
+                                          SelectedItem="{Binding SelectedKataCategory, Mode=TwoWay}"
+                                          DisplayMemberPath="KataCatName"/>
+
+                                <TextBlock Text="Mata: "
+                                           VerticalAlignment="Center"
+                                           Margin="20,0,5,0"/>
+
+                                <ComboBox x:Name="cbChoseTourCatKataMat"
+                                          Width="200"
+                                          Style="{StaticResource comboboxStyle}"
+                                          ItemsSource="{Binding Mats}"
+                                          SelectedItem="{Binding SelectedKataCategoryMat, Mode=TwoWay}"
+                                          DisplayMemberPath="MatName"/>
+
+                                <Button x:Name="btnTourAddCatKata"
+                                        Width="70"
+                                        Command="{Binding AddCatKataFromTourCommand}"                            
+                                        Content="Dodaj"
+                                        Margin="10,0,0,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        IsEnabled="{Binding IsEditingExisting}"
+                                        Style="{StaticResource contentButton}"/>
+
+                                <Button x:Name="btnTourDeleteCatKata"
+                                        Width="70"
+                                        Command="{Binding DeleteCatKataFromTourCommand}"                            
+                                        Content="Usuń"
+                                        Margin="10,0,0,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Style="{StaticResource contentButton}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Sekcja kategorii Kumite -->
+                    <Border Grid.Row="6" Margin="0,5,0,0" BorderThickness="0,1,0,0" BorderBrush="#5D83B1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="320"/>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Kategoria Kumite"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Foreground="White"
+                                       FontFamily="Montserrat"
+                                       FontSize="16"
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                                      CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                      Style="{DynamicResource DataGridStyle1}"
+                                      Grid.Row="1"
+                                      Grid.Column="1"
+                                      Margin="0,0,0,0"
+                                      ItemsSource="{Binding CatKumiteTour}"
+                                      SelectedItem="{Binding SelectedCatKumiteTour}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Binding="{Binding KumiteCatId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat="" Width="50"/>
                                     <DataGridTextColumn Binding="{Binding KumiteCatName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwa"/>
@@ -468,95 +497,75 @@
                                     <DataGridTextColumn Binding="{Binding KumiteCatAgeMax, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek Max"/>
                                     <DataGridTextColumn Binding="{Binding KumiteCatWeightMin, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga Min"/>
                                     <DataGridTextColumn Binding="{Binding KumiteCatWeightMax, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga Max"/>
+                                    <DataGridTextColumn Binding="{Binding MatName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Mata"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                    <StackPanel Margin="0,10,0,0"
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Top">
-                        <ComboBox x:Name="cbFilterTourCatKumite"
-                          Width="325"
-                          Style="{StaticResource comboboxStyle}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <Button x:Name="btnTourAddCatKumite"
-                            Width="70"
-                            Command="{Binding LoginCommand}"                            
-                            Content="Dodaj"
-                            Margin="10,0,0,0"
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            Style="{StaticResource contentButton}"/>
 
-                        <Button x:Name="btnTourDeleteCatKumite"
-                            Width="70"
-                            Command="{Binding DeleteCatKumiteFromTourCommand}"                            
-                            Content="Usuń"
-                            Margin="10,0,0,0"
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            Style="{StaticResource contentButton}"/>
-                    </StackPanel>
+                            <StackPanel Margin="0,10,0,0" Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                                <TextBlock Text="Kategoria kumite: "
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,5,0"/>
+
+                                <ComboBox x:Name="cbChoseTourCatKumite"
+                                          Width="325"
+                                          Style="{StaticResource comboboxStyle}"
+                                          ItemsSource="{Binding KumiteCategories}"
+                                          SelectedItem="{Binding SelectedKumiteCategory, Mode=TwoWay}"
+                                          DisplayMemberPath="KumiteCatName"/>
+
+                                <TextBlock Text="Mata: "
+                                           VerticalAlignment="Center"
+                                           Margin="20,0,5,0"/>
+
+                                <ComboBox x:Name="cbChoseTourCatKumiteMat"
+                                          Width="200"
+                                          Style="{StaticResource comboboxStyle}"
+                                          ItemsSource="{Binding Mats}"
+                                          SelectedItem="{Binding SelectedKumiteCategoryMat, Mode=TwoWay}"
+                                          DisplayMemberPath="MatName"/>
+
+                                <Button x:Name="btnTourAddCatKumite"
+                                        Width="70"
+                                        Command="{Binding AddCatKumiteFromTourCommand}"                            
+                                        Content="Dodaj"
+                                        Margin="10,0,0,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        IsEnabled="{Binding IsEditingExisting}"
+                                        Style="{StaticResource contentButton}"/>
+
+                                <Button x:Name="btnTourDeleteCatKumite"
+                                        Width="70"
+                                        Command="{Binding DeleteCatKumiteFromTourCommand}"                            
+                                        Content="Usuń"
+                                        Margin="10,0,0,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Style="{StaticResource contentButton}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Puste miejsce na dole -->
+                    <Grid Grid.Row="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
                 </Grid>
-            </Border>
-            <Grid Grid.Row="6">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <Button x:Name="btnTourDetailsKata"
-                        Width="150"
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Command="{Binding LoginCommand}"                            
-                        Content="Podgląd listy kata"
-                        Margin="0,0,20,0"
-                        FontSize="12"
-                        FontFamily="Montserrat"
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Foreground="White"
-                        Style="{StaticResource contentButton}"/>
-                <Button x:Name="btnTourDetailsKumite"
-                        Width="150"
-                        Grid.Column="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Command="{Binding LoginCommand}"                            
-                        Content="Podgląd listy kata"
-                        Margin="0,0,20,0"
-                        FontSize="12"
-                        FontFamily="Montserrat"
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Foreground="White"
-                        Style="{StaticResource contentButton}"/>
-            </Grid>
-        </Grid>
-    </ScrollViewer>
+            </ScrollViewer>
         </TabItem>
-        <TabItem Header="Przypisz do kategori"
-                 Style="{StaticResource tabItem}">
 
-            <ScrollViewer Margin="0,0,0,0"
-                          Style="{StaticResource CustomScrollViewer}">
+        <!-- Druga zakładka - Przypisz do kategorii -->
+        <TabItem Header="Przypisz do kategori" Style="{StaticResource tabItem}">
+            <ScrollViewer Margin="0,0,0,0" Style="{StaticResource CustomScrollViewer}">
                 <Grid Margin="15,0,10,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -566,24 +575,21 @@
                         <RowDefinition Height="350"/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0"
-                            BorderThickness="0,0,0,1"
-                            BorderBrush="#5D83B1"
-                            Margin="0,5,0,0">
+                    <!-- Wybór turnieju -->
+                    <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="#5D83B1" Margin="0,5,0,0">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="150"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center">
 
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="Turniej:"
                                            FontSize="16"
                                            FontFamily="Montserrat"
                                            Foreground="White"
                                            VerticalAlignment="Center"/>
+
                                 <ComboBox x:Name="cbTour"
                                           Width="350"
                                           Style="{StaticResource comboboxStyle}"
@@ -599,33 +605,33 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                             </StackPanel>
+
                             <Button x:Name="btnSetAutomaticCompToCat" 
-                            Grid.Column="1"
-                            Command="{Binding LoginCommand}"                            
-                            Content="Przypisz automatycznie"                            
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource contentButton}">
-                            </Button>
+                                    Grid.Column="1"
+                                    Command="{Binding LoginCommand}"                            
+                                    Content="Przypisz automatycznie"                            
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource contentButton}"/>
                         </Grid>
                     </Border>
-                    <StackPanel Grid.Row="1"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center">
 
+                    <!-- Wybór kategorii Kata -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="Kategorie Kata:"
-                               FontSize="16"
-                               FontFamily="Montserrat"
-                               Foreground="White"
-                               VerticalAlignment="Center"/>
+                                   FontSize="16"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
+
                         <ComboBox x:Name="cbTourCatKata"
-                              Width="292"
-                              Style="{StaticResource comboboxStyle}"
-                              Margin="10,0,0,0">
+                                  Width="292"
+                                  Style="{StaticResource comboboxStyle}"
+                                  Margin="10,0,0,0">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -637,15 +643,15 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                     </StackPanel>
-                    <Border Grid.Row="2"
-                            BorderThickness="0,0,0,1"
-                            BorderBrush="#5D83B1"
-                            Margin="0,0,0,0">
+
+                    <!-- Lista zawodników Kata -->
+                    <Border Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="#5D83B1" Margin="0,0,0,0">
                         <Grid Margin="0,0,0,5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="150"/>
                             </Grid.ColumnDefinitions>
+
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Lista zawodników kata"
                                            FontFamily="Montserrat"
@@ -653,12 +659,12 @@
                                            Foreground="White"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"/>
+
                                 <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
                                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                                           Style="{DynamicResource DataGridStyle1}"
                                           Height="265">
-
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
                                         <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
@@ -672,53 +678,49 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>
-                            <StackPanel Grid.Column="1"
-                                Orientation="Vertical"
-                                VerticalAlignment="Bottom"
-                                HorizontalAlignment="Left"
-                                Margin="10,0,0,0">
 
+                            <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,0">
                                 <Button x:Name="btnAddCompToCatKata" 
-                                Grid.Column="1"
-                                Command="{Binding LoginCommand}"                            
-                                Content="Dodaj zawodnika"                            
-                                FontSize="12"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                BorderThickness="0"
-                                Foreground="White"
-                                Width="120"
-                                Margin="0,0,0,5"
-                                Style="{StaticResource contentButton}"/>
-                                <Button x:Name="btnDeleteCompFromCatKata" 
-                                Grid.Column="1"
-                                Command="{Binding LoginCommand}"                            
-                                Content="Usuń zawodnika"                            
-                                FontSize="12"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                BorderThickness="0"
-                                Foreground="White"
-                                Width="120"
-                                Margin="0,0,0,5"
-                                Style="{StaticResource contentButton}"/>
+                                        Grid.Column="1"
+                                        Command="{Binding LoginCommand}"                            
+                                        Content="Dodaj zawodnika"                            
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Width="120"
+                                        Margin="0,0,0,5"
+                                        Style="{StaticResource contentButton}"/>
 
+                                <Button x:Name="btnDeleteCompFromCatKata" 
+                                        Grid.Column="1"
+                                        Command="{Binding LoginCommand}"                            
+                                        Content="Usuń zawodnika"                            
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Width="120"
+                                        Margin="0,0,0,5"
+                                        Style="{StaticResource contentButton}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
-                    <StackPanel Grid.Row="3"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center">
 
+                    <!-- Wybór kategorii Kumite -->
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="Kategorie Kumite:"
-                               FontSize="16"
-                               FontFamily="Montserrat"
-                               Foreground="White"
-                               VerticalAlignment="Center"/>
+                                   FontSize="16"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
+
                         <ComboBox x:Name="cbTourCatKumite"
-                              Width="292"
-                              Style="{StaticResource comboboxStyle}"
-                              Margin="10,0,0,0">
+                                  Width="292"
+                                  Style="{StaticResource comboboxStyle}"
+                                  Margin="10,0,0,0">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -730,24 +732,27 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                     </StackPanel>
+
+                    <!-- Lista zawodników Kumite -->
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="150"/>
                         </Grid.ColumnDefinitions>
+
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Lista zawodników Kumite"
-                               FontFamily="Montserrat"
-                               FontSize="20"
-                               Foreground="White"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"/>
-                            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                                  CellStyle="{DynamicResource DataGridCellStyle1}" 
-                                  Style="{DynamicResource DataGridStyle1}"
-                                  Height="265">
+                                       FontFamily="Montserrat"
+                                       FontSize="20"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
 
+                            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                                      ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                                      CellStyle="{DynamicResource DataGridCellStyle1}" 
+                                      Style="{DynamicResource DataGridStyle1}"
+                                      Height="265">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
                                     <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
@@ -761,37 +766,33 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>
-                        <StackPanel Grid.Column="1"
-                                Orientation="Vertical"
-                                VerticalAlignment="Bottom"
-                                HorizontalAlignment="Left"
-                                Margin="10,0,0,0">
 
+                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,0">
                             <Button x:Name="btnAddCompToCatKumite" 
-                                Grid.Column="1"
-                                Command="{Binding LoginCommand}"                            
-                                Content="Dodaj zawodnika"                            
-                                FontSize="12"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                BorderThickness="0"
-                                Foreground="White"
-                                Width="120"
-                                Margin="0,0,0,5"
-                                Style="{StaticResource contentButton}"/>
-                            <Button x:Name="btnDeleteCompFromCatKumite" 
-                                Grid.Column="1"
-                                Command="{Binding LoginCommand}"                            
-                                Content="Usuń zawodnika"                            
-                                FontSize="12"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                BorderThickness="0"
-                                Foreground="White"
-                                Width="120"
-                                Margin="0,0,0,50"
-                                Style="{StaticResource contentButton}"/>
+                                    Grid.Column="1"
+                                    Command="{Binding LoginCommand}"                            
+                                    Content="Dodaj zawodnika"                            
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    Width="120"
+                                    Margin="0,0,0,5"
+                                    Style="{StaticResource contentButton}"/>
 
+                            <Button x:Name="btnDeleteCompFromCatKumite" 
+                                    Grid.Column="1"
+                                    Command="{Binding LoginCommand}"                            
+                                    Content="Usuń zawodnika"                            
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    Width="120"
+                                    Margin="0,0,0,50"
+                                    Style="{StaticResource contentButton}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>

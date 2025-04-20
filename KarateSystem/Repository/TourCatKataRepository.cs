@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KarateSystem.Configurations;
 using KarateSystem.Dto;
+using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -39,6 +40,21 @@ namespace KarateSystem.Repository
                 throw new Exception("Nie znaleziono kategorii kata w turnieju do usunięcia.");
 
             _dbContext.TourCatKatas.Remove(tourCatKata);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task AddCatKataToTour(TourCatKataDto tourCatKata)
+        {
+            var existingTourCatKata = await _dbContext.TourCatKatas
+                .AnyAsync(t => t.TourId == tourCatKata.TourId &&
+                               t.KataCatId == tourCatKata.KataCatId &&
+                               t.MatId == tourCatKata.MatId);
+            if (existingTourCatKata)
+            {
+                throw new Exception("Ta kategoria kata już istnieje w tym turnieju.");
+            }
+            var newTourCatKata = _mapper.Map<TourCatKata>(tourCatKata);
+            _dbContext.TourCatKatas.Add(newTourCatKata);
             await _dbContext.SaveChangesAsync();
         }
     }

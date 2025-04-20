@@ -11,5 +11,6 @@ namespace KarateSystem.Repository.Interfaces
     {
         Task<List<TourCatKataDto>> GetCatKataByIdTourAsync(int tourId);
         Task DeleteCatKataFromTour(int tourCatKataId);
+        Task AddCatKataToTour(TourCatKataDto tourCatKata);
     }
 }
