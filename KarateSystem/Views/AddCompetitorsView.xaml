@@ -5,16 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KarateSystem.Views"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="AddCompetitorsView" 
-        Height="450" Width="800"
+        Height="450" Width="900"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         AllowsTransparency="True"
         Background="Transparent"
-        WindowStyle="None">
+        WindowStyle="None"
+        MouseDown="Window_MouseDown">
     <Border CornerRadius="10"
-            BorderThickness="1">
+            BorderThickness="5">
         <Border.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#061D4A" Offset="0"/>
@@ -70,23 +72,27 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
+                    <DataGrid x:Name="dgvCompetitors" 
+                              RowStyle="{DynamicResource DataGridRowStyle1}" 
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
                               Style="{DynamicResource DataGridStyle1}"
-                              Margin="10,0,10,10"
-                              Height="300">
+                              Grid.Row="2"
+                              ItemsSource="{Binding Competitors}"
+                              CanUserResizeColumns="True"
+                              SelectionMode="Extended" 
+                              SelectionUnit="FullRow">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopień"/>
-                            <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Klub"/>
+                            <DataGridTextColumn Binding="{Binding CompId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" Width="40"/>
+                            <DataGridTextColumn Binding="{Binding CompFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Imię" Width="150"/>
+                            <DataGridTextColumn Binding="{Binding CompLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwisko" Width="150"/>
+                            <DataGridTextColumn Binding="{Binding CompDateOfBirth, StringFormat='dd.MM.yyyy', Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia" Width="100"/>
+                            <DataGridTextColumn Binding="{Binding CompAge, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding GenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć" Width="100"/>
+                            <DataGridTextColumn Binding="{Binding CompWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga" Width="50"/>
+                            <DataGridTextColumn Binding="{Binding DegreeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Stopień" Width="100"/>
+                            <DataGridTextColumn Binding="{Binding ClubName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Klub" Width="*"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -104,39 +110,24 @@
                                    FontFamily="Montserrat"
                                    Foreground="White"/>
                         <ComboBox x:Name="cbFilterCategories"
-                                  Width="150"
-                                  Style="{StaticResource comboboxStyle}"
-                                  Margin="5, 0,0 ,0">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+          Width="150"
+          Style="{StaticResource comboboxStyle}"
+          Margin="5, 0,0 ,0"
+          ItemsSource="{Binding FilterTypes}"
+          SelectedItem="{Binding SelectedFilterType, Mode=TwoWay}"/>
+
                         <ComboBox x:Name="cbCategoriesDetails"
-                                  Width="250"
-                                  Style="{StaticResource comboboxStyle}"
-                                  Margin="5, 0,0 ,0">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+          Width="250"
+          Style="{StaticResource comboboxStyle}"
+          Margin="5, 0,0 ,0"
+          ItemsSource="{Binding FilterValues}"
+          SelectedItem="{Binding SelectedFilterValue, Mode=TwoWay}"/>
+
                     </StackPanel>
 
                     <Button x:Name="btnFilterCompetitor"
-                            Click="btnFilterCompetitor_Click"
                             Grid.Column="1"
-                            Command="{Binding LoginCommand}"                            
+                            Command="{Binding FilterCommand}"                       
                             Content="Filtruj"                            
                             FontSize="12"
                             FontFamily="Montserrat"
@@ -160,40 +151,17 @@
                         <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="White"/>
 
                         <TextBox x:Name="tbSearchCompetitor"
-                                 Text="Szukaj..."   
-                                 FontSize="13"
-                                 Height="24"
-                                 Width="300"
-                                 Background="Transparent"
-                                 FontWeight="Medium"
-                                 FontFamily="Montserrat"                            
-                                 Foreground="White"
-                                 CaretBrush="White"
-                                 BorderBrush="White"
-                                 BorderThickness="0,0,0,1"                             
-                                 VerticalContentAlignment="Center"
-                                 Margin="5,5,0,0"/>
+                                 Text="{Binding SearchTextComp, UpdateSourceTrigger=PropertyChanged}"  
+                                 materialDesign:HintAssist.Hint="Szukaj..."
+                                 materialDesign:HintAssist.Foreground="White"
+                                 Style="{StaticResource TransparentHintTextBox}"/>
                     </StackPanel>
-
-                    <Button x:Name="btnSearchCompetitor" 
-                            Grid.Column="1"
-                            Click="btnSearchCompetitor_Click"
-                            Command="{Binding LoginCommand}"                            
-                            Content="Wyszukaj"                            
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            VerticalAlignment="Top"
-                            Style="{StaticResource contentButton}">
-                    </Button>
                 </Grid>
                 
                 <Button x:Name="btnAddCompetitor"
                         Grid.Row="4"
-                        Click="btnAddCompetitor_Click"
-                        Command="{Binding LoginCommand}"                            
+                        Command="{Binding AddCompCommand}" 
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"                          
                         Content="Dodaj"                            
                         FontSize="12"
                         FontFamily="Montserrat"

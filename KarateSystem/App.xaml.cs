@@ -57,11 +57,16 @@ namespace KarateSystem
             services.AddScoped<MainViewModel>();
             services.AddScoped<LoginViewModel>();
             services.AddScoped<TournamentViewModel>();
+            services.AddScoped<AddCompetitorsViewModel>();
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddScoped<MainWindow>(provider => new MainWindow()
             {
                 DataContext = provider.GetRequiredService<MainViewModel>() 
+            });
+            services.AddScoped<AddCompetitorsView>(provider => new AddCompetitorsView()
+            {
+                DataContext = provider.GetRequiredService<AddCompetitorsViewModel>() 
             });
             services.AddScoped<LoginView>(provider => new LoginView()
             {

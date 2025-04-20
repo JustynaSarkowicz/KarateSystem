@@ -47,8 +47,7 @@ namespace KarateSystem.Repository
         {
             var existingTourCatKata = await _dbContext.TourCatKatas
                 .AnyAsync(t => t.TourId == tourCatKata.TourId &&
-                               t.KataCatId == tourCatKata.KataCatId &&
-                               t.MatId == tourCatKata.MatId);
+                               t.KataCatId == tourCatKata.KataCatId);
             if (existingTourCatKata)
             {
                 throw new Exception("Ta kategoria kata już istnieje w tym turnieju.");

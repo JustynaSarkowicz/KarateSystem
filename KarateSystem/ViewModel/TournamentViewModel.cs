@@ -3,6 +3,8 @@ using KarateSystem.Dto;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using KarateSystem.Service.Interfaces;
+using KarateSystem.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -55,6 +57,7 @@ namespace KarateSystem.ViewModel
         private readonly IKataCategoryRepository _kataCategoryRepository;
         private readonly IKumiteCategoryRepository _kumiteCategoryRepository;
         private readonly IMatRepository _matRepository;
+        private readonly IServiceProvider _serviceProvider;
         #endregion
 
         #region Commands
@@ -68,6 +71,7 @@ namespace KarateSystem.ViewModel
         public ICommand DeleteCatKumiteFromTourCommand { get; }
         public ICommand AddCatKataFromTourCommand { get; }
         public ICommand AddCatKumiteFromTourCommand { get; }
+        public ICommand AddCompToTourCommand { get; }
         #endregion
 
         #region Properties
@@ -295,7 +299,8 @@ namespace KarateSystem.ViewModel
             ITourCatKataRepository tourCatKataRepository,
             IKataCategoryRepository kataCategoryRepository,
             IKumiteCategoryRepository kumiteCategoryRepository,
-            IMatRepository matRepository)
+            IMatRepository matRepository,
+            IServiceProvider serviceProvider)
         {
             _tournamentRepository = tournamentRepository;
             _searchService = searchService;
@@ -305,6 +310,7 @@ namespace KarateSystem.ViewModel
             _kataCategoryRepository = kataCategoryRepository;
             _kumiteCategoryRepository = kumiteCategoryRepository;
             _matRepository = matRepository;
+            _serviceProvider = serviceProvider;
 
             EditTourCommand = new ViewModelCommand(ExecuteEditTourCommand, CanEditTour);
             CancelTourCommand = new ViewModelCommand(ExecuteCancelTourCommand);
@@ -318,6 +324,8 @@ namespace KarateSystem.ViewModel
             DeleteCatKumiteFromTourCommand = new ViewModelCommand(ExecuteDeleteCatKumiteFromTourCommand, CanDeleteCatKumite);
             AddCatKataFromTourCommand = new ViewModelCommand(ExecuteAddCatKataToTourCommand, CanAddCatKata);
             AddCatKumiteFromTourCommand = new ViewModelCommand(ExecuteAddCatKumiteToTourCommand, CanAddCatKumite);
+
+            AddCompToTourCommand = new ViewModelCommand(ExecuteAddCompToTourCommand);
 
             LoadAsync();
         }
@@ -458,6 +466,42 @@ namespace KarateSystem.ViewModel
 
         #region Competitors
         private bool CanDeleteComp(object obj) => SelectedTour != null && SelectedCompetitorTour != null;
+        private async void ExecuteAddCompToTourCommand(object obj)
+        {
+            var addCompWindow = _serviceProvider.GetRequiredService<AddCompetitorsView>();
+            var viewModel = addCompWindow.DataContext as AddCompetitorsViewModel;
+
+            if (addCompWindow.ShowDialog() == true)
+            {
+                var selected = viewModel.SelectedCompetitors;
+
+                try
+                {
+                    foreach (var comp in selected)
+                    {
+                        if (CompetitorsTour.Any(c => c.CompId == comp.CompId))
+                        {
+                            MessageBox.Show($"Zawodnik {comp.CompFirstName} {comp.CompLastName} już istnieje w turnieju.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            continue;
+                        }
+                        var tourComp = new TourCompetitorDto
+                        {
+                            TourId = EditingTour.TourId,
+                            CompId = comp.CompId
+                        };
+                        await _tourCompetitorRepository.AddCompToTour(tourComp);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas dodawania zawodnika do turnieju: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            CompetitorsTour = new ObservableCollection<TourCompetitorDto>(
+                await _tourCompetitorRepository.GetTourCompetitorsByIdTourAsync(EditingTour.TourId));
+        }
+
         private async void ExecuteDeleteCompFromTourCommand(object obj)
         {
             if (SelectedCompetitorTour == null) return;
@@ -556,17 +600,6 @@ namespace KarateSystem.ViewModel
             if (SelectedKataCategory == null || SelectedKataCategoryMat == null || EditingTour == null) return;
             try
             {
-                var existingCatKata = CatKataTour
-                    .Any(c => c.KataCatId == SelectedKataCategory.KataCatId);
-
-                if (existingCatKata)
-                {
-                    MessageBox.Show("Kategoria kata już istnieje w turnieju.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    SelectedKataCategoryMat = null;
-                    SelectedKataCategory = null;
-                    return;
-                }
-
                 var newCatKata = new TourCatKataDto
                 {
                     TourId = EditingTour.TourId,
@@ -592,7 +625,7 @@ namespace KarateSystem.ViewModel
         private bool CanAddCatKumite(object obj) => EditingTour != null && SelectedKumiteCategory != null && SelectedKumiteCategoryMat != null;
         private async void ExecuteDeleteCatKumiteFromTourCommand(object obj)
         {
-            if (SelectedCatKumiteTour == null) return;
+            if (SelectedCatKumiteTour == null || EditingTour == null) return;
             try
             {
                 await _tourCatKumiteRepository.DeleteCatKumiteFromTour(SelectedCatKumiteTour.TourCatKumiteId);
@@ -610,15 +643,6 @@ namespace KarateSystem.ViewModel
             if (SelectedKumiteCategory == null || SelectedKumiteCategoryMat == null || EditingTour == null) return;
             try
             {
-                var existingCatKumite = CatKumiteTour
-                    .Any(c => c.KumiteCatId == SelectedKumiteCategory.KumiteCatId);
-                if (existingCatKumite)
-                {
-                    MessageBox.Show("Kategoria kumite już istnieje w turnieju.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    SelectedKumiteCategoryMat = null;
-                    SelectedKumiteCategory = null;
-                    return;
-                }
                 var newCatKumite = new TourCatKumiteDto
                 {
                     TourId = EditingTour.TourId,

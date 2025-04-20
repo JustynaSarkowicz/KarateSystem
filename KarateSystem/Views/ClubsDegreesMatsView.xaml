@@ -69,6 +69,7 @@
                           Height="290"
                           VerticalAlignment="Top"
                           Grid.Row="1"
+                          SelectionMode="Single"
                           ItemsSource="{Binding Clubs}"
                           SelectedItem="{Binding SelectedClub}">
                     <DataGrid.Columns>
@@ -233,6 +234,7 @@
                               Height="290"
                               VerticalAlignment="Top"
                               Grid.Row="1"
+                              SelectionMode="Single"
                               ItemsSource="{Binding Degrees}"
                               SelectedItem="{Binding SelectedDegree}">
                         <DataGrid.Columns>
@@ -305,6 +307,7 @@
                               Height="290"
                               VerticalAlignment="Top"
                               Grid.Row="1" 
+                              SelectionMode="Single"
                               ItemsSource="{Binding Mats}"
                               SelectedItem="{Binding SelectedMat}">
                         <DataGrid.Columns>

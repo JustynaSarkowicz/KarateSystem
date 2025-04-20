@@ -93,7 +93,8 @@
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
                               Style="{DynamicResource DataGridStyle1}"
-                              Height="390">
+                              Height="390"
+                              SelectionMode="Single">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nr"/>
@@ -317,7 +318,8 @@
                                   CellStyle="{DynamicResource DataGridCellStyle1}" 
                                   Style="{DynamicResource DataGridStyle1}"
                                   Height="110"
-                                  Margin="30,0,0,0">
+                                  Margin="30,0,0,0"
+                                  SelectionMode="Single">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nr"/>
                                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Zawodnik"/>
@@ -393,7 +395,8 @@
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
                               Style="{DynamicResource DataGridStyle1}"
-                              Height="390">
+                              Height="390"
+                              SelectionMode="Single">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nr"/>

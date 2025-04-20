@@ -85,6 +85,7 @@
                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                           Style="{DynamicResource DataGridStyle1}"
                           Grid.Row="2"
+                          SelectionMode="Single"
                           ItemsSource="{Binding Competitors}"
                           SelectedItem="{Binding SelectedCompetitor}">
 
@@ -345,6 +346,7 @@
                                   Height="180"
                                   VerticalAlignment="Top"
                                   Grid.Row="1"
+                                  SelectionMode="Single"
                                   ItemsSource="{Binding TournamentsComp}"
                                   SelectedItem="{Binding SelectedTourComp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 

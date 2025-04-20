@@ -44,8 +44,7 @@ namespace KarateSystem.Repository
         {
             var existingTourCatKumite = await _dbContext.TourCatKumites
                 .AnyAsync(t => t.TourId == tourCatKumiteDto.TourId &&
-                               t.KumiteCatId == tourCatKumiteDto.KumiteCatId &&
-                               t.MatId == tourCatKumiteDto.MatId);
+                               t.KumiteCatId == tourCatKumiteDto.KumiteCatId);
             if (existingTourCatKumite)
             {
                 throw new Exception("Ta kategoria kumite już istnieje w tym turnieju.");

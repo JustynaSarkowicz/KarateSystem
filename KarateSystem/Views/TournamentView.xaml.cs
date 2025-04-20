@@ -25,11 +25,5 @@ namespace KarateSystem.Views
         {
             InitializeComponent();
         }
-
-        private void btnTourAddComp_Click(object sender, RoutedEventArgs e)
-        {
-            var AddCompWindow = new AddCompetitorsView();
-            AddCompWindow.ShowDialog();
-        }
     }
 }

@@ -67,6 +67,7 @@
                                   CellStyle="{DynamicResource DataGridCellStyle1}" 
                                   Style="{DynamicResource DataGridStyle1}"
                                   Grid.Column="0"
+                                  SelectionMode="Single"
                                   ItemsSource="{Binding Tournaments}"
                                   SelectedItem="{Binding SelectedTour}">
                             <DataGrid.Columns>
@@ -322,6 +323,7 @@
                                   CellStyle="{DynamicResource DataGridCellStyle1}" 
                                   Style="{DynamicResource DataGridStyle1}"
                                   Grid.Column="0"
+                                  SelectionMode="Single"
                                   ItemsSource="{Binding CompetitorsTour}"
                                   SelectedItem="{Binding SelectedCompetitorTour}">
                             <DataGrid.Columns>
@@ -345,9 +347,8 @@
                                     Margin="0,0,0,5">
                             <Button x:Name="btnTourAddComp"
                                     Width="70"
-                                    Command="{Binding LoginCommand}"                            
+                                    Command="{Binding AddCompToTourCommand}"                            
                                     Content="Dodaj"
-                                    Click="btnTourAddComp_Click"
                                     Margin="5,0,0,0"
                                     FontSize="12"
                                     FontFamily="Montserrat"
@@ -397,6 +398,7 @@
                                       Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      SelectionMode="Single"
                                       ItemsSource="{Binding CatKataTour}"
                                       SelectedItem="{Binding SelectedCatKataTour}">
                                 <DataGrid.Columns>
@@ -487,6 +489,7 @@
                                       Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,0,0"
+                                      SelectionMode="Single"
                                       ItemsSource="{Binding CatKumiteTour}"
                                       SelectedItem="{Binding SelectedCatKumiteTour}">
                                 <DataGrid.Columns>

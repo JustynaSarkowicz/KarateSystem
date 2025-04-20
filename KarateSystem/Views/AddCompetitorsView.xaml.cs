@@ -24,26 +24,13 @@ namespace KarateSystem.Views
         {
             InitializeComponent();
         }
-
-        private void btnFilterCompetitor_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
-        private void btnAddCompetitor_Click(object sender, RoutedEventArgs e)
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            if (e.LeftButton == MouseButtonState.Pressed) DragMove();
         }
-
-        private void btnSearchCompetitor_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
     }
 }
