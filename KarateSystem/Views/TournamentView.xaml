@@ -596,17 +596,23 @@
                                 <ComboBox x:Name="cbTour"
                                           Width="350"
                                           Style="{StaticResource comboboxStyle}"
-                                          Margin="10,0,0,0">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Name}" />
-                                                <TextBlock Text="{Binding Name}" />
-                                                <TextBlock Text="{Binding Name}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
+                                          Margin="10,0,0,0"
+                                          ItemsSource="{Binding Tournaments}"
+                                          DisplayMemberPath="TourName"
+                                          SelectedItem="{Binding SelectedTourToSetCompToCat}"/>
+
+                                <Button x:Name="btnSetTour"
+                                        Width="70"
+                                        Command="{Binding ChoseTourToSetCompToCAtCommand}"
+                                        Content="Wybierz"
+                                        Margin="10,0,0,0"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        Style="{StaticResource contentButton}"/>
+
                             </StackPanel>
 
                             <Button x:Name="btnSetAutomaticCompToCat" 
@@ -634,17 +640,10 @@
                         <ComboBox x:Name="cbTourCatKata"
                                   Width="292"
                                   Style="{StaticResource comboboxStyle}"
-                                  Margin="10,0,0,0">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                                  Margin="10,0,0,0"
+                                  ItemsSource="{Binding TourCatKatas}"
+                                  DisplayMemberPath="KataCatName"/>
+
                     </StackPanel>
 
                     <!-- Lista zawodników Kata -->
@@ -723,17 +722,10 @@
                         <ComboBox x:Name="cbTourCatKumite"
                                   Width="292"
                                   Style="{StaticResource comboboxStyle}"
-                                  Margin="10,0,0,0">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock Text="{Binding Name}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                                  Margin="10,0,0,0"
+                                  ItemsSource="{Binding TourCatKumites}"
+                                  DisplayMemberPath="KumiteCatName"/>
+
                     </StackPanel>
 
                     <!-- Lista zawodników Kumite -->
