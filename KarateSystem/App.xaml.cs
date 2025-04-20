@@ -50,29 +50,29 @@ namespace KarateSystem
             services.AddScoped<ITournamentRepository, TournamentRepository>();
             services.AddScoped<ITourCatKataRepository, TourCatKataRepository>();
             services.AddScoped<ITourCatKumiteRepository, TourCatKumiteRepository>();
-            services.AddScoped<CompetitorsViewModel>();
-            services.AddScoped<ClubsDegreesMatsViewModel>();
-            services.AddScoped<CategoryViewModel>();
-            services.AddScoped<SettingsViewModel>();
-            services.AddScoped<MainViewModel>();
-            services.AddScoped<LoginViewModel>();
-            services.AddScoped<TournamentViewModel>();
-            services.AddScoped<AddCompetitorsViewModel>();
+            services.AddTransient<CompetitorsViewModel>();
+            services.AddTransient<ClubsDegreesMatsViewModel>();
+            services.AddTransient<CategoryViewModel>();
+            services.AddTransient<SettingsViewModel>();
+            services.AddTransient<MainViewModel>();
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<TournamentViewModel>();
+            services.AddTransient<AddCompetitorsViewModel>();
             services.AddAutoMapper(typeof(MappingProfile));
 
-            services.AddScoped<MainWindow>(provider => new MainWindow()
+            services.AddTransient<MainWindow>(provider => new MainWindow()
             {
                 DataContext = provider.GetRequiredService<MainViewModel>() 
             });
-            services.AddScoped<AddCompetitorsView>(provider => new AddCompetitorsView()
+            services.AddTransient<AddCompetitorsView>(provider => new AddCompetitorsView()
             {
                 DataContext = provider.GetRequiredService<AddCompetitorsViewModel>() 
             });
-            services.AddScoped<LoginView>(provider => new LoginView()
+            services.AddTransient<LoginView>(provider => new LoginView()
             {
                 DataContext = provider.GetRequiredService<LoginViewModel>() 
             });
-            services.AddScoped<LoginViewModel>(provider =>
+            services.AddTransient<LoginViewModel>(provider =>
                                 new LoginViewModel(
                                     provider.GetRequiredService<IUserRepository>(),
                                     provider));

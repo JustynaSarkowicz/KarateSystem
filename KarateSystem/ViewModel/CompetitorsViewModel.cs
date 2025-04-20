@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using Enum = KarateSystem.Misc.Enum;
+using static KarateSystem.Misc.Helper;
 
 namespace KarateSystem.ViewModel
 {
@@ -19,7 +19,7 @@ namespace KarateSystem.ViewModel
         private bool _isEditingExisting;
         private CompetitorDto _selectedComp;
         private CompetitorDto _editingComp;
-        private Enum.Gender _selectedGenderComp; 
+        private GenderOption _selectedGenderComp;
         private string _selectedFilterType;
         private string _selectedFilterValue;
         private TourCompetitorDto _selectedTourComp;
@@ -29,10 +29,6 @@ namespace KarateSystem.ViewModel
         private ObservableCollection<DegreeDto> _degrees;
         private ObservableCollection<ClubDto> _clubs;
         private List<CompetitorDto> _allCompetitors;
-        public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
-        public ObservableCollection<string> FilterValues { get; set; } = new();
-        public ObservableCollection<Enum.Gender> GenderOption { get; set; } =
-        new ObservableCollection<Enum.Gender>((Enum.Gender[])System.Enum.GetValues(typeof(Enum.Gender)));
 
         private readonly ICompetitorRepository _competitorRepository;
         private readonly IDegreeRepository _degreeRepository;
@@ -50,6 +46,8 @@ namespace KarateSystem.ViewModel
         #endregion
 
         #region Properties
+        public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
+        public ObservableCollection<string> FilterValues { get; set; } = new();
         public ObservableCollection<TourCompetitorDto> TournamentsComp
         {
             get => _tourCompetitors;
@@ -124,7 +122,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(EditingComp));
             }
         }
-        public Enum.Gender SelectedGenderComp
+        public GenderOption SelectedGenderComp
         {
             get => _selectedGenderComp;
             set
@@ -255,8 +253,8 @@ namespace KarateSystem.ViewModel
                 CompClubId = SelectedCompetitor.CompClubId,
                 TourCompetitors = new ObservableCollection<TourCompetitorDto>(
                 SelectedCompetitor.TourCompetitors ?? new List<TourCompetitorDto>())
-            };
-            SelectedGenderComp = EditingComp.CompGender ? Enum.Gender.Mężczyzna : Enum.Gender.Kobieta;
+            }; 
+            SelectedGenderComp = GenderOptions.FirstOrDefault(g => g.Value == EditingComp.CompGender);
             TournamentsComp = new ObservableCollection<TourCompetitorDto>(
                 await _tourCompetitorRepository.GetCompetitorToursByIdCompAsync(SelectedCompetitor.CompId));
             IsEditingExisting = true;
@@ -270,7 +268,7 @@ namespace KarateSystem.ViewModel
             };
             IsEditingExisting = false;
             SelectedCompetitor = null;
-            SelectedGenderComp = 0;
+            SelectedGenderComp = null;
             TournamentsComp = new ObservableCollection<TourCompetitorDto>();
         }
 
@@ -283,7 +281,7 @@ namespace KarateSystem.ViewModel
                 SelectedCompetitor.CompFirstName = EditingComp.CompFirstName;
                 SelectedCompetitor.CompLastName = EditingComp.CompLastName;
                 SelectedCompetitor.CompDateOfBirth = EditingComp.CompDateOfBirth;
-                SelectedCompetitor.CompGender = SelectedGenderComp == Enum.Gender.Mężczyzna; 
+                SelectedCompetitor.CompGender = SelectedGenderComp.Value; 
                 SelectedCompetitor.CompWeight = EditingComp.CompWeight;
                 SelectedCompetitor.CompDegreeId = EditingComp.CompDegreeId;
                 SelectedCompetitor.CompClubId = EditingComp.CompClubId;
@@ -304,11 +302,12 @@ namespace KarateSystem.ViewModel
             {
                 if (!IsCompetitorValid(EditingComp)) return;
 
-                EditingComp.CompGender = SelectedGenderComp == Enum.Gender.Mężczyzna;
+                EditingComp.CompGender = SelectedGenderComp.Value;
 
                 await _competitorRepository.AddCompAsync(EditingComp);
                 
-                Competitors = new ObservableCollection<CompetitorDto>(await _competitorRepository.GetAllCompetitorsAsync());
+                _allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
+                Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
                 ExecuteCancelCompCommand(obj);
             }
             catch (Exception ex)

@@ -13,7 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Enum = KarateSystem.Misc.Enum;
+using static KarateSystem.Misc.Helper;
 
 namespace KarateSystem.Repository
 {
@@ -88,7 +88,7 @@ namespace KarateSystem.Repository
                 .FirstOrDefault(u =>
                     u.UserLogin == credential.UserName &&
                     u.UserPass.Decrypt() == credential.Password &&
-                    u.UserRole == Enum.UserRole.Admin.ToString());
+                    u.UserRole == RoleOptionsList.FirstOrDefault(c => c.DisplayName == "Admin").ToString());
 
             return user != null;
         }

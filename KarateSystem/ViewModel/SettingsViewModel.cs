@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows;
 using KarateSystem.Misc;
-using Enum = KarateSystem.Misc.Enum;
+using static KarateSystem.Misc.Helper;
 
 namespace KarateSystem.ViewModel
 {
@@ -13,12 +13,10 @@ namespace KarateSystem.ViewModel
     {
         #region Fields
         private bool _isEditingExisting;
-        private string _selectedRole;
+        private RoleOption _selectedRole;
         private UserDto _selectedUser;
         private UserDto _editingUser;
         private ObservableCollection<UserDto> _users;
-        public ObservableCollection<string> RoleOptions { get; set; } =
-            new ObservableCollection<string>(System.Enum.GetNames(typeof(Enum.UserRole)));
 
         private readonly IUserRepository _userRepository;
         #endregion
@@ -75,7 +73,7 @@ namespace KarateSystem.ViewModel
             }
         }
 
-        public string SelectedRole
+        public RoleOption SelectedRole
         {
             get => _selectedRole;
             set
@@ -121,7 +119,7 @@ namespace KarateSystem.ViewModel
                 UserPass = SelectedUser.UserPass.Decrypt(),
                 UserRole = SelectedUser.UserRole
             };
-            SelectedRole = EditingUser.UserRole;
+            SelectedRole = RoleOptionsList.FirstOrDefault(g => g.DisplayName == EditingUser.UserRole);
             IsEditingExisting = true;
         }
         private void ExecuteCancelUserCommand(object obj)
@@ -141,7 +139,7 @@ namespace KarateSystem.ViewModel
                 SelectedUser.UserLastName = EditingUser.UserLastName;
                 SelectedUser.UserLogin = EditingUser.UserLogin;
                 SelectedUser.UserPass = EditingUser.UserPass;
-                SelectedUser.UserRole = SelectedRole;
+                SelectedUser.UserRole = SelectedRole.DisplayName;
 
                 await _userRepository.UpdateUserAsync(SelectedUser);
 
@@ -160,7 +158,7 @@ namespace KarateSystem.ViewModel
             {
                 if (!IsUserValid(EditingUser)) return;
 
-                EditingUser.UserRole = SelectedRole;
+                EditingUser.UserRole = SelectedRole.DisplayName;
                 EditingUser.UserPass = EditingUser.UserPass.Encrypt();
 
                 await _userRepository.AddUserAsync(EditingUser);
@@ -207,7 +205,7 @@ namespace KarateSystem.ViewModel
                 string.IsNullOrWhiteSpace(user.UserLogin) ||
                 string.IsNullOrWhiteSpace(user.UserPass) ||
                 user.UserPass.Count() < 5 ||
-                string.IsNullOrWhiteSpace(SelectedRole))
+                string.IsNullOrWhiteSpace(SelectedRole.DisplayName))
             {
                 MessageBox.Show("Wszystkie pola muszą być poprawnie wypełnione.\nHasło nie może być krótsze niż 5 znaków.", "Błąd walidacji", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;

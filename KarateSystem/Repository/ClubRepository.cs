@@ -54,7 +54,7 @@ namespace KarateSystem.Repository
 
         public async Task AddClubAsync(ClubDto clubDto)
         {
-            var existingClub = await _dbContext.Clubs.AnyAsync(c => c.ClubId != clubDto.ClubId || c.ClubName == clubDto.ClubName);
+            var existingClub = await _dbContext.Clubs.AnyAsync(c => c.ClubId != clubDto.ClubId && c.ClubName == clubDto.ClubName);
 
             if (existingClub)
             {

@@ -435,9 +435,10 @@
 
                             <ComboBox x:Name="cbGenderCatKumite"
                                       Width="180"
-                                      ItemsSource="{Binding GenderOption}"
+                                      ItemsSource="{Binding GenderOptions}"
                                       SelectedItem="{Binding SelectedGenderCatKumite, Mode=TwoWay}"
-                                      Style="{StaticResource comboboxStyle}"/>
+                                      Style="{StaticResource comboboxStyle}"
+                                      DisplayMemberPath="DisplayName"/>
                         </StackPanel>
                     </Grid>
 

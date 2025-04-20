@@ -239,9 +239,10 @@
                                         Margin="0,0,0,5"/>
                             <ComboBox x:Name="cbCompetitorGender"
                                       Width="180"
-                                      ItemsSource="{Binding GenderOption}"
+                                      ItemsSource="{Binding GenderOptions}"
                                       SelectedItem="{Binding SelectedGenderComp, Mode=TwoWay}"
-                                      Style="{StaticResource comboboxStyle}"/>
+                                      Style="{StaticResource comboboxStyle}"
+                                      DisplayMemberPath="DisplayName"/>
 
                             <ComboBox x:Name="cbDegreeComp"
                                       Width="180"

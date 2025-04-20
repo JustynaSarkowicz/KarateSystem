@@ -257,7 +257,8 @@ namespace KarateSystem.ViewModel
 
                 await _clubRepository.AddClubAsync(EditingClub);
 
-                Clubs = new ObservableCollection<ClubDto>(await _clubRepository.GetAllClubsAsync());
+                _allClubs = await _clubRepository.GetAllClubsAsync();
+                Clubs = new ObservableCollection<ClubDto>(_allClubs);
                 ExecuteCancelClubCommand(obj);
             }
             catch (Exception ex)

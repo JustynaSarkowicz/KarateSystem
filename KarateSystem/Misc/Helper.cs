@@ -24,6 +24,11 @@ namespace KarateSystem.Misc
             new GenderOption2("Mężczyzna", true),
             new GenderOption2("Nie wybrano", null)
         };
+        public static List<GenderOption> GenderOptions { get; } = new()
+        {
+            new GenderOption("Kobieta", false),
+            new GenderOption("Mężczyzna", true)
+        };
 
         public static string GetDisplayName(bool? isMale) =>
             isMale switch
@@ -33,6 +38,7 @@ namespace KarateSystem.Misc
                 null => "Nie wybrano"
             };
         public record GenderOption2(string DisplayName, bool? Value);
+        public record GenderOption(string DisplayName, bool Value);
         public static List<StatusOption> StatusOptionsList { get; } = new()
         {       
            new StatusOption("Rejestracja otwarta", 0),
@@ -42,6 +48,13 @@ namespace KarateSystem.Misc
         };
 
         public record StatusOption(string DisplayName, int Value);
+        public static List<RoleOption> RoleOptionsList { get; } = new()
+        {       
+           new RoleOption("Obsługa"),
+           new RoleOption("Admin")
+        };
+
+        public record RoleOption(string DisplayName);
         public static string Decrypt(this string cipherText)
         {
             try

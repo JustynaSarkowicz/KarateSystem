@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using static KarateSystem.Misc.Helper;
-using Enum = KarateSystem.Misc.Enum;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace KarateSystem.ViewModel
@@ -29,11 +28,9 @@ namespace KarateSystem.ViewModel
         private DegreeDto _selectedDegreeToAdd;
         private CatKataDegreeDto _selectedCatKataDegree;
         private GenderOption2 _selectedGenderCatKata;
-        private Enum.Gender _selectedGenderCatKumite;
+        private GenderOption _selectedGenderCatKumite;
         private KumiteCategoryDto _selectedKumiteCategory;
         private KumiteCategoryDto _editingKumiteCategory;
-        public ObservableCollection<Enum.Gender> GenderOption { get; set; } =
-        new ObservableCollection<Enum.Gender>((Enum.Gender[])System.Enum.GetValues(typeof(Enum.Gender)));
 
         private ObservableCollection<KataCategoryDto> _kataCategories;
         private ObservableCollection<DegreeDto> _degrees;
@@ -175,7 +172,7 @@ namespace KarateSystem.ViewModel
                 OnPropertyChanged(nameof(SelectedGenderCatKata));
             }
         }
-        public Enum.Gender SelectedGenderCatKumite
+        public GenderOption SelectedGenderCatKumite
         {
             get => _selectedGenderCatKumite;
             set
@@ -298,7 +295,8 @@ namespace KarateSystem.ViewModel
 
                 await _kataCategoryRepository.AddKataCategoryAsync(EditingKataCategory);
 
-                KataCategories = new ObservableCollection<KataCategoryDto>(await _kataCategoryRepository.GetAllKataCategoryAsync());
+                _allKataCategories = await _kataCategoryRepository.GetAllKataCategoryAsync();
+                KataCategories = new ObservableCollection<KataCategoryDto>(_allKataCategories);
                 ExecuteCancelKataCategoryCommand(obj);
             }
             catch(Exception ex)
@@ -368,13 +366,13 @@ namespace KarateSystem.ViewModel
                 KumiteCatWeightMin = SelectedKumiteCategory.KumiteCatWeightMin,
                 KumiteCatWeightMax = SelectedKumiteCategory.KumiteCatWeightMax
             };
-            SelectedGenderCatKumite = EditingKumiteCategory.KumiteCatGender ? Enum.Gender.Mężczyzna : Enum.Gender.Kobieta;
+            SelectedGenderCatKumite = GenderOptions.FirstOrDefault(g => g.Value == EditingKumiteCategory.KumiteCatGender);
             IsEditingExistingCatKumite = true;
         }
         private void ExecuteCancelKumiteCategoryCommand(object obj)
         {
             EditingKumiteCategory = new KumiteCategoryDto();
-            SelectedGenderCatKumite = 0;
+            SelectedGenderCatKumite = null;
             IsEditingExistingCatKumite = false;
             SelectedKumiteCategory = null;
         }
@@ -384,11 +382,12 @@ namespace KarateSystem.ViewModel
             {
                 if (!IsKumiteCatValid(EditingKumiteCategory)) return;
 
-                EditingKumiteCategory.KumiteCatGender = SelectedGenderCatKumite == Enum.Gender.Mężczyzna;
+                EditingKumiteCategory.KumiteCatGender = SelectedGenderCatKumite.Value;
 
                 await _kumiteCategoryRepository.AddKumiteCategoryAsync(EditingKumiteCategory);
 
-                KumiteCategories = new ObservableCollection<KumiteCategoryDto>(await _kumiteCategoryRepository.GetAllKumiteCategoryAsync());
+                _allKumiteCategories = await _kumiteCategoryRepository.GetAllKumiteCategoryAsync();
+                KumiteCategories = new ObservableCollection<KumiteCategoryDto>(_allKumiteCategories);
                 ExecuteCancelKumiteCategoryCommand(obj);
             }
             catch (Exception ex)
@@ -403,7 +402,7 @@ namespace KarateSystem.ViewModel
                 if (!IsKumiteCatValid(EditingKumiteCategory) || SelectedKumiteCategory == null) return;
 
                 SelectedKumiteCategory.KumiteCatName = EditingKumiteCategory.KumiteCatName;
-                SelectedKumiteCategory.KumiteCatGender = SelectedGenderCatKumite == Enum.Gender.Mężczyzna;
+                SelectedKumiteCategory.KumiteCatGender = SelectedGenderCatKumite.Value;
                 SelectedKumiteCategory.KumiteCatAgeMin = EditingKumiteCategory.KumiteCatAgeMin;
                 SelectedKumiteCategory.KumiteCatAgeMax = EditingKumiteCategory.KumiteCatAgeMax;
                 SelectedKumiteCategory.KumiteCatWeightMin = EditingKumiteCategory.KumiteCatWeightMin;

@@ -274,8 +274,9 @@
                           Style="{StaticResource comboboxStyle}"
                           Margin="5, 0,0 ,0"
                           Height="30"
-                          ItemsSource="{Binding RoleOptions}"
-                          SelectedItem="{Binding SelectedRole, Mode=TwoWay}"/>
+                          ItemsSource="{Binding RoleOptionsList}"
+                          SelectedItem="{Binding SelectedRole, Mode=TwoWay}"
+                          DisplayMemberPath="DisplayName"/>
             </StackPanel>
         </Grid>
     </Grid>

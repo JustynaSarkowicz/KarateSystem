@@ -6,7 +6,6 @@ using KarateSystem.Misc;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using KarateSystem.ViewModel;
-using static KarateSystem.Misc.Enum;
 
 namespace KarateSystem.Views
 {

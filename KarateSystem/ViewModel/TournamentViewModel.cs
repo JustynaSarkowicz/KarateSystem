@@ -498,8 +498,9 @@ namespace KarateSystem.ViewModel
                 }
             }
 
-            CompetitorsTour = new ObservableCollection<TourCompetitorDto>(
+            _allCompetitorsTour = new ObservableCollection<TourCompetitorDto>(
                 await _tourCompetitorRepository.GetTourCompetitorsByIdTourAsync(EditingTour.TourId));
+            CompetitorsTour = _allCompetitorsTour;
         }
 
         private async void ExecuteDeleteCompFromTourCommand(object obj)
