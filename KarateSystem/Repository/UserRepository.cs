@@ -83,12 +83,13 @@ namespace KarateSystem.Repository
 
         public bool AuthenticateUser(NetworkCredential credential)
         {
+            var adminRole = RoleOptionsList.FirstOrDefault(c => c.DisplayName == "Admin").DisplayName;
             var user = _dbContext.Users
                 .AsEnumerable()
                 .FirstOrDefault(u =>
                     u.UserLogin == credential.UserName &&
                     u.UserPass.Decrypt() == credential.Password &&
-                    u.UserRole == RoleOptionsList.FirstOrDefault(c => c.DisplayName == "Admin").ToString());
+                    u.UserRole == adminRole.ToString());
 
             return user != null;
         }

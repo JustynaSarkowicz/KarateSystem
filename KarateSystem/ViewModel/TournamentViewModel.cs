@@ -45,9 +45,6 @@ namespace KarateSystem.ViewModel
         private ObservableCollection<KataCategoryDto> _kataCategory;
         private ObservableCollection<KumiteCategoryDto> _kumiteCategory;
         private ObservableCollection<MatDto> _mats;
-        public ObservableCollection<StatusOption> StatusOptions { get; set; } = new(StatusOptionsList);
-        public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
-        public ObservableCollection<string> FilterValues { get; set; } = new();
 
         private readonly ITournamentRepository _tournamentRepository;
         private readonly ITourCompetitorRepository _tourCompetitorRepository;
@@ -75,6 +72,8 @@ namespace KarateSystem.ViewModel
         #endregion
 
         #region Properties
+        public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
+        public ObservableCollection<string> FilterValues { get; set; } = new();
         public MatDto SelectedKataCategoryMat
         {
             get => _selectedKataCategoryMat;
