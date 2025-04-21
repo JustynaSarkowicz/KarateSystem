@@ -41,6 +41,12 @@ namespace KarateSystem.ViewModel
         private TournamentDto _selectedTourToSetCompToCat;
         private ObservableCollection<TourCatKataDto> _tourCatKatas;
         private ObservableCollection<TourCatKumiteDto> _tourCatKumites;
+        private TourCatKataDto _selectedTourCatKata;
+        private TourCatKumiteDto _selectedTourCatKumite;
+        private ObservableCollection<TourCompetitorDto> _compTourCatKata;
+        private ObservableCollection<TourCompetitorDto> _compTourCatKumite;
+        private TourCompetitorDto _selectedCompTourCatKata;
+        private TourCompetitorDto _selectedCompTourCatKumite;
 
         private ObservableCollection<TournamentDto> _tournaments;
         private List<TournamentDto> _allTournaments;
@@ -75,12 +81,72 @@ namespace KarateSystem.ViewModel
         public ICommand AddCatKataFromTourCommand { get; }
         public ICommand AddCatKumiteFromTourCommand { get; }
         public ICommand AddCompToTourCommand { get; }
-        public ICommand ChoseTourToSetCompToCAtCommand { get; }
+        public ICommand ChoseTourToSetCompToCatCommand { get; }
+        public ICommand SetCompToTourCatKataCommand { get;  }
+        public ICommand SetCompToTourCatKumiteCommand { get;  }
+        public ICommand DeleteCompFromTourCatKataCommand { get;  }
+        public ICommand DeleteCompFromTourCatKumiteCommand { get;  }
         #endregion
 
         #region Properties
         public ObservableCollection<string> FilterTypes { get; set; } = new() { "", "Płeć", "Stopień", "Klub" };
         public ObservableCollection<string> FilterValues { get; set; } = new();
+        public TourCompetitorDto SelectedCompTourCatKata
+        {
+            get => _selectedCompTourCatKata;
+            set
+            {
+                _selectedCompTourCatKata = value;
+                OnPropertyChanged(nameof(SelectedCompTourCatKata));
+            }
+        }
+        public TourCompetitorDto SelectedCompTourCatKumite
+        {
+            get => _selectedCompTourCatKumite;
+            set
+            {
+                _selectedCompTourCatKumite = value;
+                OnPropertyChanged(nameof(SelectedCompTourCatKumite));
+            }
+        }
+        public ObservableCollection<TourCompetitorDto> CompTourCatKata
+        {
+            get => _compTourCatKata;
+            set
+            {
+                _compTourCatKata = value;
+                OnPropertyChanged(nameof(CompTourCatKata));
+            }
+        }
+        public ObservableCollection<TourCompetitorDto> CompTourCatKumite
+        {
+            get => _compTourCatKumite;
+            set
+            {
+                _compTourCatKumite = value;
+                OnPropertyChanged(nameof(CompTourCatKumite));
+            }
+        }
+        public TourCatKumiteDto SelectedTourCatKumite
+        {
+            get => _selectedTourCatKumite;
+            set
+            {
+                _selectedTourCatKumite = value;
+                OnPropertyChanged(nameof(SelectedTourCatKumite));
+                LoadCompetitorsForKumiteCategoryAsync();
+            }
+        }
+        public TourCatKataDto SelectedTourCatKata
+        {
+            get => _selectedTourCatKata;
+            set
+            {
+                _selectedTourCatKata = value;
+                OnPropertyChanged(nameof(SelectedTourCatKata));
+                LoadCompetitorsForKataCategoryAsync();
+            }
+        }
         public ObservableCollection<TourCatKataDto> TourCatKatas
         {
             get => _tourCatKatas;
@@ -362,7 +428,11 @@ namespace KarateSystem.ViewModel
             AddCompToTourCommand = new ViewModelCommand(ExecuteAddCompToTourCommand);
 
             //Second tab
-            ChoseTourToSetCompToCAtCommand = new ViewModelCommand(ExecuteFillCatInTourCommand);
+            ChoseTourToSetCompToCatCommand = new ViewModelCommand(ExecuteFillCatInTourCommand);
+            SetCompToTourCatKataCommand = new ViewModelCommand(ExecuteAddCompToTourCatKataCommand, CanAddCompToTourCatKata);
+            SetCompToTourCatKumiteCommand = new ViewModelCommand(ExecuteAddCompToTourCatKumiteCommand, CanAddCompToTourCatKumite);
+            DeleteCatKataFromTourCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKataCommand, CanDeleteCompToTourCatKata);
+            DeleteCatKumiteFromTourCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKumiteCommand, CanDeleteCompToTourCatKumite);
 
             WeakEventManager<IKataCategoryRepository, EventArgs>
             .AddHandler(_kataCategoryRepository, nameof(IKataCategoryRepository.KataCatChanged), OnKataCatChanged);
@@ -737,6 +807,10 @@ namespace KarateSystem.ViewModel
         #endregion
 
         #region SecondTab
+        private bool CanAddCompToTourCatKata(object obj) => SelectedTourToSetCompToCat != null && SelectedTourCatKata != null;
+        private bool CanAddCompToTourCatKumite(object obj) => SelectedTourToSetCompToCat != null && SelectedTourCatKumite != null;
+        private bool CanDeleteCompToTourCatKata(object obj) => SelectedTourCatKata != null;
+        private bool CanDeleteCompToTourCatKumite(object obj) => SelectedTourCatKumite != null;
         private async void ExecuteFillCatInTourCommand(object obj)
         {
             if(SelectedTourToSetCompToCat == null) return;
@@ -744,6 +818,132 @@ namespace KarateSystem.ViewModel
                 await _tourCatKumiteRepository.GetCatKumiteByIdTourAsync(SelectedTourToSetCompToCat.TourId));
             TourCatKatas = new ObservableCollection<TourCatKataDto>(
                 await _tourCatKataRepository.GetCatKataByIdTourAsync(SelectedTourToSetCompToCat.TourId));
+        }
+        private async void LoadCompetitorsForKataCategoryAsync()
+        {
+            if (SelectedTourCatKata == null) return;
+
+            var competitorsKata = await _tourCompetitorRepository
+                .GetCompetitorToursByCatKataIdAsync(SelectedTourCatKata.TourCatKataId);
+            CompTourCatKata = new ObservableCollection<TourCompetitorDto>(competitorsKata);
+        }
+        private async void LoadCompetitorsForKumiteCategoryAsync()
+        {
+            if(SelectedTourCatKumite == null) return;
+
+            var competitorsKumite = await _tourCompetitorRepository
+                .GetCompetitorToursByCatKumiteIdAsync(SelectedTourCatKumite.TourCatKumiteId);
+            CompTourCatKumite = new ObservableCollection<TourCompetitorDto>(competitorsKumite);
+        }
+
+        private async void ExecuteAddCompToTourCatKataCommand(object obj)
+        {
+            var setCompWindow = _serviceProvider.GetRequiredService<SetCompToCatTourView>();
+            var viewModel = setCompWindow.DataContext as SetCompToCatTourViewModel;
+
+            if (viewModel != null && SelectedTourToSetCompToCat != null && SelectedTourCatKata != null)
+            {
+                viewModel.TourId = SelectedTourToSetCompToCat.TourId;
+                await viewModel.LoadAsync();
+            }
+
+            var kataCatId = SelectedTourCatKata.TourCatKataId;
+
+            if (setCompWindow.ShowDialog() == true)
+            {
+                var selected = viewModel.SelectedCompetitors;
+
+                try
+                {
+                    foreach (var comp in selected)
+                    {
+                        if (CompTourCatKata.Any(c => c.CompId == comp.CompId))
+                        {
+                            MessageBox.Show($"Zawodnik {comp.CompFirstName} {comp.CompLastName} już został dodany do tej kategorii.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            continue;
+                        }
+                        await _tourCompetitorRepository.AddCompToTourCatKata(comp, kataCatId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas dodawania zawodnika do kategori kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            var competitorsKata = await _tourCompetitorRepository
+                .GetCompetitorToursByCatKataIdAsync(SelectedTourCatKata.TourCatKataId);
+            CompTourCatKata = new ObservableCollection<TourCompetitorDto>(competitorsKata);
+        }
+
+        private async void ExecuteAddCompToTourCatKumiteCommand(object obj)
+        {
+            var setCompWindow = _serviceProvider.GetRequiredService<SetCompToCatTourView>();
+            var viewModel = setCompWindow.DataContext as SetCompToCatTourViewModel;
+
+            if (viewModel != null && SelectedTourToSetCompToCat != null && SelectedTourCatKumite != null)
+            {
+                viewModel.TourId = SelectedTourToSetCompToCat.TourId;
+                await viewModel.LoadAsync();
+            }
+
+            var kumiteCatId = SelectedTourCatKumite.TourCatKumiteId;
+
+            if (setCompWindow.ShowDialog() == true)
+            {
+                var selected = viewModel.SelectedCompetitors;
+
+                try
+                {
+                    foreach (var comp in selected)
+                    {
+                        if (CompTourCatKata.Any(c => c.CompId == comp.CompId))
+                        {
+                            MessageBox.Show($"Zawodnik {comp.CompFirstName} {comp.CompLastName} już został dodany do tej kategorii.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            continue;
+                        }
+                        await _tourCompetitorRepository.AddCompToTourCatKumite(comp, kumiteCatId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Wystąpił błąd podczas dodawania zawodnika do kategori kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            var competitorsKumite = await _tourCompetitorRepository
+                .GetCompetitorToursByCatKumiteIdAsync(SelectedTourCatKumite.TourCatKumiteId);
+            CompTourCatKumite = new ObservableCollection<TourCompetitorDto>(competitorsKumite);
+        }
+        private async void ExecuteDeleteCompFromTourCatKataCommand(object obj)
+        {
+            if (SelectedCompTourCatKata == null) return;
+            try
+            {
+                await _tourCompetitorRepository.DeleteCompFromTourCatKata(SelectedCompTourCatKata);
+                var competitorsKata = await _tourCompetitorRepository
+                    .GetCompetitorToursByCatKataIdAsync(SelectedTourCatKata.TourCatKataId);
+                CompTourCatKata = new ObservableCollection<TourCompetitorDto>(competitorsKata);
+                SelectedCompTourCatKata = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania zawodnika z kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void ExecuteDeleteCompFromTourCatKumiteCommand(object obj)
+        {
+            if (SelectedCompTourCatKumite == null) return;
+            try
+            {
+                await _tourCompetitorRepository.DeleteCompFromTourCatKumite(SelectedCompTourCatKumite);
+                var competitorsKumite = await _tourCompetitorRepository
+                    .GetCompetitorToursByCatKumiteIdAsync(SelectedTourCatKumite.TourCatKumiteId);
+                CompTourCatKumite = new ObservableCollection<TourCompetitorDto>(competitorsKumite);
+                SelectedCompTourCatKumite = null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania zawodnika z kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         #endregion
     }

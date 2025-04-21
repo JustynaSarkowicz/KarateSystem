@@ -603,7 +603,7 @@
 
                                 <Button x:Name="btnSetTour"
                                         Width="70"
-                                        Command="{Binding ChoseTourToSetCompToCAtCommand}"
+                                        Command="{Binding ChoseTourToSetCompToCatCommand}"
                                         Content="Wybierz"
                                         Margin="10,0,0,0"
                                         FontSize="12"
@@ -642,6 +642,7 @@
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="10,0,0,0"
                                   ItemsSource="{Binding TourCatKatas}"
+                                  SelectedItem="{Binding SelectedTourCatKata}"
                                   DisplayMemberPath="KataCatName"/>
 
                     </StackPanel>
@@ -666,17 +667,20 @@
                                           ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                                           CellStyle="{DynamicResource DataGridCellStyle1}" 
                                           Style="{DynamicResource DataGridStyle1}"
-                                          Height="265">
+                                          Height="265"
+                                          ItemsSource="{Binding CompTourCatKata}"
+                                          SelectedItem="{Binding SelectedCompTourCatKata}"
+                                          SelectionMode="Single">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopień"/>
-                                        <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Klub"/>
+                                        <DataGridTextColumn Binding="{Binding CompId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" Width="50"/>
+                                        <DataGridTextColumn Binding="{Binding CompFirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Imię" Width="150"/>
+                                        <DataGridTextColumn Binding="{Binding CompLastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwisko" Width="150"/>
+                                        <DataGridTextColumn Binding="{Binding CompDateOfBirth, StringFormat='dd.MM.yyyy', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia" Width="120"/>
+                                        <DataGridTextColumn Binding="{Binding CompAge, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek" Width="70"/>
+                                        <DataGridTextColumn Binding="{Binding GenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć" Width="120"/>
+                                        <DataGridTextColumn Binding="{Binding CompWeight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga" Width="80"/>
+                                        <DataGridTextColumn Binding="{Binding DegreeName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Stopień" Width="100"/>
+                                        <DataGridTextColumn Binding="{Binding ClubName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Klub" Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>
@@ -684,7 +688,7 @@
                             <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,0">
                                 <Button x:Name="btnAddCompToCatKata" 
                                         Grid.Column="1"
-                                        Command="{Binding LoginCommand}"                            
+                                        Command="{Binding SetCompToTourCatKataCommand}"                            
                                         Content="Dodaj zawodnika"                            
                                         FontSize="12"
                                         FontFamily="Montserrat"
@@ -697,7 +701,7 @@
 
                                 <Button x:Name="btnDeleteCompFromCatKata" 
                                         Grid.Column="1"
-                                        Command="{Binding LoginCommand}"                            
+                                        Command="{Binding DeleteCatKataFromTourCommand}"                            
                                         Content="Usuń zawodnika"                            
                                         FontSize="12"
                                         FontFamily="Montserrat"
@@ -724,6 +728,7 @@
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="10,0,0,0"
                                   ItemsSource="{Binding TourCatKumites}"
+                                  SelectedItem="{Binding SelectedTourCatKumite}"
                                   DisplayMemberPath="KumiteCatName"/>
 
                     </StackPanel>
@@ -747,17 +752,20 @@
                                       ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                                       CellStyle="{DynamicResource DataGridCellStyle1}" 
                                       Style="{DynamicResource DataGridStyle1}"
-                                      Height="265">
+                                      Height="265"
+                                      ItemsSource="{Binding CompTourCatKumite}"
+                                      SelectionMode="Single"
+                                      SelectedItem="{Binding SelectedCompTourCatKumite}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia"/>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Wiek"/>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Płeć"/>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Waga"/>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Stopień"/>
-                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Klub"/>
+                                    <DataGridTextColumn Binding="{Binding CompId, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="ID" Width="50"/>
+                                    <DataGridTextColumn Binding="{Binding CompFirstName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Imię" Width="150"/>
+                                    <DataGridTextColumn Binding="{Binding CompLastName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwisko" Width="150"/>
+                                    <DataGridTextColumn Binding="{Binding CompDateOfBirth, StringFormat='dd.MM.yyyy', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Data Urodzenia" Width="120"/>
+                                    <DataGridTextColumn Binding="{Binding CompAge, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wiek" Width="70"/>
+                                    <DataGridTextColumn Binding="{Binding GenderDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Płeć" Width="120"/>
+                                    <DataGridTextColumn Binding="{Binding CompWeight, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Waga" Width="80"/>
+                                    <DataGridTextColumn Binding="{Binding DegreeName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Stopień" Width="100"/>
+                                    <DataGridTextColumn Binding="{Binding ClubName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Klub" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </StackPanel>
@@ -765,7 +773,7 @@
                         <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,0">
                             <Button x:Name="btnAddCompToCatKumite" 
                                     Grid.Column="1"
-                                    Command="{Binding LoginCommand}"                            
+                                    Command="{Binding SetCompToTourCatKumiteCommand}"                            
                                     Content="Dodaj zawodnika"                            
                                     FontSize="12"
                                     FontFamily="Montserrat"
@@ -778,7 +786,7 @@
 
                             <Button x:Name="btnDeleteCompFromCatKumite" 
                                     Grid.Column="1"
-                                    Command="{Binding LoginCommand}"                            
+                                    Command="{Binding DeleteCatKumiteFromTourCommand}"                            
                                     Content="Usuń zawodnika"                            
                                     FontSize="12"
                                     FontFamily="Montserrat"

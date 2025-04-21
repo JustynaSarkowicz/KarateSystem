@@ -58,6 +58,7 @@ namespace KarateSystem
             services.AddTransient<LoginViewModel>();
             services.AddTransient<TournamentViewModel>();
             services.AddTransient<AddCompetitorsViewModel>();
+            services.AddTransient<SetCompToCatTourViewModel>();
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddTransient<MainWindow>(provider => new MainWindow()
@@ -67,6 +68,10 @@ namespace KarateSystem
             services.AddTransient<AddCompetitorsView>(provider => new AddCompetitorsView()
             {
                 DataContext = provider.GetRequiredService<AddCompetitorsViewModel>() 
+            });
+            services.AddTransient<SetCompToCatTourView>(provider => new SetCompToCatTourView()
+            {
+                DataContext = provider.GetRequiredService<SetCompToCatTourViewModel>() 
             });
             services.AddTransient<LoginView>(provider => new LoginView()
             {

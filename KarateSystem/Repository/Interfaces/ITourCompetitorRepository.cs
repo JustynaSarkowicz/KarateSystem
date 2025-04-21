@@ -13,5 +13,11 @@ namespace KarateSystem.Repository.Interfaces
         Task<List<TourCompetitorDto>> GetCompetitorToursByIdCompAsync(int compId);
         Task DeleteTourComp(int tourCompId);
         Task AddCompToTour(TourCompetitorDto tourCompetitor);
+        Task<List<TourCompetitorDto>> GetCompetitorToursByCatKataIdAsync(int catKataId);
+        Task<List<TourCompetitorDto>> GetCompetitorToursByCatKumiteIdAsync(int catKumiteId);
+        Task AddCompToTourCatKata(TourCompetitorDto tourCompetitor, int kataCatId);
+        Task AddCompToTourCatKumite(TourCompetitorDto tourCompetitor, int kumiteCatId);
+        Task DeleteCompFromTourCatKumite(TourCompetitorDto tourCompetitor);
+        Task DeleteCompFromTourCatKata(TourCompetitorDto tourCompetitor);
     }
 }
