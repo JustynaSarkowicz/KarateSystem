@@ -826,7 +826,11 @@ namespace KarateSystem.ViewModel
         }
         private async void LoadCompetitorsForKataCategoryAsync()
         {
-            if (SelectedTourCatKata == null) return;
+            if (SelectedTourCatKata == null)
+            {
+                CompTourCatKata = new ObservableCollection<TourCompetitorDto>();
+                return;
+            }
 
             var competitorsKata = await _tourCompetitorRepository
                 .GetCompetitorToursByCatKataIdAsync(SelectedTourCatKata.TourCatKataId);
@@ -834,7 +838,11 @@ namespace KarateSystem.ViewModel
         }
         private async void LoadCompetitorsForKumiteCategoryAsync()
         {
-            if(SelectedTourCatKumite == null) return;
+            if(SelectedTourCatKumite == null)
+            {
+                CompTourCatKumite = new ObservableCollection<TourCompetitorDto>();
+                return;
+            }
 
             var competitorsKumite = await _tourCompetitorRepository
                 .GetCompetitorToursByCatKumiteIdAsync(SelectedTourCatKumite.TourCatKumiteId);
@@ -862,7 +870,7 @@ namespace KarateSystem.ViewModel
                 {
                     foreach (var comp in selected)
                     {
-                        if (CompTourCatKata.Any(c => c.CompId == comp.CompId))
+                        if (CompTourCatKata.Any(c => c.CompId == comp.CompId && c.TourId == SelectedTourToSetCompToCat.TourId))
                         {
                             MessageBox.Show($"Zawodnik {comp.CompFirstName} {comp.CompLastName} już został dodany do tej kategorii.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
                             continue;
@@ -901,7 +909,7 @@ namespace KarateSystem.ViewModel
                 {
                     foreach (var comp in selected)
                     {
-                        if (CompTourCatKata.Any(c => c.CompId == comp.CompId))
+                        if (CompTourCatKumite.Any(c => c.CompId == comp.CompId && c.TourId == SelectedTourToSetCompToCat.TourId))
                         {
                             MessageBox.Show($"Zawodnik {comp.CompFirstName} {comp.CompLastName} już został dodany do tej kategorii.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
                             continue;
@@ -956,7 +964,8 @@ namespace KarateSystem.ViewModel
             if (SelectedTourToSetCompToCat == null) return;
             try
             {
-                await _tourCompetitorRepository.SetCompToCatKataAutomatic(SelectedTourToSetCompToCat.TourId);
+                var result = await _tourCompetitorRepository.SetCompToCatKataAutomatic(SelectedTourToSetCompToCat.TourId);
+                MessageBox.Show(result, "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -968,7 +977,8 @@ namespace KarateSystem.ViewModel
             if (SelectedTourToSetCompToCat == null) return;
             try
             {
-                await _tourCompetitorRepository.SetCompToKumiteCatAutomatic(SelectedTourToSetCompToCat.TourId);
+                var result = await _tourCompetitorRepository.SetCompToKumiteCatAutomatic(SelectedTourToSetCompToCat.TourId);
+                MessageBox.Show(result, "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

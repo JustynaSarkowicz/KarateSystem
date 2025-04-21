@@ -5,6 +5,7 @@ using KarateSystem.Misc;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace KarateSystem.Repository
 {
@@ -128,8 +129,9 @@ namespace KarateSystem.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task SetCompToCatKataAutomatic(int tourId)
+        public async Task<string> SetCompToCatKataAutomatic(int tourId)
         {
+            int i = 0;
             var competitors = await _dbContext.TourCompetitors
                 .Include(tc => tc.Competitor)
                 .Where(tc => tc.TourId == tourId && tc.TourCatKataId == null)
@@ -156,13 +158,16 @@ namespace KarateSystem.Repository
                 if (matchedCategory != null)
                 {
                     comp.TourCatKataId = matchedCategory.TourCatKataId;
+                    i++;
                 }
             }
 
             await _dbContext.SaveChangesAsync();
+            return $"Udało się dopasować {i}/{competitors.Count()} zawodników do kategorii kata.";
         }
-        public async Task SetCompToKumiteCatAutomatic(int tourId)
+        public async Task<string> SetCompToKumiteCatAutomatic(int tourId)
         {
+            int i = 0;
             var competitors = await _dbContext.TourCompetitors
                 .Include(tc => tc.Competitor)
                 .Where(tc => tc.TourId == tourId && tc.TourCatKumiteId == null)
@@ -189,10 +194,12 @@ namespace KarateSystem.Repository
                 if (matchedCategory != null)
                 {
                     comp.TourCatKumiteId = matchedCategory.TourCatKumiteId;
+                    i++;
                 }
             }
 
             await _dbContext.SaveChangesAsync();
+            return $"Udało się dopasować {i}/{competitors.Count()} zawodników do kategorii kumite.";
         }
     }
 }
