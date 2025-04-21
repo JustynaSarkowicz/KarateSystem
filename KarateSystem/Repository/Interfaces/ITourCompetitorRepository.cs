@@ -19,5 +19,7 @@ namespace KarateSystem.Repository.Interfaces
         Task AddCompToTourCatKumite(TourCompetitorDto tourCompetitor, int kumiteCatId);
         Task DeleteCompFromTourCatKumite(TourCompetitorDto tourCompetitor);
         Task DeleteCompFromTourCatKata(TourCompetitorDto tourCompetitor);
+        Task SetCompToCatKataAutomatic(int tourId);
+        Task SetCompToKumiteCatAutomatic(int tourId);
     }
 }

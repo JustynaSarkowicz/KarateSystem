@@ -1,4 +1,5 @@
-﻿using KarateSystem.Models;
+﻿using KarateSystem.Misc;
+using KarateSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,7 @@ namespace KarateSystem.Dto
         {
             get
             {
-                var today = DateTime.Today;
-                var age = today.Year - CompDateOfBirth.Year;
-                if (CompDateOfBirth.Date > today.AddYears(-age)) age--;
-                return age;
+                return Helper.CalculateAge(CompDateOfBirth);
             }
         }
         public bool CompGender { get; set; }

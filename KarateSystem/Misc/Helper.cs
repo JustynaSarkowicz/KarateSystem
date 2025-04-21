@@ -46,15 +46,20 @@ namespace KarateSystem.Misc
            new StatusOption("Otwarty", 2),
            new StatusOption("Zakończony", 3)
         };
-
         public record StatusOption(string DisplayName, int Value);
         public static List<RoleOption> RoleOptionsList { get; } = new()
         {       
            new RoleOption("Obsługa"),
            new RoleOption("Admin")
         };
-
         public record RoleOption(string DisplayName);
+        public static int CalculateAge(DateTime birthDate)
+        {
+            var today = DateTime.Today;
+            var age = today.Year - birthDate.Year;
+            if (birthDate.Date > today.AddYears(-age)) age--;
+            return age;
+        }
         public static string Decrypt(this string cipherText)
         {
             try

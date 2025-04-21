@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KarateSystem.Configurations;
 using KarateSystem.Dto;
+using KarateSystem.Misc;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -124,6 +125,73 @@ namespace KarateSystem.Repository
 
             tourComp.TourCatKumiteId = null;
             _dbContext.TourCompetitors.Update(tourComp);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task SetCompToCatKataAutomatic(int tourId)
+        {
+            var competitors = await _dbContext.TourCompetitors
+                .Include(tc => tc.Competitor)
+                .Where(tc => tc.TourId == tourId && tc.TourCatKataId == null)
+                .ToListAsync();
+
+            var kataCategories = await _dbContext.TourCatKatas
+                .Include(tck => tck.KataCategory)
+                    .ThenInclude(kc => kc.CatKataDegrees)
+                .Where(tck => tck.TourId == tourId)
+                .ToListAsync();
+
+            foreach (var comp in competitors)
+            {
+                var age = Helper.CalculateAge(comp.Competitor.CompDateOfBirth);
+                var gender = comp.Competitor.CompGender;
+                var degreeId = comp.Competitor.CompDegreeId;
+
+                var matchedCategory = kataCategories.FirstOrDefault(cat =>
+                    age >= cat.KataCategory.KataCatAgeMin &&
+                    age <= cat.KataCategory.KataCatAgeMax &&
+                    (cat.KataCategory.KataCatGender == null || cat.KataCategory.KataCatGender == gender) &&
+                    cat.KataCategory.CatKataDegrees.Any(d => d.DegreeId == degreeId));
+
+                if (matchedCategory != null)
+                {
+                    comp.TourCatKataId = matchedCategory.TourCatKataId;
+                }
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task SetCompToKumiteCatAutomatic(int tourId)
+        {
+            var competitors = await _dbContext.TourCompetitors
+                .Include(tc => tc.Competitor)
+                .Where(tc => tc.TourId == tourId && tc.TourCatKumiteId == null)
+                .ToListAsync();
+
+            var kumiteCategories = await _dbContext.TourCatKumites
+                .Include(tck => tck.KumiteCategory)
+                .Where(tck => tck.TourId == tourId)
+                .ToListAsync();
+
+            foreach (var comp in competitors)
+            {
+                var age = Helper.CalculateAge(comp.Competitor.CompDateOfBirth);
+                var gender = comp.Competitor.CompGender;
+                var weight = comp.Competitor.CompWeight;
+
+                var matchedCategory = kumiteCategories.FirstOrDefault(cat =>
+                    age >= cat.KumiteCategory.KumiteCatAgeMin &&
+                    age <= cat.KumiteCategory.KumiteCatAgeMax &&
+                    gender == cat.KumiteCategory.KumiteCatGender &&
+                    weight >= cat.KumiteCategory.KumiteCatWeightMin &&
+                    weight <= cat.KumiteCategory.KumiteCatWeightMax);
+
+                if (matchedCategory != null)
+                {
+                    comp.TourCatKumiteId = matchedCategory.TourCatKumiteId;
+                }
+            }
+
             await _dbContext.SaveChangesAsync();
         }
     }

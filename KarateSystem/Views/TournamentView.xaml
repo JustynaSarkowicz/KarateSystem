@@ -583,7 +583,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="410"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
@@ -614,18 +614,35 @@
                                         Style="{StaticResource contentButton}"/>
 
                             </StackPanel>
+                            <StackPanel Grid.Column="1"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center">
+                                <Button x:Name="btnSetAutomaticCompToCatKata" 
+                                        Command="{Binding SetCompAutomaticCatKata}"
+                                        Content="Przypisz automatycznie - KATA"  
+                                        Width="200"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource contentButton}"/>
 
-                            <Button x:Name="btnSetAutomaticCompToCat" 
-                                    Grid.Column="1"
-                                    Command="{Binding LoginCommand}"                            
-                                    Content="Przypisz automatycznie"                            
-                                    FontSize="12"
-                                    FontFamily="Montserrat"
-                                    Cursor="Hand"
-                                    BorderThickness="0"
-                                    Foreground="White"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource contentButton}"/>
+                                <Button x:Name="btnSetAutomaticCompToCatKumite" 
+                                        Command="{Binding SetCompAutomaticCatKumite}"                            
+                                        Content="Przypisz automatycznie - KUMITE"                            
+                                        FontSize="12"
+                                        Width="200"
+                                        Margin="10,0,0,0"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource contentButton}"/>
+                            </StackPanel>
                         </Grid>
                     </Border>
 

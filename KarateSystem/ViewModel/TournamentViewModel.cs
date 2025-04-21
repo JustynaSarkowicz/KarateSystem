@@ -86,6 +86,8 @@ namespace KarateSystem.ViewModel
         public ICommand SetCompToTourCatKumiteCommand { get;  }
         public ICommand DeleteCompFromTourCatKataCommand { get;  }
         public ICommand DeleteCompFromTourCatKumiteCommand { get;  }
+        public ICommand SetCompAutomaticCatKata { get; }
+        public ICommand SetCompAutomaticCatKumite { get; }
         #endregion
 
         #region Properties
@@ -433,6 +435,8 @@ namespace KarateSystem.ViewModel
             SetCompToTourCatKumiteCommand = new ViewModelCommand(ExecuteAddCompToTourCatKumiteCommand, CanAddCompToTourCatKumite);
             DeleteCatKataFromTourCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKataCommand, CanDeleteCompToTourCatKata);
             DeleteCatKumiteFromTourCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKumiteCommand, CanDeleteCompToTourCatKumite);
+            SetCompAutomaticCatKata = new ViewModelCommand(ExecuteSetCompAutomaticCatKataCommand, CanSetCompAutomatic);
+            SetCompAutomaticCatKumite = new ViewModelCommand(ExecuteSetCompAutomaticCatKumiteCommand, CanSetCompAutomatic);
 
             WeakEventManager<IKataCategoryRepository, EventArgs>
             .AddHandler(_kataCategoryRepository, nameof(IKataCategoryRepository.KataCatChanged), OnKataCatChanged);
@@ -811,6 +815,7 @@ namespace KarateSystem.ViewModel
         private bool CanAddCompToTourCatKumite(object obj) => SelectedTourToSetCompToCat != null && SelectedTourCatKumite != null;
         private bool CanDeleteCompToTourCatKata(object obj) => SelectedTourCatKata != null;
         private bool CanDeleteCompToTourCatKumite(object obj) => SelectedTourCatKumite != null;
+        private bool CanSetCompAutomatic (object obj) => SelectedTourToSetCompToCat != null;
         private async void ExecuteFillCatInTourCommand(object obj)
         {
             if(SelectedTourToSetCompToCat == null) return;
@@ -943,6 +948,31 @@ namespace KarateSystem.ViewModel
             catch (Exception ex)
             {
                 MessageBox.Show($"Wystąpił błąd podczas usuwania zawodnika z kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void ExecuteSetCompAutomaticCatKataCommand(object obj)
+        {
+            if (SelectedTourToSetCompToCat == null) return;
+            try
+            {
+                await _tourCompetitorRepository.SetCompToCatKataAutomatic(SelectedTourToSetCompToCat.TourId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas automatycznego przypisywania zawodników do kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void ExecuteSetCompAutomaticCatKumiteCommand(object obj)
+        {
+            if (SelectedTourToSetCompToCat == null) return;
+            try
+            {
+                await _tourCompetitorRepository.SetCompToKumiteCatAutomatic(SelectedTourToSetCompToCat.TourId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas automatycznego przypisywania zawodników do kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion
