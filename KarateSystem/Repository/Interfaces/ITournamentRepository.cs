@@ -12,5 +12,6 @@ namespace KarateSystem.Repository.Interfaces
         Task AddTourAsync(TournamentDto tournament);
         Task<List<TournamentDto>> GetAllTournamentsAsync();
         Task UpdateTournamentAsync(TournamentDto tournament);
+        Task<TournamentDto> GetLastFinishedTournament();
     }
 }

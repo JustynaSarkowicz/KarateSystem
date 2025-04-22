@@ -59,6 +59,7 @@ namespace KarateSystem
             services.AddTransient<TournamentViewModel>();
             services.AddTransient<AddCompetitorsViewModel>();
             services.AddTransient<SetCompToCatTourViewModel>();
+            services.AddTransient<HomeViewModel>();
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddTransient<MainWindow>(provider => new MainWindow()

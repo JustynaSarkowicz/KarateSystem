@@ -42,5 +42,6 @@ namespace KarateSystem.Dto
         public string? KataCatName { get; set; }
         public int? TourCatKumiteId { get; set; }
         public string? KumiteCatName { get; set; }
+        public int? KataId { get; set; }
     }
 }

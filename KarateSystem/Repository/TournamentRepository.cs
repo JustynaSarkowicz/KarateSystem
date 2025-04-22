@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KarateSystem.Configurations;
 using KarateSystem.Dto;
+using KarateSystem.Misc;
 using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -72,6 +73,28 @@ namespace KarateSystem.Repository
 
             _dbContext.Tournaments.Update(existingTour);
             await _dbContext.SaveChangesAsync();
+        }
+        public async Task<TournamentDto> GetLastFinishedTournament()
+        {
+            var status = Helper.StatusOptionsList.Where(opt => opt.DisplayName == "Zakończony").Select(opt => opt.Value).FirstOrDefault();
+            var lastTour = await _dbContext.Tournaments
+                .Include(t => t.TourCatKatas)
+                    .ThenInclude(t => t.KataCategory)
+                .Include(t => t.TourCatKumites)
+                    .ThenInclude(t => t.KumiteCategory)
+                .Include(t => t.TourCompetitors)
+                    .ThenInclude(t => t.Competitor)
+                    .ThenInclude(t => t.Club)
+                .Include(t => t.TourCompetitors)
+                    .ThenInclude(t => t.Kata)
+                .Where(t => t.Status == status)
+                .OrderByDescending(t => t.TourDate)
+                .FirstOrDefaultAsync();
+            if(lastTour == null)
+            {
+                return null;
+            }
+            return _mapper.Map<TournamentDto>(lastTour);
         }
     }
 }

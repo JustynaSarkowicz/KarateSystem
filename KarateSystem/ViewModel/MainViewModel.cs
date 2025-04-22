@@ -21,6 +21,7 @@ namespace KarateSystem.ViewModel
         private readonly CategoryViewModel _categoryViewModel;
         private readonly SettingsViewModel _settingsViewModel;
         private readonly TournamentViewModel _tournamentViewModel;
+        private readonly HomeViewModel _homeViewModel;
 
         private readonly IUserRepository _userRepository;
         #endregion
@@ -93,6 +94,7 @@ namespace KarateSystem.ViewModel
             CategoryViewModel categoryViewModel,
             SettingsViewModel settingsViewModel,
             TournamentViewModel tournamentViewModel,
+            HomeViewModel homeViewModel,
             IUserRepository userRepository)
         {
             _competitorsViewModel = competitorsViewModel;
@@ -101,6 +103,7 @@ namespace KarateSystem.ViewModel
             _settingsViewModel = settingsViewModel;
             _userRepository = userRepository;
             _tournamentViewModel = tournamentViewModel;
+            _homeViewModel = homeViewModel;
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowCompetitorViewCommand = new ViewModelCommand(ExecuteShowCompetitorViewCommand);
@@ -146,7 +149,7 @@ namespace KarateSystem.ViewModel
 
         private void ExecuteShowHomeViewCommand(object obj)
         {
-            CurrentChildView = new HomeViewModel();
+            CurrentChildView = _homeViewModel;
             Caption = "Strona Główna";
             Icon = IconChar.Home;
         }
