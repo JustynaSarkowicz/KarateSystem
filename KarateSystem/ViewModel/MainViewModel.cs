@@ -15,6 +15,9 @@ namespace KarateSystem.ViewModel
         private UserDto _user;
         private string _caption;
         private IconChar _icon;
+        public bool IsAdmin => User?.UserRole == "Admin";
+        public bool IsService => User?.UserRole == "Obsluga" || User?.UserRole == "Admin";
+
 
         private readonly CompetitorsViewModel _competitorsViewModel;
         private readonly ClubsDegreesMatsViewModel _clubsDegreesMatsViewModel;
@@ -38,6 +41,8 @@ namespace KarateSystem.ViewModel
             {
                 _user = value;
                 OnPropertyChanged(nameof(User));
+                OnPropertyChanged(nameof(IsAdmin));
+                OnPropertyChanged(nameof(IsService));
             }
         }
         public ViewModelBase CurrentChildView
@@ -135,6 +140,7 @@ namespace KarateSystem.ViewModel
                 {
                     UserFirstName = user.UserFirstName,
                     UserLastName = user.UserLastName,
+                    UserRole = user.UserRole
                 };
             }
             else

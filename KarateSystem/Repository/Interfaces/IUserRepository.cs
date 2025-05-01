@@ -14,7 +14,7 @@ namespace KarateSystem.Repository.Interfaces
         Task AddUserAsync(UserDto user);
         Task UpdateUserAsync(UserDto user);
         Task DeleteUserAsync(int userId);
-        bool AuthenticateUser(NetworkCredential credential);
+        Task<UserDto?> AuthenticateUser(NetworkCredential credential);
         Task<UserDto> GetUserDtoByName(string username);
     }
 }

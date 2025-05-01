@@ -81,17 +81,17 @@ namespace KarateSystem.Repository
             await _dbContext.SaveChangesAsync();
         }
 
-        public bool AuthenticateUser(NetworkCredential credential)
+        public async Task<UserDto?> AuthenticateUser(NetworkCredential credential)
         {
-            var adminRole = RoleOptionsList.FirstOrDefault(c => c.DisplayName == "Admin").DisplayName;
-            var user = _dbContext.Users
-                .AsEnumerable()
-                .FirstOrDefault(u =>
-                    u.UserLogin == credential.UserName &&
-                    u.UserPass.Decrypt() == credential.Password &&
-                    u.UserRole == adminRole.ToString());
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.UserLogin == credential.UserName);
 
-            return user != null;
+            if (user != null && user.UserPass.Decrypt() == credential.Password)
+            {
+                return _mapper.Map<UserDto>(user);
+            }
+
+            return null;
         }
 
         public async Task<UserDto> GetUserDtoByName(string username)

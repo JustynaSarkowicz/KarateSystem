@@ -73,12 +73,12 @@ namespace KarateSystem.ViewModel
                    Password.Length >= 3;
         }
 
-        private void ExecuteLoginCommand(object obj)
+        private async void ExecuteLoginCommand(object obj)
         {
-            var isValidUser = _userRepository.AuthenticateUser(
+            var user = await _userRepository.AuthenticateUser(
                 new NetworkCredential(Username, Password));
 
-            if (!isValidUser)
+            if (user == null)
             {
                 ErrorMessage = "Nieprawidłowa nazwa lub hasło.";
                 return;
@@ -86,7 +86,7 @@ namespace KarateSystem.ViewModel
 
             // Authentication successful
             Thread.CurrentPrincipal = new GenericPrincipal(
-                new GenericIdentity(Username), null);
+                new GenericIdentity(Username), new[] {user.UserRole});
 
             Application.Current.Dispatcher.Invoke(() =>
             {
