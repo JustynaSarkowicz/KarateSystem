@@ -433,8 +433,8 @@ namespace KarateSystem.ViewModel
             ChoseTourToSetCompToCatCommand = new ViewModelCommand(ExecuteFillCatInTourCommand);
             SetCompToTourCatKataCommand = new ViewModelCommand(ExecuteAddCompToTourCatKataCommand, CanAddCompToTourCatKata);
             SetCompToTourCatKumiteCommand = new ViewModelCommand(ExecuteAddCompToTourCatKumiteCommand, CanAddCompToTourCatKumite);
-            DeleteCatKataFromTourCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKataCommand, CanDeleteCompToTourCatKata);
-            DeleteCatKumiteFromTourCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKumiteCommand, CanDeleteCompToTourCatKumite);
+            DeleteCompFromTourCatKataCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKataCommand, CanDeleteCompToTourCatKata);
+            DeleteCompFromTourCatKumiteCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKumiteCommand, CanDeleteCompToTourCatKumite);
             SetCompAutomaticCatKata = new ViewModelCommand(ExecuteSetCompAutomaticCatKataCommand, CanSetCompAutomatic);
             SetCompAutomaticCatKumite = new ViewModelCommand(ExecuteSetCompAutomaticCatKumiteCommand, CanSetCompAutomatic);
 
@@ -445,12 +445,12 @@ namespace KarateSystem.ViewModel
             WeakEventManager<IMatRepository, EventArgs>
             .AddHandler(_matRepository, nameof(IMatRepository.MatsChanged), OnMatChanged);
 
-            LoadAsync();
+            _ = LoadAsync();
         }
 
-        public async void LoadAsync()
+        public async Task LoadAsync()
         {
-            _allTournaments = await _tournamentRepository.GetAllTournamentsAsync();
+            _allTournaments = await _tournamentRepository.GetAllTournamentsAsync().ConfigureAwait(false);
             Tournaments = new ObservableCollection<TournamentDto>(_allTournaments);
 
             KataCategories = new ObservableCollection<KataCategoryDto>(await _kataCategoryRepository.GetAllKataCategoryAsync());

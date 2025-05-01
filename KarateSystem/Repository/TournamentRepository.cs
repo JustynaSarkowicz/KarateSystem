@@ -46,6 +46,15 @@ namespace KarateSystem.Repository
 
             return _mapper.Map<List<TournamentDto>>(entities);
         }
+        public async Task<List<TournamentDto>> GetOnlyActiveTournamentsAsync()
+        {
+            var entities = await _dbContext.Tournaments.Where(t => t.Status == 4 || t.Status == 3)
+                                                       .OrderByDescending(t => t.Status)
+                                                       .AsNoTracking()
+                                                       .ToListAsync();
+
+            return _mapper.Map<List<TournamentDto>>(entities);
+        }
 
         public async Task UpdateTournamentAsync(TournamentDto tournament)
         {

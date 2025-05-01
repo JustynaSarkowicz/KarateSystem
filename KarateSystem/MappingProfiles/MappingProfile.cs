@@ -81,6 +81,13 @@ namespace KarateSystem.MappingProfiles
                 .ForMember(dest => dest.Mat, opt => opt.Ignore())
                 .ForMember(dest => dest.Tour, opt => opt.Ignore());
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Kata, KataDto>()
+                .ForMember(dest => dest.TourCompId, opt => opt.MapFrom(src => src.TourCompetitor.TourCompId))
+                .ForMember(dest => dest.CompId, opt => opt.MapFrom(src => src.TourCompetitor.Competitor.CompId))
+                .ForMember(dest => dest.CompFirstName, opt => opt.MapFrom(src => src.TourCompetitor.Competitor.CompFirstName))
+                .ForMember(dest => dest.CompLastName, opt => opt.MapFrom(src => src.TourCompetitor.Competitor.CompLastName))
+                .ReverseMap()
+                .ForMember(dest => dest.TourCompetitor, opt => opt.Ignore());
         }
     }
 }

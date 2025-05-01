@@ -37,19 +37,20 @@ namespace KarateSystem
                      options.UseSqlServer(JsonConfiguration.GetSqlConnectionString()),
                      ServiceLifetime.Transient);
 
-            services.AddScoped<ICompetitorRepository, CompetitorRepository>();
-            services.AddScoped<IClubRepository, ClubRepository>();
-            services.AddScoped<IMatRepository, MatRepository>();
-            services.AddScoped<IDegreeRepository, DegreeRepository>();
-            services.AddScoped<IKataCategoryRepository, KataCategoryRepository>();
-            services.AddScoped<ICatKataDegreeRepository, CatKataDegreeRepository>();
-            services.AddScoped<ISearchService, SearchService>();
-            services.AddScoped<IKumiteCategoryRepository, KumiteCategoryRepository>();
-            services.AddScoped<ITourCompetitorRepository, TourCompetitorRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<ITournamentRepository, TournamentRepository>();
-            services.AddScoped<ITourCatKataRepository, TourCatKataRepository>();
-            services.AddScoped<ITourCatKumiteRepository, TourCatKumiteRepository>();
+            services.AddTransient<ICompetitorRepository, CompetitorRepository>();
+            services.AddTransient<IClubRepository, ClubRepository>();
+            services.AddTransient<IMatRepository, MatRepository>();
+            services.AddTransient<IDegreeRepository, DegreeRepository>();
+            services.AddTransient<IKataCategoryRepository, KataCategoryRepository>();
+            services.AddTransient<ICatKataDegreeRepository, CatKataDegreeRepository>();
+            services.AddTransient<ISearchService, SearchService>();
+            services.AddTransient<IKumiteCategoryRepository, KumiteCategoryRepository>();
+            services.AddTransient<ITourCompetitorRepository, TourCompetitorRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ITournamentRepository, TournamentRepository>();
+            services.AddTransient<ITourCatKataRepository, TourCatKataRepository>();
+            services.AddTransient<ITourCatKumiteRepository, TourCatKumiteRepository>();
+            services.AddTransient<IKataRepository, KataRepository>();
             services.AddTransient<CompetitorsViewModel>();
             services.AddTransient<ClubsDegreesMatsViewModel>();
             services.AddTransient<CategoryViewModel>();
@@ -60,6 +61,7 @@ namespace KarateSystem
             services.AddTransient<AddCompetitorsViewModel>();
             services.AddTransient<SetCompToCatTourViewModel>();
             services.AddTransient<HomeViewModel>();
+            services.AddTransient<KataKumiteViewModel>();
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddTransient<MainWindow>(provider => new MainWindow()

@@ -38,10 +38,10 @@ namespace KarateSystem.Configurations
                    .IsRequired(false);
 
             builder.HasOne(tc => tc.Kata)
-               .WithOne(k => k.TourCompetitor)
-               .HasForeignKey<Kata>(k => k.TourCompId)
-               .IsRequired(false)
-               .OnDelete(DeleteBehavior.Cascade);  
+                    .WithOne(k => k.TourCompetitor)
+                    .HasForeignKey<Kata>(k => k.TourCompId)
+                    .IsRequired(false)
+                    .OnDelete(DeleteBehavior.Cascade);  
         }
     }
 }

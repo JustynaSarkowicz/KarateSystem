@@ -718,7 +718,7 @@
 
                                 <Button x:Name="btnDeleteCompFromCatKata" 
                                         Grid.Column="1"
-                                        Command="{Binding DeleteCatKataFromTourCommand}"                            
+                                        Command="{Binding DeleteCompFromTourCatKataCommand}"                            
                                         Content="Usuń zawodnika"                            
                                         FontSize="12"
                                         FontFamily="Montserrat"
@@ -803,7 +803,7 @@
 
                             <Button x:Name="btnDeleteCompFromCatKumite" 
                                     Grid.Column="1"
-                                    Command="{Binding DeleteCatKumiteFromTourCommand}"                            
+                                    Command="{Binding DeleteCompFromTourCatKumiteCommand}"                            
                                     Content="Usuń zawodnika"                            
                                     FontSize="12"
                                     FontFamily="Montserrat"

@@ -90,6 +90,21 @@ namespace KarateSystem.Repository
 
             tourComp.TourCatKataId = kataCatId;
 
+            var kata = new Kata
+            {
+                TourCompId = tourComp.TourCompId, 
+                KataRate1 = null, 
+                KataRate2 = null,
+                KataRate3 = null,
+                KataRate4 = null,
+                KataRate5 = null,
+                KataScore = null,
+                Overtime = null
+            };
+
+            _dbContext.Katas.Add(kata);
+            tourComp.Kata = kata;
+
             _dbContext.TourCompetitors.Update(tourComp);
             await _dbContext.SaveChangesAsync();
         }
@@ -109,9 +124,15 @@ namespace KarateSystem.Repository
         public async Task DeleteCompFromTourCatKata(TourCompetitorDto tourCompetitor)
         {
             var tourComp = await _dbContext.TourCompetitors
+                .Include(tc => tc.Kata)
                 .FirstOrDefaultAsync(tc => tc.CompId == tourCompetitor.CompId && tc.TourId == tourCompetitor.TourId && tc.TourCatKataId != null);
             if (tourComp == null)
                 throw new Exception("Nie można znaleźć zawodnika.");
+
+            if (tourComp.Kata != null)
+            {
+                _dbContext.Katas.Remove(tourComp.Kata);
+            }
 
             tourComp.TourCatKataId = null;
             _dbContext.TourCompetitors.Update(tourComp);

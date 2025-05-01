@@ -18,6 +18,10 @@ namespace KarateSystem.Misc
         {
             return Regex.IsMatch(text, @"^\d*([.]\d{0,2})?$");
         }
+        public static bool IsRateValidDecimal(string text)
+        {
+            return Regex.IsMatch(text, @"^\d*([.]\d{0,1})?$");
+        }
         public static List<GenderOption2> GenderOptions2 { get; } = new()
         {
             new GenderOption2("Kobieta", false),
@@ -43,8 +47,9 @@ namespace KarateSystem.Misc
         {       
            new StatusOption("Rejestracja otwarta", 0),
            new StatusOption("Rejestracja zamknięta", 1),
-           new StatusOption("Otwarty", 2),
-           new StatusOption("Zakończony", 3)
+           new StatusOption("Oczekuje na rozpoczęcie", 2),
+           new StatusOption("Zakończony", 3),
+           new StatusOption("Rozpoczęto turniej", 4)
         };
         public record StatusOption(string DisplayName, int Value);
         public static List<RoleOption> RoleOptionsList { get; } = new()

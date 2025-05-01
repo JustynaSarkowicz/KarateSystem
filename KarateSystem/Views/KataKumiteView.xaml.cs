@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KarateSystem.Misc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,16 @@ namespace KarateSystem.Views
         public KataKumiteView()
         {
             InitializeComponent();
+        }
+
+        private void tbRate_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            string currentText = textBox.Text;
+
+            string newText = currentText.Insert(textBox.SelectionStart, e.Text);
+
+            e.Handled = !Helper.IsRateValidDecimal(newText);
         }
     }
 }

@@ -190,10 +190,10 @@ namespace KarateSystem.ViewModel
             AddDegreeCommand = new ViewModelCommand(ExecuteAddDegreeCommand);
             CancelDegreeCommand = new ViewModelCommand(ExecuteCancelDegreeCommand);
 
-            LoadAsync();
+            _ = LoadAsync();
         }
 
-        private async void LoadAsync()
+        private async Task LoadAsync()
         {
             _allClubs = await _clubRepository.GetAllClubsAsync();
             Clubs = new ObservableCollection<ClubDto>(_allClubs);

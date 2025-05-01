@@ -22,6 +22,7 @@ namespace KarateSystem.ViewModel
         private readonly SettingsViewModel _settingsViewModel;
         private readonly TournamentViewModel _tournamentViewModel;
         private readonly HomeViewModel _homeViewModel;
+        private readonly KataKumiteViewModel _kataKumiteViewModel;
 
         private readonly IUserRepository _userRepository;
         #endregion
@@ -95,6 +96,7 @@ namespace KarateSystem.ViewModel
             SettingsViewModel settingsViewModel,
             TournamentViewModel tournamentViewModel,
             HomeViewModel homeViewModel,
+            KataKumiteViewModel kataKumiteViewModel,
             IUserRepository userRepository)
         {
             _competitorsViewModel = competitorsViewModel;
@@ -104,6 +106,7 @@ namespace KarateSystem.ViewModel
             _userRepository = userRepository;
             _tournamentViewModel = tournamentViewModel;
             _homeViewModel = homeViewModel;
+            _kataKumiteViewModel = kataKumiteViewModel;
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowCompetitorViewCommand = new ViewModelCommand(ExecuteShowCompetitorViewCommand);
@@ -174,7 +177,7 @@ namespace KarateSystem.ViewModel
         }
         private void ExecuteShowKataKumiteViewCommand(object obj)
         {
-            CurrentChildView = new KataKumiteViewModel();
+            CurrentChildView = _kataKumiteViewModel;
             Caption = "Kata i Kumite";
             Icon = IconChar.Medal;
         }
