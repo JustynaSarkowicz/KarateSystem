@@ -152,6 +152,7 @@ namespace KarateSystem.ViewModel
         public ICommand ChoseTourToSetCatCommand { get; }
         public ICommand SetGradesToKataCommand { get; }
         public ICommand EditKataCommand { get; }
+        public ICommand SortKataCommand { get; }
         #endregion
 
         public KataKumiteViewModel(ITournamentRepository tournamentRepository,
@@ -167,6 +168,7 @@ namespace KarateSystem.ViewModel
             ChoseTourToSetCatCommand = new ViewModelCommand(ExecuteFillCatInTourCommand);
             EditKataCommand = new ViewModelCommand(ExecuteEditKataCommand, CanEditKata);
             SetGradesToKataCommand = new ViewModelCommand(ExecuteSetGradesToKataCommand, CanEditKata);
+            SortKataCommand = new ViewModelCommand(ExecuteSortKataCommand);
 
             _ = LoadAsync();
         }
@@ -268,6 +270,11 @@ namespace KarateSystem.ViewModel
             }
         }
 
+        private void ExecuteSortKataCommand(object obj)
+        {
+            if (SelectedTourCatKata == null) return;
+            Katas = new ObservableCollection<KataDto>(Katas.OrderByDescending(x => x.KataScore));
+        }
         #endregion
     }
 }
