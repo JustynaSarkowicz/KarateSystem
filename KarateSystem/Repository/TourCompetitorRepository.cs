@@ -99,7 +99,7 @@ namespace KarateSystem.Repository
                 KataRate4 = null,
                 KataRate5 = null,
                 KataScore = null,
-                Overtime = null
+                Overtime = 0
             };
 
             _dbContext.Katas.Add(kata);

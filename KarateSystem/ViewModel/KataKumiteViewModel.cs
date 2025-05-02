@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using static KarateSystem.Misc.Helper;
 
 namespace KarateSystem.ViewModel
 {
@@ -26,6 +27,7 @@ namespace KarateSystem.ViewModel
         private KataDto _selectedKata;
         private KataDto _editingKata;
         private ObservableCollection<KataDto> _katas;
+        private OvertimePlaceOption _selectedOvertime;
         private bool _isEnabled;
 
         private readonly ITournamentRepository _tournamentRepository;
@@ -35,6 +37,15 @@ namespace KarateSystem.ViewModel
         #endregion
 
         #region Properties
+        public OvertimePlaceOption SelectedOvertime
+        {
+            get => _selectedOvertime;
+            set
+            {
+                _selectedOvertime = value;
+                OnPropertyChanged(nameof(SelectedOvertime));
+            }
+        }
         public bool IsEnabled 
         {
            get =>  _isEnabled;
@@ -174,6 +185,7 @@ namespace KarateSystem.ViewModel
             {
                 Numeration = null
             };
+            SelectedOvertime = OvertimeOptions.FirstOrDefault(x => x.Value == EditingKata.Overtime);
         }
 
         private async void ExecuteFillCatInTourCommand(object obj)
@@ -214,8 +226,10 @@ namespace KarateSystem.ViewModel
                 KataRate4 = SelectedKata.KataRate4,
                 KataRate5 = SelectedKata.KataRate5,
                 CompFirstName = SelectedKata.CompFirstName,
-                CompLastName = SelectedKata.CompLastName
+                CompLastName = SelectedKata.CompLastName,
+                Overtime = SelectedKata.Overtime
             };
+            SelectedOvertime = OvertimeOptions.FirstOrDefault(x => x.Value == EditingKata.Overtime);
         }
         private async void ExecuteSetGradesToKataCommand(object obj)
         {
@@ -236,6 +250,7 @@ namespace KarateSystem.ViewModel
                 SelectedKata.KataRate3 = EditingKata.KataRate3;
                 SelectedKata.KataRate4 = EditingKata.KataRate4;
                 SelectedKata.KataRate5 = EditingKata.KataRate5;
+                SelectedKata.Overtime = SelectedOvertime.Value;
 
                 await _kataRepository.UpdateGradesOnKataAsync(SelectedKata);
 

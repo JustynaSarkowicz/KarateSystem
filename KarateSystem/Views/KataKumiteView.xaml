@@ -14,8 +14,8 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="400"/>
-                    <RowDefinition Height="120"/>
-                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="400"/>
                     <RowDefinition Height="120"/>
@@ -106,7 +106,7 @@
                             <DataGridTextColumn Binding="{Binding KataRate4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Ocena 4"/>
                             <DataGridTextColumn Binding="{Binding KataRate5, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Ocena 5"/>
                             <DataGridTextColumn Binding="{Binding KataScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Średnia z ocen"/>
-                            <DataGridTextColumn Binding="{Binding Overtime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Dogrywka"/>
+                            <DataGridTextColumn Binding="{Binding OvertimeDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Dogrywka"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -339,37 +339,23 @@
                                 Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="320"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Vertical"
-                                Grid.Column="0">
-
-                        <TextBlock Text="Dogrywki:"
-                               FontSize="20"
-                               Margin="30,0,5,10"
+                <Grid Grid.Row="4"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Miejsce w dogrywce:"
+                               FontSize="17"
                                FontFamily="Montserrat"
                                Foreground="White"
                                VerticalAlignment="Center"/>
-                        <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" 
-                                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                                  CellStyle="{DynamicResource DataGridCellStyle1}" 
-                                  Style="{DynamicResource DataGridStyle1}"
-                                  Height="110"
-                                  Margin="30,0,0,0"
-                                  SelectionMode="Single">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Nr"/>
-                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Zawodnik"/>
-                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Czy dogrywka?"/>
-                                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Czy wygrany?"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                    <ComboBox x:Name="cbSelectedKataOvertime"
+                              Width="200"
+                              Style="{StaticResource comboboxStyle}"
+                              Margin="15,0,0,0"
+                              ItemsSource="{Binding OvertimeOptions}"
+                              SelectedItem="{Binding SelectedOvertime, Mode=TwoWay}"
+                              DisplayMemberPath="DisplayName"/>
                     </StackPanel>
-                    
                 </Grid>
                 <Border Grid.Row="5"
                         BorderBrush="#5D83B1"

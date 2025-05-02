@@ -52,6 +52,7 @@ namespace KarateSystem.Repository
             existingKata.KataRate3 = kata.KataRate3;
             existingKata.KataRate4 = kata.KataRate4;
             existingKata.KataRate5 = kata.KataRate5;
+            existingKata.Overtime = kata.Overtime;
 
             var rates = new List<decimal?>
             {

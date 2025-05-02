@@ -58,6 +58,15 @@ namespace KarateSystem.Misc
            new RoleOption("Admin")
         };
         public record RoleOption(string DisplayName);
+        public static List<OvertimePlaceOption> OvertimePlaceList { get; } = new()
+        {
+           new OvertimePlaceOption("Brak", 0),
+           new OvertimePlaceOption("Miejsce 1", 1),
+           new OvertimePlaceOption("Miejsce 2", 2),
+           new OvertimePlaceOption("Miejsce 3", 3),
+           new OvertimePlaceOption("Miejsce 4", 4)
+        };
+        public record OvertimePlaceOption(string DisplayName, int Value);
         public static int CalculateAge(DateTime birthDate)
         {
             var today = DateTime.Today;

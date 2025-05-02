@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using KarateSystem.Misc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace KarateSystem.Models
 {
