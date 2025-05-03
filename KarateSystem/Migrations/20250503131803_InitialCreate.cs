@@ -39,23 +39,6 @@ namespace KarateSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fights",
-                columns: table => new
-                {
-                    FightId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FightScoreA = table.Column<decimal>(type: "decimal(5,1)", nullable: true),
-                    FightScoreB = table.Column<decimal>(type: "decimal(5,1)", nullable: true),
-                    FightWinner = table.Column<int>(type: "int", nullable: true),
-                    FightTime = table.Column<int>(type: "int", nullable: true),
-                    FightNumOverTime = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Fights", x => x.FightId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "KataCategories",
                 columns: table => new
                 {
@@ -299,6 +282,59 @@ namespace KarateSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Fights",
+                columns: table => new
+                {
+                    FightId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TourCatKumiteId = table.Column<int>(type: "int", nullable: false),
+                    RedCompetitorId = table.Column<int>(type: "int", nullable: false),
+                    BlueCompetitorId = table.Column<int>(type: "int", nullable: false),
+                    WinnerId = table.Column<int>(type: "int", nullable: true),
+                    NextFightId = table.Column<int>(type: "int", nullable: true),
+                    RedCompetitorScore = table.Column<decimal>(type: "decimal(5,1)", nullable: true),
+                    BlueCompetitorScore = table.Column<decimal>(type: "decimal(5,1)", nullable: true),
+                    FightTime = table.Column<int>(type: "int", nullable: true),
+                    FightNumOverTime = table.Column<int>(type: "int", nullable: true),
+                    FightWalkover = table.Column<bool>(type: "bit", nullable: false),
+                    Round = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fights", x => x.FightId);
+                    table.ForeignKey(
+                        name: "FK_Fights_Fights_NextFightId",
+                        column: x => x.NextFightId,
+                        principalTable: "Fights",
+                        principalColumn: "FightId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Fights_TourCatKumites_TourCatKumiteId",
+                        column: x => x.TourCatKumiteId,
+                        principalTable: "TourCatKumites",
+                        principalColumn: "TourCatKumiteId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Fights_TourCompetitors_BlueCompetitorId",
+                        column: x => x.BlueCompetitorId,
+                        principalTable: "TourCompetitors",
+                        principalColumn: "TourCompId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Fights_TourCompetitors_RedCompetitorId",
+                        column: x => x.RedCompetitorId,
+                        principalTable: "TourCompetitors",
+                        principalColumn: "TourCompId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Fights_TourCompetitors_WinnerId",
+                        column: x => x.WinnerId,
+                        principalTable: "TourCompetitors",
+                        principalColumn: "TourCompId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Katas",
                 columns: table => new
                 {
@@ -343,6 +379,31 @@ namespace KarateSystem.Migrations
                 name: "IX_Competitors_CompDegreeId",
                 table: "Competitors",
                 column: "CompDegreeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fights_BlueCompetitorId",
+                table: "Fights",
+                column: "BlueCompetitorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fights_NextFightId",
+                table: "Fights",
+                column: "NextFightId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fights_RedCompetitorId",
+                table: "Fights",
+                column: "RedCompetitorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fights_TourCatKumiteId",
+                table: "Fights",
+                column: "TourCatKumiteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fights_WinnerId",
+                table: "Fights",
+                column: "WinnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Katas_TourCompId",

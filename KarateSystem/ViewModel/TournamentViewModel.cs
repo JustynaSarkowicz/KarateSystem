@@ -67,6 +67,7 @@ namespace KarateSystem.ViewModel
         private readonly IKumiteCategoryRepository _kumiteCategoryRepository;
         private readonly IMatRepository _matRepository;
         private readonly IServiceProvider _serviceProvider;
+        private readonly IFightRepository _fightRepository;
         #endregion
 
         #region Commands
@@ -88,6 +89,7 @@ namespace KarateSystem.ViewModel
         public ICommand DeleteCompFromTourCatKumiteCommand { get;  }
         public ICommand SetCompAutomaticCatKata { get; }
         public ICommand SetCompAutomaticCatKumite { get; }
+        public ICommand SetFights { get; }
         #endregion
 
         #region Properties
@@ -400,6 +402,7 @@ namespace KarateSystem.ViewModel
             ITourCatKataRepository tourCatKataRepository,
             IKataCategoryRepository kataCategoryRepository,
             IKumiteCategoryRepository kumiteCategoryRepository,
+            IFightRepository fightRepository,
             IMatRepository matRepository,
             IServiceProvider serviceProvider)
         {
@@ -412,6 +415,7 @@ namespace KarateSystem.ViewModel
             _kumiteCategoryRepository = kumiteCategoryRepository;
             _matRepository = matRepository;
             _serviceProvider = serviceProvider;
+            _fightRepository = fightRepository;
 
             //First tab
             EditTourCommand = new ViewModelCommand(ExecuteEditTourCommand, CanEditTour);
@@ -437,6 +441,7 @@ namespace KarateSystem.ViewModel
             DeleteCompFromTourCatKumiteCommand = new ViewModelCommand(ExecuteDeleteCompFromTourCatKumiteCommand, CanDeleteCompToTourCatKumite);
             SetCompAutomaticCatKata = new ViewModelCommand(ExecuteSetCompAutomaticCatKataCommand, CanSetCompAutomatic);
             SetCompAutomaticCatKumite = new ViewModelCommand(ExecuteSetCompAutomaticCatKumiteCommand, CanSetCompAutomatic);
+            SetFights = new ViewModelCommand(ExecuteSetFightsCommand);
 
             WeakEventManager<IKataCategoryRepository, EventArgs>
             .AddHandler(_kataCategoryRepository, nameof(IKataCategoryRepository.KataCatChanged), OnKataCatChanged);
@@ -983,6 +988,20 @@ namespace KarateSystem.ViewModel
             catch (Exception ex)
             {
                 MessageBox.Show($"Wystąpił błąd podczas automatycznego przypisywania zawodników do kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void ExecuteSetFightsCommand(object obj)
+        {
+            if (SelectedTourToSetCompToCat == null) return;
+            try
+            {
+                var result = await _fightRepository.SetFightsAsync(SelectedTourToSetCompToCat.TourId);
+                if(result) MessageBox.Show("Stworzono drabinki walk.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+                else MessageBox.Show("Nie można stworzyć drabinek walk. Sprawdź czy są zawodnicy w kategoriach.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas ustalania walk: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion

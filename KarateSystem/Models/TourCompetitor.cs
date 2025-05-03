@@ -18,5 +18,9 @@ namespace KarateSystem.Models
         public int? TourCatKumiteId { get; set; }
         public TourCatKumite? TourCatKumite { get; set; }
         public Kata? Kata { get; set; }
+        public ICollection<Fight> RedFights { get; set; } = new List<Fight>();
+        public ICollection<Fight> BlueFights { get; set; } = new List<Fight>();
+        public ICollection<Fight> WonFights { get; set; } = new List<Fight>();
+
     }
 }

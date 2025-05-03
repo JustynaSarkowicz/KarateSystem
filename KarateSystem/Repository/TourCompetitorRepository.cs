@@ -43,6 +43,15 @@ namespace KarateSystem.Repository
 
             return _mapper.Map<List<TourCompetitorDto>>(tourCompetitors);
         }
+        public async Task<TourCompetitorDto> GetTourCompetitorByIdAsync(int tourCompId)
+        {
+            var tourCompetitor = await _dbContext.TourCompetitors.Where(t => t.TourCompId == tourCompId)
+                .Include(t => t.Competitor)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            return _mapper.Map<TourCompetitorDto>(tourCompetitor);
+        }
         public async Task<List<TourCompetitorDto>> GetCompetitorToursByCatKataIdAsync(int catKataId)
         {
             var tourCompetitors = await _dbContext.TourCompetitors.Where(t => t.TourCatKataId == catKataId)

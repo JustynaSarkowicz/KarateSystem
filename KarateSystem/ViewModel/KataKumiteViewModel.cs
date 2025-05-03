@@ -27,16 +27,78 @@ namespace KarateSystem.ViewModel
         private KataDto _selectedKata;
         private KataDto _editingKata;
         private ObservableCollection<KataDto> _katas;
+        private FightDto _selectedFight;
+        private FightDto _editingFight;
+        private ObservableCollection<FightDto> _fights;
         private OvertimePlaceOption _selectedOvertime;
+        private WalkoverOption _selectedWalkover;
+        private TourCompetitorDto _selectedCompWinner;
+        private ObservableCollection<TourCompetitorDto> _winnerList;
         private bool _isEnabled;
 
         private readonly ITournamentRepository _tournamentRepository;
+        private readonly ITourCompetitorRepository _tourCompetitorRepository;
         private readonly ITourCatKumiteRepository _tourCatKumiteRepository;
         private readonly ITourCatKataRepository _tourCatKataRepository;
         private readonly IKataRepository _kataRepository;
+        private readonly IFightRepository _fightsRepository;
         #endregion
 
         #region Properties
+        public ObservableCollection<TourCompetitorDto> WinnerList
+        {
+            get => _winnerList;
+            set
+            {
+                _winnerList = value;
+                OnPropertyChanged(nameof(WinnerList));
+            }
+        }
+        public TourCompetitorDto SelectedCompWinner
+        {
+            get => _selectedCompWinner;
+            set
+            {
+                _selectedCompWinner = value;
+                OnPropertyChanged(nameof(SelectedCompWinner));
+            }
+        }
+        public WalkoverOption SelectedWalkover
+        {
+            get => _selectedWalkover;
+            set
+            {
+                _selectedWalkover = value;
+                OnPropertyChanged(nameof(SelectedWalkover));
+            }
+        }
+        public FightDto EditingFight
+        {
+            get => _editingFight;
+            set
+            {
+                _editingFight = value;
+                OnPropertyChanged(nameof(EditingFight));
+            }
+        }
+        public FightDto SelectedFight
+        {
+            get => _selectedFight;
+            set
+            {
+                _selectedFight = value;
+                OnPropertyChanged(nameof(SelectedFight));
+            }
+        }
+        public ObservableCollection<FightDto> Fights
+        {
+            get => _fights;
+            set
+            {
+                _fights = value;
+                OnPropertyChanged(nameof(Fights));
+            }
+        }
         public OvertimePlaceOption SelectedOvertime
         {
             get => _selectedOvertime;
@@ -98,6 +160,7 @@ namespace KarateSystem.ViewModel
             {
                 _selectedTourCatKumite = value;
                 OnPropertyChanged(nameof(SelectedTourCatKumite));
+                LoadFightsForKumiteCategoryAsync();
             }
         }
         public TourCatKataDto SelectedTourCatKata
@@ -153,22 +216,31 @@ namespace KarateSystem.ViewModel
         public ICommand SetGradesToKataCommand { get; }
         public ICommand EditKataCommand { get; }
         public ICommand SortKataCommand { get; }
+        public ICommand EditFightCommand { get; }
+        public ICommand SetFightCommand { get; }
         #endregion
 
         public KataKumiteViewModel(ITournamentRepository tournamentRepository,
             ITourCatKataRepository tourCatKataRepository,
             ITourCatKumiteRepository tourCatKumiteRepository,
-            IKataRepository kataRepository)
+            IKataRepository kataRepository,
+            IFightRepository fightRepository,
+            ITourCompetitorRepository tourCompetitorRepository)
         {
             _tournamentRepository = tournamentRepository;
             _tourCatKataRepository = tourCatKataRepository;
             _tourCatKumiteRepository = tourCatKumiteRepository;
             _kataRepository = kataRepository;
+            _fightsRepository = fightRepository;
+            _tourCompetitorRepository = tourCompetitorRepository;
 
             ChoseTourToSetCatCommand = new ViewModelCommand(ExecuteFillCatInTourCommand);
             EditKataCommand = new ViewModelCommand(ExecuteEditKataCommand, CanEditKata);
             SetGradesToKataCommand = new ViewModelCommand(ExecuteSetGradesToKataCommand, CanEditKata);
             SortKataCommand = new ViewModelCommand(ExecuteSortKataCommand);
+
+            EditFightCommand = new ViewModelCommand(ExecuteEditFightCommand, CanEditFight);
+            SetFightCommand = new ViewModelCommand(ExecuteSetFightCommand, CanEditFight);
 
             _ = LoadAsync();
         }
@@ -188,6 +260,12 @@ namespace KarateSystem.ViewModel
                 Numeration = null
             };
             SelectedOvertime = OvertimeOptions.FirstOrDefault(x => x.Value == EditingKata.Overtime);
+
+            EditingFight = new FightDto
+            {
+                FightWalkover = false
+            };
+            SelectedWalkover = WalkoverOptions.FirstOrDefault(x => x.Value == EditingFight.FightWalkover);
         }
 
         private async void ExecuteFillCatInTourCommand(object obj)
@@ -203,6 +281,7 @@ namespace KarateSystem.ViewModel
 
         #region Kata
         private bool CanEditKata(object obj) => SelectedKata != null;
+        private bool CanEditFight(object obj) => SelectedFight != null;
         private async void LoadKatasForKataCategoryAsync()
         {
             if (SelectedTourCatKata == null)
@@ -214,6 +293,18 @@ namespace KarateSystem.ViewModel
             var katas = await _kataRepository.GetKatasByTourCatKataIdAsync(SelectedTourCatKata.TourCatKataId);
             Katas = new ObservableCollection<KataDto>(katas);
         }
+        private async void LoadFightsForKumiteCategoryAsync()
+        {
+            if (SelectedTourCatKumite == null)
+            {
+                Fights = new ObservableCollection<FightDto>();
+                return;
+            }
+
+            var fights = await _fightsRepository.GetFightsByTourAsync(SelectedTourCatKumite.TourCatKumiteId);
+            Fights = new ObservableCollection<FightDto>(fights);
+        }
+
         private void ExecuteEditKataCommand(object obj)
         {
             if (SelectedKata == null) return;
@@ -231,7 +322,97 @@ namespace KarateSystem.ViewModel
                 CompLastName = SelectedKata.CompLastName,
                 Overtime = SelectedKata.Overtime
             };
+
             SelectedOvertime = OvertimeOptions.FirstOrDefault(x => x.Value == EditingKata.Overtime);
+        }
+        private async void ExecuteEditFightCommand(object obj)
+        {
+            if (SelectedFight == null) return;
+
+            EditingFight = new FightDto
+            {
+                FightId = SelectedFight.FightId,
+                FightNumber = SelectedFight.FightNumber,
+                TourCatKumiteId = SelectedFight.TourCatKumiteId,
+                RedCompetitorId = SelectedFight.RedCompetitorId,
+                RedCompetitorName = SelectedFight.RedCompetitorName,
+                BlueCompetitorId = SelectedFight.BlueCompetitorId,
+                BlueCompetitorName = SelectedFight.BlueCompetitorName,
+                WinnerId = SelectedFight.WinnerId,
+                WinnerName = SelectedFight.WinnerName,
+                NextFightId = SelectedFight.NextFightId,
+                RedCompetitorScore = SelectedFight.RedCompetitorScore,
+                BlueCompetitorScore = SelectedFight.BlueCompetitorScore,
+                FightTime = SelectedFight.FightTime,
+                FightNumOverTime = SelectedFight.FightNumOverTime,
+                FightWalkover = SelectedFight.FightWalkover,
+            };
+            WinnerList = new ObservableCollection<TourCompetitorDto>();
+
+            // Pobierz dane zawodników na podstawie ID
+            if (SelectedFight.RedCompetitorId != null)
+            {
+                var redCompetitor = await _tourCompetitorRepository.GetTourCompetitorByIdAsync(Convert.ToInt32(SelectedFight.RedCompetitorId)); 
+                if (redCompetitor != null)
+                {
+                    WinnerList.Add(new TourCompetitorDto
+                    {
+                        TourCompId = redCompetitor.TourCompId,
+                        CompFullName = redCompetitor.CompFirstName + " " + redCompetitor.CompLastName
+                    });
+                }
+            }
+
+            if (SelectedFight.BlueCompetitorId != null)
+            {
+                // Załaduj pełne dane zawodnika
+                var blueCompetitor = await _tourCompetitorRepository.GetTourCompetitorByIdAsync(Convert.ToInt32(SelectedFight.BlueCompetitorId));// Pobierz dane zawodnika z repozytorium
+                if (blueCompetitor != null)
+                {
+                    WinnerList.Add(new TourCompetitorDto
+                    {
+                        TourCompId = blueCompetitor.TourCompId,
+                        CompFullName = blueCompetitor.CompFirstName + " " + blueCompetitor.CompLastName
+                    });
+                }
+            }
+            if (SelectedFight.WinnerId == null) SelectedCompWinner = null;
+            else SelectedCompWinner = WinnerList.FirstOrDefault(x => x.TourCompId == SelectedFight.WinnerId);
+
+            SelectedWalkover = WalkoverOptions.FirstOrDefault(x => x.Value == EditingFight.FightWalkover);
+        }
+        private async void ExecuteSetFightCommand(object obj)
+        {
+            if (SelectedFight == null) return;
+            if (EditingFight.RedCompetitorScore < 0 || EditingFight.RedCompetitorScore == null ||
+                EditingFight.BlueCompetitorScore < 0 || EditingFight.BlueCompetitorScore == null ||
+                SelectedCompWinner == null)
+            {
+                MessageBox.Show("Wszystkie oceny muszą być uzupełnione!", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            try
+            {
+                SelectedFight.RedCompetitorScore = EditingFight.RedCompetitorScore;
+                SelectedFight.BlueCompetitorScore = EditingFight.BlueCompetitorScore;
+                SelectedFight.FightWalkover = SelectedWalkover.Value;
+                SelectedFight.WinnerId = SelectedCompWinner?.TourCompId;
+                SelectedFight.FightNumOverTime = EditingFight.FightNumOverTime;
+                SelectedFight.FightTime = EditingFight.FightTime;
+
+                await _fightsRepository.UpdateFightsAsync(SelectedFight);
+                var fights = await _fightsRepository.GetFightsByTourAsync(SelectedTourCatKumite.TourCatKumiteId);
+                Fights = new ObservableCollection<FightDto>(fights);
+                SelectedFight = null;
+                EditingFight = new FightDto
+                {
+                    FightWalkover = false
+                };
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas dodawanie ocen do kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private async void ExecuteSetGradesToKataCommand(object obj)
         {

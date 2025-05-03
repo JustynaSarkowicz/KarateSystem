@@ -67,6 +67,12 @@ namespace KarateSystem.Misc
            new OvertimePlaceOption("Miejsce 4", 4)
         };
         public record OvertimePlaceOption(string DisplayName, int Value);
+        public static List<WalkoverOption> WalkoverOptionsList { get; } = new()
+        {
+            new WalkoverOption("Nie", false),
+            new WalkoverOption("Tak", true)
+        };
+        public record WalkoverOption(string DisplayName, bool Value);
         public static int CalculateAge(DateTime birthDate)
         {
             var today = DateTime.Today;

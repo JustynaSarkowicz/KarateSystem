@@ -16,6 +16,7 @@ namespace KarateSystem.Dto
         public int CompId { get; set; }
         public string CompFirstName { get; set; }
         public string CompLastName { get; set; }
+        public string CompFullName { get; set; }
         public DateTime CompDateOfBirth { get; set; }
         public int CompAge
         {

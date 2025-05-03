@@ -17,6 +17,7 @@ namespace KarateSystem.ViewModel
         public List<StatusOption> StatusOptions => Helper.StatusOptionsList;
         public List<RoleOption> RoleOptions => Helper.RoleOptionsList;
         public List<OvertimePlaceOption> OvertimeOptions => Helper.OvertimePlaceList;
+        public List<WalkoverOption> WalkoverOptions => Helper.WalkoverOptionsList;
 
         public void OnPropertyChanged(string propertyName)
         {

@@ -131,22 +131,50 @@ namespace KarateSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FightId"));
 
-                    b.Property<int?>("FightNumOverTime")
+                    b.Property<int?>("BlueCompetitorId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("FightScoreA")
+                    b.Property<decimal?>("BlueCompetitorScore")
                         .HasColumnType("decimal(5,1)");
 
-                    b.Property<decimal?>("FightScoreB")
-                        .HasColumnType("decimal(5,1)");
+                    b.Property<int?>("FightNumOverTime")
+                        .HasColumnType("int");
 
                     b.Property<int?>("FightTime")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FightWinner")
+                    b.Property<bool>("FightWalkover")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("NextFightId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RedCompetitorId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("RedCompetitorScore")
+                        .HasColumnType("decimal(5,1)");
+
+                    b.Property<int>("Round")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourCatKumiteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("WinnerId")
                         .HasColumnType("int");
 
                     b.HasKey("FightId");
+
+                    b.HasIndex("BlueCompetitorId");
+
+                    b.HasIndex("NextFightId");
+
+                    b.HasIndex("RedCompetitorId");
+
+                    b.HasIndex("TourCatKumiteId");
+
+                    b.HasIndex("WinnerId");
 
                     b.ToTable("Fights");
                 });
@@ -453,6 +481,45 @@ namespace KarateSystem.Migrations
                     b.Navigation("Degree");
                 });
 
+            modelBuilder.Entity("KarateSystem.Models.Fight", b =>
+                {
+                    b.HasOne("KarateSystem.Models.TourCompetitor", "BlueCompetitor")
+                        .WithMany("BlueFights")
+                        .HasForeignKey("BlueCompetitorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("KarateSystem.Models.Fight", "NextFight")
+                        .WithMany()
+                        .HasForeignKey("NextFightId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("KarateSystem.Models.TourCompetitor", "RedCompetitor")
+                        .WithMany("RedFights")
+                        .HasForeignKey("RedCompetitorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("KarateSystem.Models.TourCatKumite", "TourCatKumite")
+                        .WithMany("Fights")
+                        .HasForeignKey("TourCatKumiteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KarateSystem.Models.TourCompetitor", "Winner")
+                        .WithMany("WonFights")
+                        .HasForeignKey("WinnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("BlueCompetitor");
+
+                    b.Navigation("NextFight");
+
+                    b.Navigation("RedCompetitor");
+
+                    b.Navigation("TourCatKumite");
+
+                    b.Navigation("Winner");
+                });
+
             modelBuilder.Entity("KarateSystem.Models.Kata", b =>
                 {
                     b.HasOne("KarateSystem.Models.TourCompetitor", "TourCompetitor")
@@ -593,12 +660,20 @@ namespace KarateSystem.Migrations
 
             modelBuilder.Entity("KarateSystem.Models.TourCatKumite", b =>
                 {
+                    b.Navigation("Fights");
+
                     b.Navigation("TourCompetitors");
                 });
 
             modelBuilder.Entity("KarateSystem.Models.TourCompetitor", b =>
                 {
+                    b.Navigation("BlueFights");
+
                     b.Navigation("Kata");
+
+                    b.Navigation("RedFights");
+
+                    b.Navigation("WonFights");
                 });
 
             modelBuilder.Entity("KarateSystem.Models.Tournament", b =>

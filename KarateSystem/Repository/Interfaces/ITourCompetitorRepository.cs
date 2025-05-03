@@ -21,5 +21,6 @@ namespace KarateSystem.Repository.Interfaces
         Task DeleteCompFromTourCatKata(TourCompetitorDto tourCompetitor);
         Task<string> SetCompToCatKataAutomatic(int tourId);
         Task<string> SetCompToKumiteCatAutomatic(int tourId);
+        Task<TourCompetitorDto> GetTourCompetitorByIdAsync(int tourCompId);
     }
 }

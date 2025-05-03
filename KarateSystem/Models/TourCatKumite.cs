@@ -16,5 +16,6 @@ namespace KarateSystem.Models
         public int MatId { get; set; }
         public Mat Mat { get; set; }
         public ICollection<TourCompetitor> TourCompetitors { get; set; } = new List<TourCompetitor>();
+        public ICollection<Fight> Fights { get; set; } = new List<Fight>();
     }
 }
