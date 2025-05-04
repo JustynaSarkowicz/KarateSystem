@@ -147,43 +147,81 @@
         </Style.Triggers>
     </Style>
     
+    <!--Logout Button-->
+    <Style x:Key="LogoutButton" TargetType="Button">
+        <Setter Property="Background" Value="#5D83B1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Height="25"
+                            CornerRadius="0"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#344D6B"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="userMenuToggleStyle" TargetType="ToggleButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#3A72A8"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="#2E5B85"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
     <!--Combobox Style-->
     <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
             <Border x:Name="Border" 
-                    Grid.ColumnSpan="2"
                     CornerRadius="10"
-                    Background="#1B3663"/>
-            <Border x:Name="BorderArrow" Grid.Column="1"
-                    CornerRadius="0,10,10,0"
-                    Margin="1" 
-                    Background="#1B3663"/>
-            <Path x:Name="Arrow"
-                  Grid.Column="0"     
-                  Fill="White"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"/>
+                    Background="Transparent"/>
+            <ContentPresenter HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          RecognizesAccessKey="True"/>
         </Grid>
         <ControlTemplate.Triggers>
              <Trigger Property="ToggleButton.IsMouseOver" Value="true">
                 <Setter TargetName="Border" Property="Background" Value="#5D83B1" />
-                <Setter TargetName="BorderArrow" Property="Background" Value="#5D83B1" />
-                </Trigger>
+            </Trigger>
              <Trigger Property="ToggleButton.IsChecked" Value="true">
                 <Setter TargetName="Border" Property="Background" Value="#5D83B1" />
-                <Setter TargetName="BorderArrow" Property="Background" Value="#5D83B1" />
-             </Trigger>
+            </Trigger>
              <Trigger Property="IsEnabled" Value="False">
                 <Setter TargetName="Border" Property="Background" Value="#5D83B1"/>
             </Trigger>
             </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <Style x:Key="ComboBoxToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Template" Value="{StaticResource ComboBoxToggleButton}" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Focusable" Value="False"/>
+    </Style>
+    
     <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
         <Border x:Name="PART_ContentHost" 
                 Focusable="False" 

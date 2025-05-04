@@ -13,6 +13,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
+        x:Name="window"
         Icon="pack://application:,,,/Images/programIcon.ico">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
@@ -210,37 +211,67 @@
                             </Grid.ColumnDefinitions>
                             <!--Caption-->
                             <StackPanel Grid.Column="0"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center">
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center">
                                 <fa:IconImage Icon="{Binding Icon}"
-                                          Height="20"
-                                          Width="20"
-                                          Foreground="White"
-                                          Margin="35,0,10,0"/>
+                                              Height="20"
+                                              Width="20"
+                                              Foreground="White"
+                                              Margin="35,0,10,0"/>
                                 <TextBlock Text="{Binding Caption}"
-                                       Foreground="White"
-                                       FontFamily="Montserrat"
-                                       FontWeight="Medium"
-                                       FontSize="16"
-                                       VerticalAlignment="Center"/>
+                                           Foreground="White"
+                                           FontFamily="Montserrat"
+                                           FontWeight="Medium"
+                                           FontSize="16"
+                                           VerticalAlignment="Center"/>
                             </StackPanel>
 
                             <!--User Option-->
                             <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal"
-                                    FlowDirection="RightToLeft"
-                                    VerticalAlignment="Center"
-                                    Margin="0,0,10,0">
-                                <Button Style="{StaticResource iconButton}"
-                                    Tag="#5D83B1">
-                                    <fa:IconImage Icon="AngleDown" Width="12" Height="12" Style="{StaticResource iconButtonIcon}"/>
-                                </Button>
-                                <!--Tu będzie imię użytkownika zalogowanego-->
+                                        Orientation="Horizontal"
+                                        FlowDirection="RightToLeft"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,10,0">
+                                <ToggleButton x:Name="UserMenuToggle"
+                                              Width="30"
+                                              Height="30"
+                                              BorderThickness="0"
+                                              Margin="0,0,10,0"
+                                              Style="{StaticResource ComboBoxToggleButtonStyle}">
+                                    <fa:IconImage Icon="AngleDown"
+                                                  Width="12"
+                                                  Height="12"
+                                                  Foreground="White"
+                                                  Style="{StaticResource iconButtonIcon}"/>
+                                </ToggleButton>
+
+                                <Popup PlacementTarget="{Binding ElementName=UserMenuToggle}"
+                                       Placement="Bottom"
+                                       IsOpen="{Binding IsChecked, ElementName=UserMenuToggle}"
+                                       StaysOpen="False">
+                                    <Border Background="#5D83B1" 
+                                            Padding="0" 
+                                            CornerRadius="2" 
+                                            BorderBrush="#061D4A" 
+                                            BorderThickness="1" 
+                                            Width="80"
+                                            Height="27">
+                                        <StackPanel>
+                                            <Button Content="Wyloguj"
+                                                    Command="{Binding LogoutCommand}"
+                                                    CommandParameter="{Binding ElementName=window, Mode=OneWay}"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    Foreground="White"
+                                                    Style="{StaticResource LogoutButton}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Popup>
                                 <TextBlock Text="{Binding User.DisplayName}" 
-                                       Foreground="White"
-                                       FontFamily="Montserrat"
-                                       FontSize="12"
-                                       VerticalAlignment="Center"/>
+                                           Foreground="White"
+                                           FontFamily="Montserrat"
+                                           FontSize="12"
+                                           VerticalAlignment="Center"/>
 
                             </StackPanel>
                         </Grid>
@@ -250,9 +281,6 @@
                     <ContentControl Content="{Binding CurrentChildView}"
                                     Grid.Row="2"
                                     Margin="15,15,0,15"/>
-                    
-                    
-                    
                 </Grid>
             </Border>
         </Grid>

@@ -91,6 +91,8 @@ namespace KarateSystem.Repository
                     .ThenInclude(t => t.KataCategory)
                 .Include(t => t.TourCatKumites)
                     .ThenInclude(t => t.KumiteCategory)
+                .Include(t => t.TourCatKumites)
+                    .ThenInclude(t => t.Fights)
                 .Include(t => t.TourCompetitors)
                     .ThenInclude(t => t.Competitor)
                     .ThenInclude(t => t.Club)

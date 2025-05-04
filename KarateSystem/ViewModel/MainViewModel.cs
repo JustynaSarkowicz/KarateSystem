@@ -1,6 +1,8 @@
 ﻿using FontAwesome.Sharp;
 using KarateSystem.Dto;
 using KarateSystem.Repository.Interfaces;
+using KarateSystem.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using System.Security.Principal;
 using System.Windows;
@@ -28,6 +30,7 @@ namespace KarateSystem.ViewModel
         private readonly KataKumiteViewModel _kataKumiteViewModel;
 
         private readonly IUserRepository _userRepository;
+        private readonly IServiceProvider _serviceProvider;
         #endregion
 
         #region Properties
@@ -94,6 +97,7 @@ namespace KarateSystem.ViewModel
         public ICommand ShowTournamentViewCommand { get; }
         public ICommand ShowKataKumiteViewCommand { get; }
         public ICommand ShowSettingsViewCommand { get; }
+        public ICommand LogoutCommand { get; }
         #endregion
         public MainViewModel(CompetitorsViewModel competitorsViewModel,
             ClubsDegreesMatsViewModel clubsDegreesMatsViewModel,
@@ -102,7 +106,8 @@ namespace KarateSystem.ViewModel
             TournamentViewModel tournamentViewModel,
             HomeViewModel homeViewModel,
             KataKumiteViewModel kataKumiteViewModel,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IServiceProvider serviceProvider)
         {
             _competitorsViewModel = competitorsViewModel;
             _clubsDegreesMatsViewModel = clubsDegreesMatsViewModel;
@@ -112,6 +117,7 @@ namespace KarateSystem.ViewModel
             _tournamentViewModel = tournamentViewModel;
             _homeViewModel = homeViewModel;
             _kataKumiteViewModel = kataKumiteViewModel;
+            _serviceProvider = serviceProvider;
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowCompetitorViewCommand = new ViewModelCommand(ExecuteShowCompetitorViewCommand);
@@ -120,6 +126,7 @@ namespace KarateSystem.ViewModel
             ShowTournamentViewCommand = new ViewModelCommand(ExecuteShowTournamentViewCommand);
             ShowKataKumiteViewCommand = new ViewModelCommand(ExecuteShowKataKumiteViewCommand);
             ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
+            LogoutCommand = new ViewModelCommand(ExecuteLogoutCommand);
 
             LoadCurrentUserData();
             ExecuteShowHomeViewCommand(null);
@@ -148,6 +155,19 @@ namespace KarateSystem.ViewModel
                 MessageBox.Show("Nie prawidłowoy użytkownik, nie zalogowano.");
                 App.Current.Shutdown();
             }
+        }
+        private void ExecuteLogoutCommand(object obj)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var currentWindow = obj as Window;
+                var loginWindow = _serviceProvider.GetRequiredService<LoginView>();
+
+                Application.Current.MainWindow = loginWindow;
+                currentWindow?.Close();
+
+                loginWindow.Show();
+            });
         }
         private void ExecuteShowCompetitorViewCommand(object obj)
         {

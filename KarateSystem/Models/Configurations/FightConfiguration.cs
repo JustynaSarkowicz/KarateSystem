@@ -37,12 +37,6 @@ namespace KarateSystem.Configurations
                    .HasForeignKey(f => f.WinnerId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-
-            builder.HasOne(f => f.NextFight)
-                   .WithMany()
-                   .HasForeignKey(f => f.NextFightId)
-                   .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasOne(f => f.TourCatKumite)
                    .WithMany(c => c.Fights)
                    .HasForeignKey(f => f.TourCatKumiteId)

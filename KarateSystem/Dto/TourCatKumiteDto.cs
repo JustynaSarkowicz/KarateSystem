@@ -25,5 +25,6 @@ namespace KarateSystem.Dto
         };
         public int MatId { get; set; }
         public string MatName { get; set; }
+        public ICollection<Fight> Fights { get; set; } = new List<Fight>();
     }
 }

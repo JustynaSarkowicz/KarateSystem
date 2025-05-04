@@ -17,7 +17,6 @@ namespace KarateSystem.Dto
         public string? BlueCompetitorName { get; set; }
         public int? WinnerId { get; set; }
         public string? WinnerName { get; set; }
-        public int? NextFightId { get; set; }
         public decimal? RedCompetitorScore { get; set; }
         public decimal? BlueCompetitorScore { get; set; }
         public int? FightTime { get; set; }

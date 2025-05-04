@@ -363,7 +363,6 @@ namespace KarateSystem.ViewModel
                 BlueCompetitorName = SelectedFight.BlueCompetitorName,
                 WinnerId = SelectedFight.WinnerId,
                 WinnerName = SelectedFight.WinnerName,
-                NextFightId = SelectedFight.NextFightId,
                 RedCompetitorScore = SelectedFight.RedCompetitorScore,
                 BlueCompetitorScore = SelectedFight.BlueCompetitorScore,
                 FightTime = SelectedFight.FightTime,
@@ -372,7 +371,6 @@ namespace KarateSystem.ViewModel
             };
             WinnerList = new ObservableCollection<TourCompetitorDto>();
 
-            // Pobierz dane zawodników na podstawie ID
             if (SelectedFight.RedCompetitorId != null)
             {
                 var redCompetitor = await _tourCompetitorRepository.GetTourCompetitorByIdAsync(Convert.ToInt32(SelectedFight.RedCompetitorId)); 
@@ -388,8 +386,7 @@ namespace KarateSystem.ViewModel
 
             if (SelectedFight.BlueCompetitorId != null)
             {
-                // Załaduj pełne dane zawodnika
-                var blueCompetitor = await _tourCompetitorRepository.GetTourCompetitorByIdAsync(Convert.ToInt32(SelectedFight.BlueCompetitorId));// Pobierz dane zawodnika z repozytorium
+                var blueCompetitor = await _tourCompetitorRepository.GetTourCompetitorByIdAsync(Convert.ToInt32(SelectedFight.BlueCompetitorId));
                 if (blueCompetitor != null)
                 {
                     WinnerList.Add(new TourCompetitorDto

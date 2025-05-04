@@ -34,17 +34,15 @@ namespace KarateSystem.Repository
 
                 foreach (var category in categories)
                 {
-                    // Pobierz zawodników w tej kategorii
                     var competitors = await _dbContext.TourCompetitors
                         .Where(tc => tc.TourCatKumiteId == category.TourCatKumiteId)
-                        .OrderBy(_ => Guid.NewGuid()) // Losowe ustawienie zawodników
+                        .OrderBy(_ => Guid.NewGuid()) 
                         .ToListAsync();
 
                     if (competitors.Count < 2)
-                        continue; // nie twórz walk, jeśli za mało zawodników
+                        continue; 
 
                     int round = 1;
-                    int fightNumber = 1;
                     List<Fight> fights = new List<Fight>();
 
                     for (int i = 0; i < competitors.Count; i += 2)
@@ -80,7 +78,6 @@ namespace KarateSystem.Repository
             }
             catch (Exception ex)
             {
-                // Obsługa błędów
                 Console.WriteLine($"Error: {ex.Message}");
                 result = false;
             }
@@ -98,7 +95,6 @@ namespace KarateSystem.Repository
 
             var fightDtos = _mapper.Map<List<FightDto>>(fights);
 
-            // Numerowanie np. wg kolejności walk w liście
             for (int i = 0; i < fightDtos.Count; i++)
             {
                 fightDtos[i].FightNumber = i + 1;

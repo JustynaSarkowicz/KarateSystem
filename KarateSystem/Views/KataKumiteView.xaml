@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KarateSystem.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="1300" d:DesignWidth="1050">
+             d:DesignHeight="1300" 
+             d:DesignWidth="1050">
     <Grid>
         <ScrollViewer Margin="0,0,0,-15"
-              Style="{StaticResource CustomScrollViewer}">
+                      Style="{StaticResource CustomScrollViewer}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -21,6 +22,8 @@
                     <RowDefinition Height="100"/>
                     <RowDefinition Height="120"/>
                 </Grid.RowDefinitions>
+
+                <!-- Turniej selection -->
                 <StackPanel Grid.Row="0"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
@@ -50,64 +53,68 @@
                             Foreground="White"
                             Style="{StaticResource contentButton}"/>
                 </StackPanel>
+
+                <!-- Kategoria Kata -->
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="160"/>
                     </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left">
-                    <TextBlock Text="Kategoria Kata:"
-                               FontSize="16"
-                               FontFamily="Montserrat"
-                               Foreground="White"
-                               VerticalAlignment="Center"/>
-                    <ComboBox x:Name="cbTourCatKata"
-                              Width="292"
-                              Style="{StaticResource comboboxStyle}"
-                              Margin="10,0,0,0"
-                              ItemsSource="{Binding TourCatKatas}"
-                              SelectedItem="{Binding SelectedTourCatKata}"
-                              DisplayMemberPath="KataCatName"/>
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left">
+                        <TextBlock Text="Kategoria Kata:"
+                                   FontSize="16"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbTourCatKata"
+                                  Width="292"
+                                  Style="{StaticResource comboboxStyle}"
+                                  Margin="10,0,0,0"
+                                  ItemsSource="{Binding TourCatKatas}"
+                                  SelectedItem="{Binding SelectedTourCatKata}"
+                                  DisplayMemberPath="KataCatName"/>
 
-                    <TextBlock Text="Mata: "
-                               FontSize="16"
-                               Margin="20,0,5,0"
-                               FontFamily="Montserrat"
-                               Foreground="White"
-                               VerticalAlignment="Center"/>
-                    <TextBox  Width="100" 
-                              Background="Transparent"                                   
-                              FontWeight="Medium"
-                              FontFamily="Montserrat"                            
-                              Foreground="White"
-                              CaretBrush="White"
-                              BorderBrush="White"
-                              BorderThickness="0"                             
-                              VerticalContentAlignment="Center"
-                              IsReadOnly="True"
-                              FontSize="16"
-                              Text="{Binding SelectedTourCatKata.MatName}"/>
-                    
-                </StackPanel>
+                        <TextBlock Text="Mata: "
+                                   FontSize="16"
+                                   Margin="20,0,5,0"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
+                        <TextBox Width="100" 
+                                 Background="Transparent"                                   
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0"                             
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
+                                 FontSize="16"
+                                 Text="{Binding SelectedTourCatKata.MatName}"/>
+                    </StackPanel>
                     <StackPanel Grid.Column="1"
-                                VerticalAlignment="Center">
-                    <Button x:Name="btnFilterKatasByGrades"                         
-                            Content="Sortuj po średniej"
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Command="{Binding SortKataCommand}"
-                            Foreground="White"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Right"
-                            Width="120"
-                            Style="{StaticResource contentButton}"/>
+                                VerticalAlignment="Center"
+                                Margin="20,0">
+                        <Button x:Name="btnFilterKatasByGrades"                         
+                                Content="Sortuj po średniej"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Command="{Binding SortKataCommand}"
+                                Foreground="White"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Right"
+                                Width="120"
+                                Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Grid>
+
+                <!-- Kata DataGrid -->
                 <Grid Grid.Row="2"
                       VerticalAlignment="Top"
                       Margin="20,0,20,0">
@@ -119,223 +126,234 @@
                               ItemsSource="{Binding Katas}"
                               SelectedItem="{Binding SelectedKata}"
                               SelectionMode="Single">
-
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Numeration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nr"/>
-                            <DataGridTextColumn Binding="{Binding CompFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Imię"/>
-                            <DataGridTextColumn Binding="{Binding CompLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nazwisko"/>
-                            <DataGridTextColumn Binding="{Binding KataRate1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Ocena 1"/>
-                            <DataGridTextColumn Binding="{Binding KataRate2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Ocena 2"/>
-                            <DataGridTextColumn Binding="{Binding KataRate3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Ocena 3"/>
-                            <DataGridTextColumn Binding="{Binding KataRate4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Ocena 4"/>
-                            <DataGridTextColumn Binding="{Binding KataRate5, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Ocena 5"/>
-                            <DataGridTextColumn Binding="{Binding KataScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Średnia z ocen"/>
-                            <DataGridTextColumn Binding="{Binding OvertimeDisplay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Dogrywka"/>
+                            <DataGridTextColumn Binding="{Binding Numeration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Nr"/>
+                            <DataGridTextColumn Binding="{Binding CompFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Imię"/>
+                            <DataGridTextColumn Binding="{Binding CompLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Nazwisko"/>
+                            <DataGridTextColumn Binding="{Binding KataRate1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Ocena 1"/>
+                            <DataGridTextColumn Binding="{Binding KataRate2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Ocena 2"/>
+                            <DataGridTextColumn Binding="{Binding KataRate3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Ocena 3"/>
+                            <DataGridTextColumn Binding="{Binding KataRate4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Ocena 4"/>
+                            <DataGridTextColumn Binding="{Binding KataRate5, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Ocena 5"/>
+                            <DataGridTextColumn Binding="{Binding KataScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Średnia z ocen"/>
+                            <DataGridTextColumn Binding="{Binding OvertimeDisplay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Dogrywka"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
 
+                <!-- Kata Editing -->
                 <Grid Grid.Row="3"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
-
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="120"/>
                     </Grid.ColumnDefinitions>
                     <Border Background="#1B3663"
-                        CornerRadius="10"
-                        Grid.Column="0"                        
-                        Margin="10,10,10,0"
-                        Height="70">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="35"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        
-                        <StackPanel Grid.Row="0"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center"
-                                    Margin="10,0,10,0">
+                            CornerRadius="10"
+                            Grid.Column="0"                        
+                            Margin="10,10,10,0"
+                            Height="70">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                            <TextBlock Text="Nr" 
-                                       FontSize="17"
-                                       FontFamily="Montserrat"
-                                       Foreground="White"
-                                       Width="40"
-                                       TextAlignment="Center"/>
-                            <TextBlock Text="Imię" 
-                                       FontSize="17"
-                                       FontFamily="Montserrat"
-                                       Foreground="White"
-                                       Width="160"
-                                       TextAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock Text="Nazwisko" 
-                                       FontSize="17"
-                                       FontFamily="Montserrat"
-                                       Foreground="White"
-                                       Width="180"
-                                       TextAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock Text="Ocena 1" 
-                                       FontSize="17"
-                                       FontFamily="Montserrat"
-                                       Foreground="White"
-                                       Width="80"
-                                       TextAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock Text="Ocena 2" 
-                                       FontSize="17"
-                                       FontFamily="Montserrat"
-                                       Foreground="White"
-                                       Width="80"
-                                       TextAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock Text="Ocena 3" 
-                                       FontSize="17"
-                                       FontFamily="Montserrat"
-                                       Foreground="White"
-                                       Width="80"
-                                       TextAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock Text="Ocena 4" 
-                                       FontSize="17"
-                                       FontFamily="Montserrat"
-                                       Foreground="White"
-                                       Width="80"
-                                       TextAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock Text="Ocena 5" 
-                                       FontSize="17"
-                                       FontFamily="Montserrat"
-                                       Foreground="White"
-                                       Width="80"
-                                       TextAlignment="Center"
-                                       Margin="10,0,0,0"/>
+                            <StackPanel Grid.Row="0"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        Margin="10,0,10,0">
+                                <TextBlock Text="Nr" 
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="40"
+                                           TextAlignment="Center"/>
+                                <TextBlock Text="Imię" 
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="160"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                                <TextBlock Text="Nazwisko" 
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="180"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                                <TextBlock Text="Ocena 1" 
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="80"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                                <TextBlock Text="Ocena 2" 
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="80"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                                <TextBlock Text="Ocena 3" 
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="80"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                                <TextBlock Text="Ocena 4" 
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="80"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                                <TextBlock Text="Ocena 5" 
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="80"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
+                            </StackPanel>
 
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Row="1">
-                            <TextBox Width="40" 
-                                     Margin="10,5"
-                                     Background="Transparent"                                   
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0"                             
-                                     TextAlignment="Center"
-                                     IsReadOnly="True"
-                                     Text="{Binding EditingKata.Numeration, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox Width="160" 
-                                     Margin="0,5,10,5"
-                                     Background="Transparent"                                   
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0"                             
-                                     TextAlignment="Center"
-                                     IsReadOnly="True"
-                                     Text="{Binding EditingKata.CompFirstName, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox Width="180" 
-                                     Margin="0,5,10,5"
-                                     Background="Transparent"                                   
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0"                             
-                                     TextAlignment="Center"
-                                     IsReadOnly="True"
-                                     Text="{Binding EditingKata.CompLastName, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox Width="80" 
-                                     Margin="0,5,10,5"
-                                     Background="Transparent"                                   
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     TextAlignment="Center"
-                                     MaxLength="3"
-                                     PreviewTextInput="tbRate_PreviewTextInput"
-                                     Text="{Binding EditingKata.KataRate1, UpdateSourceTrigger=LostFocus, FallbackValue=0}"
-                                     />
-                            <TextBox Width="80" 
-                                     Margin="0,5,10,5"
-                                     Background="Transparent"                                   
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     TextAlignment="Center"
-                                     MaxLength="3"
-                                     PreviewTextInput="tbRate_PreviewTextInput"
-                                     Text="{Binding EditingKata.KataRate2, UpdateSourceTrigger=LostFocus, FallbackValue=0}"
-                                     />
-                            <TextBox Width="80" 
-                                     Margin="0,5,10,5"
-                                     Background="Transparent"                                   
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     TextAlignment="Center"
-                                     MaxLength="3"
-                                     PreviewTextInput="tbRate_PreviewTextInput"
-                                     Text="{Binding EditingKata.KataRate3, UpdateSourceTrigger=LostFocus, FallbackValue=0}"
-                                     />
-                            <TextBox Width="80" 
-                                     Margin="0,5,10,5"
-                                     Background="Transparent"                                   
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     TextAlignment="Center"
-                                     MaxLength="3"
-                                     PreviewTextInput="tbRate_PreviewTextInput"
-                                     Text="{Binding EditingKata.KataRate4, UpdateSourceTrigger=LostFocus, FallbackValue=0}"
-                                     />
-                            <TextBox Width="80" 
-                                     Margin="0,5,10,5"
-                                     Background="Transparent"                                   
-                                     FontWeight="Medium"
-                                     FontFamily="Montserrat"                            
-                                     Foreground="White"
-                                     CaretBrush="White"
-                                     BorderBrush="White"
-                                     BorderThickness="0,0,0,1"                             
-                                     TextAlignment="Center"
-                                     MaxLength="3"
-                                     PreviewTextInput="tbRate_PreviewTextInput"
-                                     Text="{Binding EditingKata.KataRate5, UpdateSourceTrigger=LostFocus, FallbackValue=0}"
-                                     />
-                        </StackPanel>
-                    </Grid>
-                </Border>
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Row="1">
+                                <TextBox Width="40" 
+                                         Margin="10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0"                             
+                                         TextAlignment="Center"
+                                         IsReadOnly="True"
+                                         Text="{Binding EditingKata.Numeration, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Width="160" 
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0"                             
+                                         TextAlignment="Center"
+                                         IsReadOnly="True"
+                                         Text="{Binding EditingKata.CompFirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Width="180" 
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0"                             
+                                         TextAlignment="Center"
+                                         IsReadOnly="True"
+                                         Text="{Binding EditingKata.CompLastName, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Width="80" 
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         TextAlignment="Center"
+                                         MaxLength="3"
+                                         PreviewTextInput="tbRate_PreviewTextInput"
+                                         Text="{Binding EditingKata.KataRate1, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
+                                <TextBox Width="80" 
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         TextAlignment="Center"
+                                         MaxLength="3"
+                                         PreviewTextInput="tbRate_PreviewTextInput"
+                                         Text="{Binding EditingKata.KataRate2, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
+                                <TextBox Width="80" 
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         TextAlignment="Center"
+                                         MaxLength="3"
+                                         PreviewTextInput="tbRate_PreviewTextInput"
+                                         Text="{Binding EditingKata.KataRate3, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
+                                <TextBox Width="80" 
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         TextAlignment="Center"
+                                         MaxLength="3"
+                                         PreviewTextInput="tbRate_PreviewTextInput"
+                                         Text="{Binding EditingKata.KataRate4, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
+                                <TextBox Width="80" 
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         TextAlignment="Center"
+                                         MaxLength="3"
+                                         PreviewTextInput="tbRate_PreviewTextInput"
+                                         Text="{Binding EditingKata.KataRate5, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                     <StackPanel Grid.Column="1"
                                 Orientation="Vertical"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Bottom">
-                        <Button 
-                                x:Name="btnEditKata"                           
+                        <Button x:Name="btnEditKata"                           
                                 Content="Edytuj"     
-                            Command="{Binding EditKataCommand}"
+                                Command="{Binding EditKataCommand}"
                                 FontSize="12"
                                 FontFamily="Montserrat"
                                 Cursor="Hand"
@@ -344,13 +362,12 @@
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Right"
                                 Width="120"
-                            Margin="0,0,0,10"
-                            IsEnabled="{Binding IsEnabled}"
+                                Margin="0,0,0,10"
+                                IsEnabled="{Binding IsEnabled}"
                                 Style="{StaticResource contentButton}"/>
-                        <Button 
-                                x:Name="btnSetRates"                           
+                        <Button x:Name="btnSetRates"                           
                                 Content="Zapisz"     
-                            Command="{Binding SetGradesToKataCommand}"
+                                Command="{Binding SetGradesToKataCommand}"
                                 FontSize="12"
                                 FontFamily="Montserrat"
                                 Cursor="Hand"
@@ -359,39 +376,43 @@
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Right"
                                 Width="120"
-                            IsEnabled="{Binding IsEnabled}"
+                                IsEnabled="{Binding IsEnabled}"
                                 Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Grid>
+
+                <!-- Dogrywka -->
                 <Grid Grid.Row="4"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Miejsce w dogrywce:"
-                               FontSize="17"
-                               FontFamily="Montserrat"
-                               Foreground="White"
-                               VerticalAlignment="Center"/>
-                    <ComboBox x:Name="cbSelectedKataOvertime"
-                              Width="200"
-                              Style="{StaticResource comboboxStyle}"
-                              Margin="15,0,0,0"
-                              ItemsSource="{Binding OvertimeOptions}"
-                              SelectedItem="{Binding SelectedOvertime, Mode=TwoWay}"
-                              DisplayMemberPath="DisplayName"/>
+                        <TextBlock Text="Miejsce w dogrywce:"
+                                   FontSize="17"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbSelectedKataOvertime"
+                                  Width="200"
+                                  Style="{StaticResource comboboxStyle}"
+                                  Margin="15,0,0,0"
+                                  ItemsSource="{Binding OvertimeOptions}"
+                                  SelectedItem="{Binding SelectedOvertime, Mode=TwoWay}"
+                                  DisplayMemberPath="DisplayName"/>
                     </StackPanel>
                 </Grid>
+
+                <!-- Kategoria Kumite -->
                 <Border Grid.Row="5"
                         BorderBrush="#5D83B1"
                         BorderThickness="0,1,0,0">
-                <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left">
-                    <TextBlock Text="Kategoria Kumite:"
-                               FontSize="16"
-                               FontFamily="Montserrat"
-                               Foreground="White"
-                               VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left">
+                        <TextBlock Text="Kategoria Kumite:"
+                                   FontSize="16"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
                         <ComboBox x:Name="cbTourCatKumite"
                                   Width="292"
                                   Style="{StaticResource comboboxStyle}"
@@ -401,12 +422,12 @@
                                   DisplayMemberPath="KumiteCatName"/>
 
                         <TextBlock Text="Mata: "
-                               FontSize="16"
-                               Margin="20,0,5,0"
-                               FontFamily="Montserrat"
-                               Foreground="White"
-                               VerticalAlignment="Center"/>
-                        <TextBox  Width="100" 
+                                   FontSize="16"
+                                   Margin="20,0,5,0"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
+                        <TextBox Width="100" 
                                   Background="Transparent"                                   
                                   FontWeight="Medium"
                                   FontFamily="Montserrat"                            
@@ -429,8 +450,7 @@
                                   Margin="10,0,0,0"
                                   ItemsSource="{Binding Rounds}"
                                   SelectedItem="{Binding SelectedRound}"/>
-                        <Button 
-                                x:Name="btnGeneretaRounds"                           
+                        <Button x:Name="btnGeneretaRounds"                           
                                 Content="Generuj kolejną rundę"     
                                 FontSize="12"
                                 FontFamily="Montserrat"
@@ -441,11 +461,13 @@
                                 Command="{Binding GenerateNextRoundCommand}"
                                 HorizontalAlignment="Right"
                                 Width="130"
-                            IsEnabled="{Binding IsEnabled}"
-                            Margin="10,0,0,0"
+                                IsEnabled="{Binding IsEnabled}"
+                                Margin="10,0,0,0"
                                 Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Border>
+
+                <!-- Kumite DataGrid -->
                 <Grid Grid.Row="6"
                       VerticalAlignment="Top"
                       Margin="20,0,20,0">
@@ -457,25 +479,43 @@
                               SelectionMode="Single"
                               ItemsSource="{Binding Fights}"
                               SelectedItem="{Binding SelectedFight}">
-
                         <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding FightNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Nr"/>
-                            <DataGridTextColumn Binding="{Binding RedCompetitorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Zawodnik A"/>
-                            <DataGridTextColumn Binding="{Binding RedCompetitorScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Punkty A"/>
-                            <DataGridTextColumn Binding="{Binding BlueCompetitorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Zawodnik B"/>
-                            <DataGridTextColumn Binding="{Binding BlueCompetitorScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Punkty B"/>
-                            <DataGridTextColumn Binding="{Binding FightTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Czas trwania"/>
-                            <DataGridTextColumn Binding="{Binding FightNumOverTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Liczba dogrywek"/>
-                            <DataGridTextColumn Binding="{Binding FightWalkoverDisplay,UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Walkower"/>
-                            <DataGridTextColumn Binding="{Binding WinnerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ClipboardContentBinding="{x:Null}" Header="Wygrany"/>
+                            <DataGridTextColumn Binding="{Binding FightNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Nr"/>
+                            <DataGridTextColumn Binding="{Binding RedCompetitorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Zawodnik A"/>
+                            <DataGridTextColumn Binding="{Binding RedCompetitorScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Punkty A"/>
+                            <DataGridTextColumn Binding="{Binding BlueCompetitorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Zawodnik B"/>
+                            <DataGridTextColumn Binding="{Binding BlueCompetitorScore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Punkty B"/>
+                            <DataGridTextColumn Binding="{Binding FightTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Czas trwania"/>
+                            <DataGridTextColumn Binding="{Binding FightNumOverTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Liczba dogrywek"/>
+                            <DataGridTextColumn Binding="{Binding FightWalkoverDisplay,UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Walkower"/>
+                            <DataGridTextColumn Binding="{Binding WinnerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                               ClipboardContentBinding="{x:Null}" 
+                                               Header="Wygrany"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
+
+                <!-- Kumite Editing -->
                 <Grid Grid.Row="7"
                       VerticalAlignment="Center"
                       HorizontalAlignment="Center"
                       Margin="10,0">
-
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="120"/>
@@ -495,109 +535,106 @@
                                         Orientation="Horizontal"
                                         VerticalAlignment="Center"
                                         Margin="10,0,10,0">
-
                                 <TextBlock Text="Nr" 
-                                            FontSize="17"
-                                            FontFamily="Montserrat"
-                                            Foreground="White"
-                                            Width="40"
-                                            TextAlignment="Center"/>
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="40"
+                                           TextAlignment="Center"/>
                                 <TextBlock Text="Zawodnik A" 
-                                            FontSize="17"
-                                            FontFamily="Montserrat"
-                                            Foreground="White"
-                                            Width="300"
-                                            TextAlignment="Center"
-                                            Margin="10,0,0,0"/>
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="300"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
                                 <TextBlock Text="Punkty A" 
-                                            FontSize="17"
-                                            FontFamily="Montserrat"
-                                            Foreground="White"
-                                            Width="70"
-                                            TextAlignment="Center"
-                                            Margin="10,0,0,0"/>
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="70"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
                                 <TextBlock Text="Zawdonik B" 
-                                            FontSize="17"
-                                            FontFamily="Montserrat"
-                                            Foreground="White"
-                                            Width="300"
-                                            TextAlignment="Center"
-                                            Margin="10,0,0,0"/>
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="300"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
                                 <TextBlock Text="Punkty B" 
-                                            FontSize="17"
-                                            FontFamily="Montserrat"
-                                            Foreground="White"
-                                            Width="70"
-                                            TextAlignment="Center"
-                                            Margin="10,0,0,0"/>
-                                
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="70"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal"
                                         Grid.Row="1">
                                 <TextBox Width="40" 
-                                        Margin="10,5"
-                                        Background="Transparent"                                   
-                                        FontWeight="Medium"
-                                        FontFamily="Montserrat"                            
-                                        Foreground="White"
-                                        CaretBrush="White"
-                                        BorderBrush="White"
-                                        BorderThickness="0"                             
-                                        TextAlignment="Center"
-                                        IsReadOnly="True"
-                                     Text="{Binding EditingFight.FightNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                                         Margin="10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0"                             
+                                         TextAlignment="Center"
+                                         IsReadOnly="True"
+                                         Text="{Binding EditingFight.FightNumber, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Width="300" 
-                                        Margin="0,5,10,5"
-                                        Background="Transparent"                                   
-                                        FontWeight="Medium"
-                                        FontFamily="Montserrat"                            
-                                        Foreground="White"
-                                        CaretBrush="White"
-                                        BorderBrush="White"
-                                        BorderThickness="0"                             
-                                        TextAlignment="Center"
-                                        IsReadOnly="True"
-                                     Text="{Binding EditingFight.RedCompetitorName, UpdateSourceTrigger=PropertyChanged}"/>
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0"                             
+                                         TextAlignment="Center"
+                                         IsReadOnly="True"
+                                         Text="{Binding EditingFight.RedCompetitorName, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Width="70" 
-                                        Margin="0,5,10,5"
-                                        Background="Transparent"                                   
-                                        FontWeight="Medium"
-                                        FontFamily="Montserrat"                            
-                                        Foreground="White"
-                                        CaretBrush="White"
-                                        BorderBrush="White"
-                                        BorderThickness="0,0,0,1"                             
-                                        TextAlignment="Center"
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         TextAlignment="Center"
                                          PreviewTextInput="tbRate_PreviewTextInput"
-                                     Text="{Binding EditingFight.RedCompetitorScore, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
+                                         Text="{Binding EditingFight.RedCompetitorScore, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
                                 <TextBox Width="300" 
-                                        Margin="0,5,10,5"
-                                        Background="Transparent"                                   
-                                        FontWeight="Medium"
-                                        FontFamily="Montserrat"                            
-                                        Foreground="White"
-                                        CaretBrush="White"
-                                        BorderBrush="White"
-                                        BorderThickness="0"                             
-                                        TextAlignment="Center"
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0"                             
+                                         TextAlignment="Center"
                                          IsReadOnly="True"
                                          MaxLength="3"
-                                     Text="{Binding EditingFight.BlueCompetitorName, UpdateSourceTrigger=PropertyChanged}"/>
+                                         Text="{Binding EditingFight.BlueCompetitorName, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Width="70" 
-                                        Margin="0,5,10,5"
-                                        Background="Transparent"                                   
-                                        FontWeight="Medium"
-                                        FontFamily="Montserrat"                            
-                                        Foreground="White"
-                                        CaretBrush="White"
-                                        BorderBrush="White"
-                                        BorderThickness="0,0,0,1"                             
-                                        TextAlignment="Center"
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         TextAlignment="Center"
                                          PreviewTextInput="tbRate_PreviewTextInput"
                                          MaxLength="3"
-                                     Text="{Binding EditingFight.BlueCompetitorScore, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
-                               
+                                         Text="{Binding EditingFight.BlueCompetitorScore, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -605,42 +642,41 @@
                                 Orientation="Vertical"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Bottom">
-                        <Button 
-                            x:Name="btnEditFight"                           
-                            Content="Edytuj"    
-                            Command="{Binding EditFightCommand}"
-                            FontSize="12"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            BorderThickness="0"
-                            Foreground="White"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Right"
-                            Width="120"
-                            Margin="0,0,0,10"
-                            IsEnabled="{Binding IsEnabled}"
-                            Style="{StaticResource contentButton}"/>
-                        <Button 
-                x:Name="btnSetFight"                           
-                Content="Zapisz"     
-                           Command="{Binding SetFightCommand}"
-                FontSize="12"
-                FontFamily="Montserrat"
-                Cursor="Hand"
-                BorderThickness="0"
-                Foreground="White"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Right"
-                Width="120"
-                            IsEnabled="{Binding IsEnabled}"
-                Style="{StaticResource contentButton}"/>
+                        <Button x:Name="btnEditFight"                           
+                                Content="Edytuj"    
+                                Command="{Binding EditFightCommand}"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Right"
+                                Width="120"
+                                Margin="0,0,0,10"
+                                IsEnabled="{Binding IsEnabled}"
+                                Style="{StaticResource contentButton}"/>
+                        <Button x:Name="btnSetFight"                           
+                                Content="Zapisz"     
+                                Command="{Binding SetFightCommand}"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Right"
+                                Width="120"
+                                IsEnabled="{Binding IsEnabled}"
+                                Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Grid>
+
+                <!-- Fight Details -->
                 <Grid Grid.Row="8"
                       VerticalAlignment="Top"
                       HorizontalAlignment="Center"
                       Margin="10,0">
-
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="120"/>
@@ -657,80 +693,77 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Grid.Row="0"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        Margin="10,0,10,0">
-
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        Margin="10,0,10,0">
                                 <TextBlock Text="Czas trwania" 
-                            FontSize="17"
-                            FontFamily="Montserrat"
-                            Foreground="White"
-                            Width="100"
-                            TextAlignment="Center"/>
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="100"
+                                           TextAlignment="Center"/>
                                 <TextBlock Text="Liczba dogrywek" 
-                            FontSize="17"
-                            FontFamily="Montserrat"
-                            Foreground="White"
-                            Width="150"
-                            TextAlignment="Center"
-                            Margin="10,0,0,0"/>
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="150"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
                                 <TextBlock Text="Walkower" 
-                            FontSize="17"
-                            FontFamily="Montserrat"
-                            Foreground="White"
-                            Width="100"
-                            TextAlignment="Center"
-                            Margin="10,0,0,0"/>
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="100"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
                                 <TextBlock Text="Wygrany" 
-                            FontSize="17"
-                            FontFamily="Montserrat"
-                            Foreground="White"
-                            Width="300"
-                            TextAlignment="Center"
-                            Margin="10,0,0,0"/>
-                                
-
+                                           FontSize="17"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Width="300"
+                                           TextAlignment="Center"
+                                           Margin="10,0,0,0"/>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal"
-                        Grid.Row="1">
+                                        Grid.Row="1">
                                 <TextBox Width="100" 
-                        Margin="10,5"
-                        Background="Transparent"                                   
-                        FontWeight="Medium"
-                        FontFamily="Montserrat"                            
-                        Foreground="White"
-                        CaretBrush="White"
-                        BorderBrush="White"
-                        BorderThickness="0,0,0,1"                             
-                        TextAlignment="Center"
-                        Text="{Binding EditingFight.FightTime, UpdateSourceTrigger=PropertyChanged}"/>
+                                         Margin="10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                             
+                                         TextAlignment="Center"
+                                         Text="{Binding EditingFight.FightTime, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Width="150" 
-                        Margin="0,5,10,5"
-                        Background="Transparent"                                   
-                        FontWeight="Medium"
-                        FontFamily="Montserrat"                            
-                        Foreground="White"
-                        CaretBrush="White"
-                        BorderBrush="White"
-                        BorderThickness="0,0,0,1"                            
-                        TextAlignment="Center"
-                        Text="{Binding EditingFight.FightNumOverTime, UpdateSourceTrigger=PropertyChanged}"/>
+                                         Margin="0,5,10,5"
+                                         Background="Transparent"                                   
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="White"
+                                         BorderBrush="White"
+                                         BorderThickness="0,0,0,1"                            
+                                         TextAlignment="Center"
+                                         Text="{Binding EditingFight.FightNumOverTime, UpdateSourceTrigger=PropertyChanged}"/>
                                 <ComboBox x:Name="cbFightWalkower"
-                        Width="80"
-                        Style="{StaticResource comboboxStyle}"
-                        Margin="0,5,10,5"
-                        ItemsSource="{Binding WalkoverOptions}"
-                        SelectedItem="{Binding SelectedWalkover, Mode=TwoWay}"
-                        DisplayMemberPath="DisplayName"/>
+                                           Width="80"
+                                           Style="{StaticResource comboboxStyle}"
+                                           Margin="0,5,10,5"
+                                           ItemsSource="{Binding WalkoverOptions}"
+                                           SelectedItem="{Binding SelectedWalkover, Mode=TwoWay}"
+                                           DisplayMemberPath="DisplayName"/>
                                 <ComboBox x:Name="cbFightWinner"
-                                            Width="300"
-                                            Style="{StaticResource comboboxStyle}"
-                                            Margin="0,5,10,5"
-                                            ItemsSource="{Binding WinnerList}" 
-                                            DisplayMemberPath="CompFullName" 
-                                            SelectedValuePath="TourCompId" 
-                                            SelectedItem="{Binding SelectedCompWinner}"/>
+                                           Width="300"
+                                           Style="{StaticResource comboboxStyle}"
+                                           Margin="0,5,10,5"
+                                           ItemsSource="{Binding WinnerList}" 
+                                           DisplayMemberPath="CompFullName" 
+                                           SelectedValuePath="TourCompId" 
+                                           SelectedItem="{Binding SelectedCompWinner}"/>
                             </StackPanel>
                         </Grid>
                     </Border>

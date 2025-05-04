@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KarateSystem.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="625" d:DesignWidth="1050">
+             d:DesignHeight="625" 
+             d:DesignWidth="1050">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="300"/>
@@ -16,6 +17,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="500"/>
         </Grid.ColumnDefinitions>
+
+        <!-- Ostatni turniej -->
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
@@ -43,7 +46,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
-                                <ColumnDefinition />
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0"
                                         Margin="0,0,20,0">
@@ -125,88 +128,91 @@
                         </Grid>
                     </Border>
                 </Grid>
-                    </Border>
-                    <Border x:Name="BorderTourElement" Grid.Column="2"
-                            Margin="20,50,20,20"
-                            Background="#5D83B1"
-                            CornerRadius="10"
-                            Padding="10">
+            </Border>
+            <Border x:Name="BorderTourElement" 
+                    Grid.Column="2"
+                    Margin="20,50,20,20"
+                    Background="#5D83B1"
+                    CornerRadius="10"
+                    Padding="10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="80"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0"
-                                        Margin="0,0,10,0">
+                                Margin="0,0,10,0">
                         <TextBlock Text="Nazwa:"
-                                           Foreground="White"
-                                           FontFamily="Montserrat"
-                                           FontSize="18"
-                                           FontWeight="Medium"
-                                           Margin="0,10,0,10"
-                                           HorizontalAlignment="Right"/>
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="18"
+                                   FontWeight="Medium"
+                                   Margin="0,10,0,10"
+                                   HorizontalAlignment="Right"/>
                         <TextBlock Text="Miejsce:"
-                                           Foreground="White"
-                                           FontFamily="Montserrat"
-                                           FontSize="18"
-                                           FontWeight="Medium"
-                                           Margin="0,10,0,10"
-                                           HorizontalAlignment="Right"/>
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="18"
+                                   FontWeight="Medium"
+                                   Margin="0,10,0,10"
+                                   HorizontalAlignment="Right"/>
                         <TextBlock Text="Data:"
-                                           Foreground="White"
-                                           FontFamily="Montserrat"
-                                           FontSize="18"
-                                           FontWeight="Medium"
-                                           Margin="0,10,0,10"
-                                           HorizontalAlignment="Right"/>
+                                   Foreground="White"
+                                   FontFamily="Montserrat"
+                                   FontSize="18"
+                                   FontWeight="Medium"
+                                   Margin="0,10,0,10"
+                                   HorizontalAlignment="Right"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1">
                         <TextBox x:Name="tbTourNameLast2"
-                                         Background="Transparent"
-                                         Width="250"
-                                         Height="20"
-                                         Margin="0,12,0,10"
-                                         FontWeight="Medium"
-                                         FontFamily="Montserrat"                            
-                                         Foreground="White"
-                                         CaretBrush="White"
-                                         BorderBrush="White"
-                                         BorderThickness="0,0,0,1"                             
-                                         VerticalContentAlignment="Center"
-                                         IsReadOnly="True"
-                                         Style="{StaticResource textBoxEnabled}"/>
+                                 Background="Transparent"
+                                 Width="250"
+                                 Height="20"
+                                 Margin="0,12,0,10"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"                             
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource textBoxEnabled}"/>
                         <TextBox x:Name="tbTourPlaceLast2"
-                                         Background="Transparent"
-                                         Width="250"
-                                         Height="20"
-                                         Margin="0,12,0,10"
-                                         FontWeight="Medium"
-                                         FontFamily="Montserrat"                            
-                                         Foreground="White"
-                                         CaretBrush="White"
-                                         BorderBrush="White"
-                                         BorderThickness="0,0,0,1"                             
-                                         VerticalContentAlignment="Center"
-                                         IsReadOnly="True"
-                                         Style="{StaticResource textBoxEnabled}"/>
+                                 Background="Transparent"
+                                 Width="250"
+                                 Height="20"
+                                 Margin="0,12,0,10"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"                             
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource textBoxEnabled}"/>
                         <TextBox x:Name="tbTourDateLast2"
-                                         Background="Transparent"
-                                         Width="250"
-                                         Height="20"
-                                         Margin="0,10,0,10"
-                                         FontWeight="Medium"
-                                         FontFamily="Montserrat"                            
-                                         Foreground="White"
-                                         CaretBrush="White"
-                                         BorderBrush="White"
-                                         BorderThickness="0,0,0,1"                             
-                                         VerticalContentAlignment="Center"
-                                         IsReadOnly="True"
-                                         Style="{StaticResource textBoxEnabled}"/>
+                                 Background="Transparent"
+                                 Width="250"
+                                 Height="20"
+                                 Margin="0,10,0,10"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0,0,0,1"                             
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource textBoxEnabled}"/>
                     </StackPanel>
                 </Grid>
             </Border>
         </Grid>
+
+        <!-- Szczegóły turnieju -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"/>
@@ -218,54 +224,54 @@
                     CornerRadius="10,0,0,10">
                 <StackPanel Margin="0,0,10,0">
                     <TextBlock Text="Szczegóły turnieju"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="20"
-                           FontWeight="Medium"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"/>
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="20"
+                               FontWeight="Medium"
+                               Margin="0,0,0,20"
+                               HorizontalAlignment="Center"/>
                     <TextBlock Text="Liczba zawodników:"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Margin="0,0,0,10"
-                           HorizontalAlignment="Right"/>
-                    <TextBlock Text="Liczba  kategorii kata:"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Margin="0,0,0,10"
-                           HorizontalAlignment="Right"/>
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Right"/>
+                    <TextBlock Text="Liczba kategorii kata:"
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Right"/>
                     <TextBlock Text="Liczba Kata:"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Margin="0,0,0,10"
-                           HorizontalAlignment="Right"/>
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Right"/>
                     <TextBlock Text="Liczba kategorii kumite:"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Margin="0,0,0,10"
-                           HorizontalAlignment="Right"/>
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Right"/>
                     <TextBlock Text="Liczba kumite:"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Margin="0,0,0,10"
-                           HorizontalAlignment="Right"/>
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Right"/>
                     <TextBlock Text="Status:"
-                           Foreground="White"
-                           FontFamily="Montserrat"
-                           FontSize="16"
-                           FontWeight="Medium"
-                           Margin="0,0,0,10"
-                           HorizontalAlignment="Right"/>
+                               Foreground="White"
+                               FontFamily="Montserrat"
+                               FontSize="16"
+                               FontWeight="Medium"
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Right"/>
                 </StackPanel>
             </Border>
 
@@ -281,14 +287,14 @@
                         </Grid.RowDefinitions>
                     </Grid>
                     <StackPanel Grid.Row="0"
-                            HorizontalAlignment="Left"
-                            Margin="5,0,5,0">
+                                HorizontalAlignment="Left"
+                                Margin="5,0,5,0">
                         <TextBox x:Name="tbTourCompNumber"
                                  Background="Transparent"
                                  Width="60"
                                  Height="19" 
-                                         TextAlignment="Center"
-                                         Cursor="Arrow"
+                                 TextAlignment="Center"
+                                 Cursor="Arrow"
                                  Margin="0,15,0,5"
                                  FontWeight="Medium"
                                  FontFamily="Montserrat"                            
@@ -302,99 +308,103 @@
                                  Text="{Binding CompetitorCount, UpdateSourceTrigger=PropertyChanged}"  
                                  Style="{StaticResource textBoxEnabled}"/>
                         <TextBox x:Name="tbTourCatKataNumber"
-                         Background="Transparent"
-                         Width="60"
-                         Height="19"
-                         Margin="0,5,0,5" 
-                                         TextAlignment="Center"
-                                         Cursor="Arrow"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="White"
-                         BorderBrush="White"
-                         BorderThickness="0"
+                                 Background="Transparent"
+                                 Width="60"
+                                 Height="19"
+                                 Margin="0,5,0,5" 
+                                 TextAlignment="Center"
+                                 Cursor="Arrow"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0"
                                  FontSize="17"
-                         VerticalContentAlignment="Center"
-                         IsReadOnly="True"
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
                                  Text="{Binding KataCategoryCount, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource textBoxEnabled}"/>
+                                 Style="{StaticResource textBoxEnabled}"/>
                         <TextBox x:Name="tbTourKataNumber"
-                         Background="Transparent"
-                         Width="60"
-                         Height="19"
-                         Margin="0,5,0,5" 
-                                         TextAlignment="Center"
-                                         Cursor="Arrow"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="White"
-                         BorderBrush="White"
-                         BorderThickness="0"
+                                 Background="Transparent"
+                                 Width="60"
+                                 Height="19"
+                                 Margin="0,5,0,5" 
+                                 TextAlignment="Center"
+                                 Cursor="Arrow"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0"
                                  Text="{Binding KataCount, UpdateSourceTrigger=PropertyChanged}"
                                  FontSize="17"                          
-                         VerticalContentAlignment="Center"
-                         IsReadOnly="True"
-                         Style="{StaticResource textBoxEnabled}"/>
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource textBoxEnabled}"/>
                         <TextBox x:Name="tbTourCatKumiteNumber"
-                         Background="Transparent"
-                         Width="60"
-                         Height="19"
-                         Margin="0,5,0,5"
-                         FontWeight="Medium" 
-                                         TextAlignment="Center"
-                                         Cursor="Arrow"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="White"
-                         BorderBrush="White"
-                         BorderThickness="0"
+                                 Background="Transparent"
+                                 Width="60"
+                                 Height="19"
+                                 Margin="0,5,0,5"
+                                 FontWeight="Medium" 
+                                 TextAlignment="Center"
+                                 Cursor="Arrow"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0"
                                  FontSize="17"                          
-                         VerticalContentAlignment="Center"
-                         IsReadOnly="True"
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
                                  Text="{Binding KumiteCategoryCount, UpdateSourceTrigger=PropertyChanged}"
-                         Style="{StaticResource textBoxEnabled}"/>
+                                 Style="{StaticResource textBoxEnabled}"/>
                         <TextBox x:Name="tbTourKumiteNumber"
-                         Background="Transparent"
-                         Width="60"
-                         Height="19"
-                         Margin="0,5,0,5"
-                         FontWeight="Medium" 
-                                         TextAlignment="Center"
-                                         Cursor="Arrow"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="White"
-                         BorderBrush="White"
-                         BorderThickness="0"
+                                 Background="Transparent"
+                                 Width="60"
+                                 Height="19"
+                                 Margin="0,5,0,5"
+                                 FontWeight="Medium" 
+                                 TextAlignment="Center"
+                                 Cursor="Arrow"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0"
+                                 Text="{Binding KumiteCount, UpdateSourceTrigger=PropertyChanged}"
                                  FontSize="17"                           
-                         VerticalContentAlignment="Center"
-                         IsReadOnly="True"
-                         Style="{StaticResource textBoxEnabled}"/>
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource textBoxEnabled}"/>
                         <TextBox x:Name="tbTourKumiteRole"
-                         Background="Transparent"
-                         Width="150"
-                         Height="19"
-                         Margin="0,5,0,5" 
-                                         TextAlignment="Center"
-                                         Cursor="Arrow"
-                         FontWeight="Medium"
-                         FontFamily="Montserrat"                            
-                         Foreground="White"
-                         CaretBrush="White"
-                         BorderBrush="White"
-                         BorderThickness="0"
+                                 Background="Transparent"
+                                 Width="150"
+                                 Height="19"
+                                 Margin="0,5,0,5" 
+                                 TextAlignment="Center"
+                                 Cursor="Arrow"
+                                 FontWeight="Medium"
+                                 FontFamily="Montserrat"                            
+                                 Foreground="White"
+                                 CaretBrush="White"
+                                 BorderBrush="White"
+                                 BorderThickness="0"
                                  FontSize="17"
                                  Text="{Binding TourStatus, UpdateSourceTrigger=PropertyChanged}"
-                         VerticalContentAlignment="Center"
-                         IsReadOnly="True"
-                         Style="{StaticResource textBoxEnabled}"/>
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"
+                                 Style="{StaticResource textBoxEnabled}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
         </Grid>
-        <Grid Grid.RowSpan="2" Grid.Column="1">
+
+        <!-- Obrazki -->
+        <Grid Grid.RowSpan="2" 
+              Grid.Column="1">
             <Image Source="/Images/kanku_kan.png"
                    Stretch="Fill"
                    HorizontalAlignment="Center"
@@ -406,7 +416,7 @@
                    Stretch="Uniform"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   Opacity="1" />
+                   Opacity="1"/>
         </Grid>
     </Grid>
 </UserControl>

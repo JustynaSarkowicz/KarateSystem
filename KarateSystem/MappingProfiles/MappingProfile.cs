@@ -64,6 +64,7 @@ namespace KarateSystem.MappingProfiles
                 .ForMember(dest => dest.KumiteCatWeightMin, opt => opt.MapFrom(src => src.KumiteCategory.KumiteCatWeightMin))
                 .ForMember(dest => dest.KumiteCatWeightMax, opt => opt.MapFrom(src => src.KumiteCategory.KumiteCatWeightMax))
                 .ForMember(dest => dest.MatName, opt => opt.MapFrom(src => src.Mat.MatName))
+                .ForMember(dest => dest.Fights, opt => opt.MapFrom(src => src.Fights))
                 .ReverseMap()
                 .ForMember(dest => dest.KumiteCategory, opt => opt.Ignore())
                 .ForMember(dest => dest.Mat, opt => opt.Ignore())

@@ -190,6 +190,21 @@ namespace KarateSystem.Repository
                     comp.TourCatKataId = matchedCategory.TourCatKataId;
                     i++;
                 }
+
+                var kata = new Kata
+                {
+                    TourCompId = comp.TourCompId,
+                    KataRate1 = null,
+                    KataRate2 = null,
+                    KataRate3 = null,
+                    KataRate4 = null,
+                    KataRate5 = null,
+                    KataScore = null,
+                    Overtime = 0
+                };
+
+                _dbContext.Katas.Add(kata);
+                comp.Kata = kata;
             }
 
             await _dbContext.SaveChangesAsync();

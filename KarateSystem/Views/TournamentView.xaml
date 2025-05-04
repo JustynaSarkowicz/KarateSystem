@@ -574,7 +574,7 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="300"/>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="60"/>
                         <RowDefinition Height="350"/>
                     </Grid.RowDefinitions>
 
@@ -614,56 +614,46 @@
                                         Style="{StaticResource contentButton}"/>
 
                             </StackPanel>
-                            <StackPanel Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center">
-                                <Button x:Name="btnSetAutomaticCompToCatKata" 
-                                        Command="{Binding SetCompAutomaticCatKata}"
-                                        Content="Przypisz automatycznie - KATA"  
-                                        Width="200"
-                                        FontSize="12"
-                                        FontFamily="Montserrat"
-                                        Cursor="Hand"
-                                        BorderThickness="0"
-                                        Foreground="White"
-                                        VerticalAlignment="Center"
-                                        Style="{StaticResource contentButton}"/>
-
-                                <Button x:Name="btnSetAutomaticCompToCatKumite" 
-                                        Command="{Binding SetCompAutomaticCatKumite}"                            
-                                        Content="Przypisz automatycznie - KUMITE"                            
-                                        FontSize="12"
-                                        Width="200"
-                                        Margin="10,0,0,0"
-                                        FontFamily="Montserrat"
-                                        Cursor="Hand"
-                                        BorderThickness="0"
-                                        Foreground="White"
-                                        VerticalAlignment="Center"
-                                        Style="{StaticResource contentButton}"/>
-                            </StackPanel>
                         </Grid>
                     </Border>
 
                     <!-- Wybór kategorii Kata -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Kategorie Kata:"
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel  Grid.Column="0"
+                                 Orientation="Horizontal" 
+                                 VerticalAlignment="Center">
+                            <TextBlock Text="Kategorie Kata:"
                                    FontSize="16"
                                    FontFamily="Montserrat"
                                    Foreground="White"
                                    VerticalAlignment="Center"/>
 
-                        <ComboBox x:Name="cbTourCatKata"
+                            <ComboBox x:Name="cbTourCatKata"
                                   Width="292"
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="10,0,0,0"
                                   ItemsSource="{Binding TourCatKatas}"
                                   SelectedItem="{Binding SelectedTourCatKata}"
                                   DisplayMemberPath="KataCatName"/>
+                        </StackPanel>
 
-                    </StackPanel>
-
+                        <Button x:Name="btnSetAutomaticCompToCatKata" 
+                                        Command="{Binding SetCompAutomaticCatKata}"
+                                        Content="Przypisz automatycznie"  
+                                        Width="200"
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        VerticalAlignment="Center"
+                                Grid.Column="1"
+                                        Style="{StaticResource contentButton}"/>
+                    </Grid>
                     <!-- Lista zawodników Kata -->
                     <Border Grid.Row="2" BorderThickness="0,0,0,1" BorderBrush="#5D83B1" Margin="0,0,0,0">
                         <Grid Margin="0,0,0,5">
@@ -733,14 +723,21 @@
                     </Border>
 
                     <!-- Wybór kategorii Kumite -->
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Kategorie Kumite:"
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal" 
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="Kategorie Kumite:"
                                    FontSize="16"
                                    FontFamily="Montserrat"
                                    Foreground="White"
                                    VerticalAlignment="Center"/>
 
-                        <ComboBox x:Name="cbTourCatKumite"
+                            <ComboBox x:Name="cbTourCatKumite"
                                   Width="292"
                                   Style="{StaticResource comboboxStyle}"
                                   Margin="10,0,0,0"
@@ -748,8 +745,27 @@
                                   SelectedItem="{Binding SelectedTourCatKumite}"
                                   DisplayMemberPath="KumiteCatName"/>
 
-                    </StackPanel>
-
+                        </StackPanel>
+                        <Button x:Name="btnSetAutomaticCompToCatKumite" 
+                                Command="{Binding SetCompAutomaticCatKumite}" 
+                                Width="200"
+                                Margin="0"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                VerticalAlignment="Center"
+                                Grid.Column="1"
+                                Style="{StaticResource contentButton}">
+                            <Button.Content>
+                                <TextBlock Text="Przypisz automatycznie"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center"
+                                           FontSize="12"
+                                           FontFamily="Montserrat"
+                                           Foreground="White"
+                                           Padding="0"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
                     <!-- Lista zawodników Kumite -->
                     <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>

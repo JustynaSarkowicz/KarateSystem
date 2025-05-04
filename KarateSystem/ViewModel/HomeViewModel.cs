@@ -19,12 +19,22 @@ namespace KarateSystem.ViewModel
         private int _kataCategoryCount;
         private int _kumiteCategoryCount;
         private int _kataCount;
+        private int _kumiteCount;
         private string _tourStatus;
 
         private ITournamentRepository _tournamentRepository;
         #endregion
 
         #region Properties
+        public int KumiteCount
+        {
+            get => _kumiteCount;
+            set
+            {
+                _kumiteCount = value;
+                OnPropertyChanged(nameof(KumiteCount));
+            }
+        }
         public string TourStatus
         {
             get => _tourStatus;
@@ -124,6 +134,7 @@ namespace KarateSystem.ViewModel
                 CompetitorCount = lastTournament.TourCompetitors.Count;
                 KataCategoryCount = lastTournament.TourCatKatas.Count;
                 KumiteCategoryCount = lastTournament.TourCatKumites.Count;
+                KumiteCount = lastTournament.TourCatKumites.Sum(t => t.Fights.Count);
                 KataCount = lastTournament.TourCompetitors.Where(t => t.KataId != null).Count();
             }
             else
