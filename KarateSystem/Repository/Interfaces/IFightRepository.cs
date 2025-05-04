@@ -12,5 +12,7 @@ namespace KarateSystem.Repository.Interfaces
         Task<bool> SetFightsAsync(int tournamentId);
         Task<List<FightDto>> GetFightsByTourAsync(int tournamentId);
         Task UpdateFightsAsync(FightDto fightDto);
+        Task<List<FightDto>> GetFightsByTourAndRoundAsync(int tourCatKumiteId, int roundNumber);
+        Task AddFightsAsync(List<FightDto> fightDtos);
     }
 }

@@ -125,6 +125,31 @@ namespace KarateSystem.Repository
 
             await _dbContext.SaveChangesAsync();
         }
+        public async Task<List<FightDto>> GetFightsByTourAndRoundAsync(int tourCatKumiteId, int roundNumber)
+        {
+            var fights = await _dbContext.Fights
+                .Include(f => f.RedCompetitor).ThenInclude(c => c.Competitor)
+                .Include(f => f.BlueCompetitor).ThenInclude(c => c.Competitor)
+                .Where(f => f.TourCatKumiteId == tourCatKumiteId && f.Round == roundNumber)
+                .ToListAsync();
+
+            var fightDtos = _mapper.Map<List<FightDto>>(fights);
+
+            // Numerowanie np. wg kolejności walk w liście
+            for (int i = 0; i < fightDtos.Count; i++)
+            {
+                fightDtos[i].FightNumber = i + 1;
+            }
+
+            return fightDtos;
+        }
+
+        public async Task AddFightsAsync(List<FightDto> fightDtos)
+        {
+            var fights = _mapper.Map<List<Fight>>(fightDtos);
+            await _dbContext.Fights.AddRangeAsync(fights);
+            await _dbContext.SaveChangesAsync();
+        }
 
     }
 }

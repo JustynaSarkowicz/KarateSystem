@@ -35,6 +35,8 @@ namespace KarateSystem.ViewModel
         private TourCompetitorDto _selectedCompWinner;
         private ObservableCollection<TourCompetitorDto> _winnerList;
         private bool _isEnabled;
+        private ObservableCollection<int> _rounds;
+        private int _selectedRound;
 
         private readonly ITournamentRepository _tournamentRepository;
         private readonly ITourCompetitorRepository _tourCompetitorRepository;
@@ -45,6 +47,25 @@ namespace KarateSystem.ViewModel
         #endregion
 
         #region Properties
+        public ObservableCollection<int> Rounds
+        {
+            get => _rounds;
+            set
+            {
+                _rounds = value;
+                OnPropertyChanged(nameof(Rounds));
+            }
+        }
+        public int SelectedRound
+        {
+            get => _selectedRound;
+            set
+            {
+                _selectedRound = value;
+                OnPropertyChanged(nameof(SelectedRound));
+                LoadFightsForSelectedRound();
+            }
+        }
         public ObservableCollection<TourCompetitorDto> WinnerList
         {
             get => _winnerList;
@@ -218,6 +239,7 @@ namespace KarateSystem.ViewModel
         public ICommand SortKataCommand { get; }
         public ICommand EditFightCommand { get; }
         public ICommand SetFightCommand { get; }
+        public ICommand GenerateNextRoundCommand { get; }
         #endregion
 
         public KataKumiteViewModel(ITournamentRepository tournamentRepository,
@@ -241,6 +263,7 @@ namespace KarateSystem.ViewModel
 
             EditFightCommand = new ViewModelCommand(ExecuteEditFightCommand, CanEditFight);
             SetFightCommand = new ViewModelCommand(ExecuteSetFightCommand, CanEditFight);
+            GenerateNextRoundCommand = new ViewModelCommand(ExecuteGenerateNextRound);
 
             _ = LoadAsync();
         }
@@ -248,7 +271,6 @@ namespace KarateSystem.ViewModel
         {
             var tour = await _tournamentRepository.GetOnlyActiveTournamentsAsync().ConfigureAwait(false);
             Tournaments = new ObservableCollection<TournamentDto>(tour);
-
             EditingTour = new TournamentDto
             {
                 TourCatKatas = new List<TourCatKataDto>(),
@@ -279,7 +301,6 @@ namespace KarateSystem.ViewModel
                 await _tourCatKataRepository.GetCatKataByIdTourAsync(SelectedTourToChoseCat.TourId));
         }
 
-        #region Kata
         private bool CanEditKata(object obj) => SelectedKata != null;
         private bool CanEditFight(object obj) => SelectedFight != null;
         private async void LoadKatasForKataCategoryAsync()
@@ -303,6 +324,8 @@ namespace KarateSystem.ViewModel
 
             var fights = await _fightsRepository.GetFightsByTourAsync(SelectedTourCatKumite.TourCatKumiteId);
             Fights = new ObservableCollection<FightDto>(fights);
+
+            _ = LoadRoundsAsync();
         }
 
         private void ExecuteEditKataCommand(object obj)
@@ -401,8 +424,7 @@ namespace KarateSystem.ViewModel
                 SelectedFight.FightTime = EditingFight.FightTime;
 
                 await _fightsRepository.UpdateFightsAsync(SelectedFight);
-                var fights = await _fightsRepository.GetFightsByTourAsync(SelectedTourCatKumite.TourCatKumiteId);
-                Fights = new ObservableCollection<FightDto>(fights);
+                LoadFightsForSelectedRound();
                 SelectedFight = null;
                 EditingFight = new FightDto
                 {
@@ -456,6 +478,90 @@ namespace KarateSystem.ViewModel
             if (SelectedTourCatKata == null) return;
             Katas = new ObservableCollection<KataDto>(Katas.OrderByDescending(x => x.KataScore));
         }
+
+        #region Rounds
+        private async Task LoadRoundsAsync()
+        {
+            if(SelectedTourCatKumite == null)
+            {
+                Rounds = new ObservableCollection<int>();
+                return;
+            }
+            var allFights = await _fightsRepository.GetFightsByTourAsync(SelectedTourCatKumite.TourCatKumiteId);
+            var roundNumbers = allFights
+                .Select(f => f.Round)
+                .Distinct()
+                .OrderBy(r => r)
+                .ToList();
+
+            Rounds = new ObservableCollection<int>(roundNumbers);
+
+            if (!Rounds.Contains(SelectedRound))
+                SelectedRound = Rounds.FirstOrDefault();
+        }
+        private async void LoadFightsForSelectedRound()
+        {
+            var fights = await _fightsRepository.GetFightsByTourAndRoundAsync(SelectedTourCatKumite.TourCatKumiteId, SelectedRound);
+            Fights = new ObservableCollection<FightDto>(fights);
+        }
+
+        private async void ExecuteGenerateNextRound(object obj)
+        {
+            int currentRound = SelectedRound;
+            int nextRound = currentRound + 1;
+
+            var fightsInCurrentRound = await _fightsRepository.GetFightsByTourAndRoundAsync(SelectedTourCatKumite.TourCatKumiteId, currentRound);
+
+            var incompleteFights = fightsInCurrentRound.Where(f => !f.WinnerId.HasValue).ToList();
+
+            if (incompleteFights.Any())
+            {
+                var result = MessageBox.Show(
+                    "Nie wszystkie walki mają wybranego zwycięzcę.\n" +
+                    "Zawodnicy z tych walk zostaną pominięci w dalszej rundzie.\n\n" +
+                    "Czy chcesz wrócić i uzupełnić brakujące walki?",
+                    "Brak zwycięzców",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                    return; 
+            }
+
+            var winners = fightsInCurrentRound
+                .Where(f => f.WinnerId.HasValue)
+                .Select(f => f.WinnerId.Value)
+                .ToList();
+
+            if (winners.Count < 2)
+            {
+                MessageBox.Show("Za mało zwycięzców do utworzenia nowej rundy.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var newFights = new List<FightDto>();
+            for (int i = 0; i < winners.Count; i += 2)
+            {
+                var redId = winners[i];
+                int? blueId = (i + 1 < winners.Count) ? winners[i + 1] : null;
+
+                newFights.Add(new FightDto
+                {
+                    TourCatKumiteId = SelectedTourCatKumite.TourCatKumiteId,
+                    RedCompetitorId = redId,
+                    BlueCompetitorId = blueId,
+                    Round = nextRound
+                });
+            }
+
+            await _fightsRepository.AddFightsAsync(newFights);
+
+            MessageBox.Show($"Utworzono {newFights.Count} walk dla rundy {nextRound}.", "Sukces", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            await LoadRoundsAsync();
+            SelectedRound = nextRound;
+        }
+
         #endregion
     }
 }

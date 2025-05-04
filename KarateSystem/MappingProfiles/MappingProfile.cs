@@ -100,9 +100,8 @@ namespace KarateSystem.MappingProfiles
                 .ReverseMap()
                 .ForMember(dest => dest.RedCompetitor, opt => opt.Ignore())
                 .ForMember(dest => dest.BlueCompetitor, opt => opt.Ignore())
-                .ForMember(dest => dest.Winner, opt => opt.Ignore());
-
-
+                .ForMember(dest => dest.Winner, opt => opt.Ignore())
+                .ForMember(dest => dest.TourCatKumite, opt => opt.Ignore());
         }
     }
 }

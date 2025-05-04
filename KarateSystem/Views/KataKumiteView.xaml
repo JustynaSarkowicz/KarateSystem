@@ -418,7 +418,32 @@
                                   IsReadOnly="True"
                                   FontSize="16"
                                   Text="{Binding SelectedTourCatKumite.MatName}"/>
-
+                        <TextBlock Text="Runda"
+                                   FontSize="16"
+                                   FontFamily="Montserrat"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"/>
+                        <ComboBox x:Name="cbTourCatKumiteRound"
+                                  Width="80"
+                                  Style="{StaticResource comboboxStyle}"
+                                  Margin="10,0,0,0"
+                                  ItemsSource="{Binding Rounds}"
+                                  SelectedItem="{Binding SelectedRound}"/>
+                        <Button 
+                                x:Name="btnGeneretaRounds"                           
+                                Content="Generuj kolejną rundę"     
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                VerticalAlignment="Top"
+                                Command="{Binding GenerateNextRoundCommand}"
+                                HorizontalAlignment="Right"
+                                Width="130"
+                            IsEnabled="{Binding IsEnabled}"
+                            Margin="10,0,0,0"
+                                Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Border>
                 <Grid Grid.Row="6"
@@ -544,7 +569,8 @@
                                         BorderBrush="White"
                                         BorderThickness="0,0,0,1"                             
                                         TextAlignment="Center"
-                                     Text="{Binding EditingFight.RedCompetitorScore, UpdateSourceTrigger=PropertyChanged}"/>
+                                         PreviewTextInput="tbRate_PreviewTextInput"
+                                     Text="{Binding EditingFight.RedCompetitorScore, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
                                 <TextBox Width="300" 
                                         Margin="0,5,10,5"
                                         Background="Transparent"                                   
@@ -556,6 +582,7 @@
                                         BorderThickness="0"                             
                                         TextAlignment="Center"
                                          IsReadOnly="True"
+                                         MaxLength="3"
                                      Text="{Binding EditingFight.BlueCompetitorName, UpdateSourceTrigger=PropertyChanged}"/>
                                 <TextBox Width="70" 
                                         Margin="0,5,10,5"
@@ -567,7 +594,9 @@
                                         BorderBrush="White"
                                         BorderThickness="0,0,0,1"                             
                                         TextAlignment="Center"
-                                     Text="{Binding EditingFight.BlueCompetitorScore, UpdateSourceTrigger=PropertyChanged}"/>
+                                         PreviewTextInput="tbRate_PreviewTextInput"
+                                         MaxLength="3"
+                                     Text="{Binding EditingFight.BlueCompetitorScore, UpdateSourceTrigger=LostFocus, FallbackValue=0}"/>
                                
                             </StackPanel>
                         </Grid>
@@ -589,6 +618,7 @@
                             HorizontalAlignment="Right"
                             Width="120"
                             Margin="0,0,0,10"
+                            IsEnabled="{Binding IsEnabled}"
                             Style="{StaticResource contentButton}"/>
                         <Button 
                 x:Name="btnSetFight"                           
@@ -602,6 +632,7 @@
                 VerticalAlignment="Top"
                 HorizontalAlignment="Right"
                 Width="120"
+                            IsEnabled="{Binding IsEnabled}"
                 Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Grid>
