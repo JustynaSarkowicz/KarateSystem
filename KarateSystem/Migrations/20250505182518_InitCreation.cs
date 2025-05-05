@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KarateSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitCreation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -288,10 +288,9 @@ namespace KarateSystem.Migrations
                     FightId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TourCatKumiteId = table.Column<int>(type: "int", nullable: false),
-                    RedCompetitorId = table.Column<int>(type: "int", nullable: false),
-                    BlueCompetitorId = table.Column<int>(type: "int", nullable: false),
+                    RedCompetitorId = table.Column<int>(type: "int", nullable: true),
+                    BlueCompetitorId = table.Column<int>(type: "int", nullable: true),
                     WinnerId = table.Column<int>(type: "int", nullable: true),
-                    NextFightId = table.Column<int>(type: "int", nullable: true),
                     RedCompetitorScore = table.Column<decimal>(type: "decimal(5,1)", nullable: true),
                     BlueCompetitorScore = table.Column<decimal>(type: "decimal(5,1)", nullable: true),
                     FightTime = table.Column<int>(type: "int", nullable: true),
@@ -302,12 +301,6 @@ namespace KarateSystem.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fights", x => x.FightId);
-                    table.ForeignKey(
-                        name: "FK_Fights_Fights_NextFightId",
-                        column: x => x.NextFightId,
-                        principalTable: "Fights",
-                        principalColumn: "FightId",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Fights_TourCatKumites_TourCatKumiteId",
                         column: x => x.TourCatKumiteId,
@@ -384,11 +377,6 @@ namespace KarateSystem.Migrations
                 name: "IX_Fights_BlueCompetitorId",
                 table: "Fights",
                 column: "BlueCompetitorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Fights_NextFightId",
-                table: "Fights",
-                column: "NextFightId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Fights_RedCompetitorId",

@@ -37,6 +37,9 @@
         <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
             <local:SettingsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:ResultAnalysisViewModel}">
+            <local:ResultAnalysisView/>
+        </DataTemplate>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
     <Border CornerRadius="10"
@@ -133,6 +136,7 @@
                         </StackPanel>
                     </RadioButton>
                     <RadioButton Style="{StaticResource menuButton}"
+                                 Command="{Binding ShowResultAnalysisViewCommand}"
                                  Visibility="{Binding IsService, Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="PieChart" Style="{StaticResource menuButtonIcon}"/>

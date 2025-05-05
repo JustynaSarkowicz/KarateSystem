@@ -146,9 +146,6 @@ namespace KarateSystem.Migrations
                     b.Property<bool>("FightWalkover")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("NextFightId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("RedCompetitorId")
                         .HasColumnType("int");
 
@@ -167,8 +164,6 @@ namespace KarateSystem.Migrations
                     b.HasKey("FightId");
 
                     b.HasIndex("BlueCompetitorId");
-
-                    b.HasIndex("NextFightId");
 
                     b.HasIndex("RedCompetitorId");
 
@@ -488,11 +483,6 @@ namespace KarateSystem.Migrations
                         .HasForeignKey("BlueCompetitorId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("KarateSystem.Models.Fight", "NextFight")
-                        .WithMany()
-                        .HasForeignKey("NextFightId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("KarateSystem.Models.TourCompetitor", "RedCompetitor")
                         .WithMany("RedFights")
                         .HasForeignKey("RedCompetitorId")
@@ -510,8 +500,6 @@ namespace KarateSystem.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("BlueCompetitor");
-
-                    b.Navigation("NextFight");
 
                     b.Navigation("RedCompetitor");
 

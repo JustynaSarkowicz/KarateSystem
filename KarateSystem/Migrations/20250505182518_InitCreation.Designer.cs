@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KarateSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250503131803_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250505182518_InitCreation")]
+    partial class InitCreation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,7 +134,7 @@ namespace KarateSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FightId"));
 
-                    b.Property<int>("BlueCompetitorId")
+                    b.Property<int?>("BlueCompetitorId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("BlueCompetitorScore")
@@ -149,10 +149,7 @@ namespace KarateSystem.Migrations
                     b.Property<bool>("FightWalkover")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("NextFightId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RedCompetitorId")
+                    b.Property<int?>("RedCompetitorId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("RedCompetitorScore")
@@ -170,8 +167,6 @@ namespace KarateSystem.Migrations
                     b.HasKey("FightId");
 
                     b.HasIndex("BlueCompetitorId");
-
-                    b.HasIndex("NextFightId");
 
                     b.HasIndex("RedCompetitorId");
 
@@ -489,19 +484,12 @@ namespace KarateSystem.Migrations
                     b.HasOne("KarateSystem.Models.TourCompetitor", "BlueCompetitor")
                         .WithMany("BlueFights")
                         .HasForeignKey("BlueCompetitorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("KarateSystem.Models.Fight", "NextFight")
-                        .WithMany()
-                        .HasForeignKey("NextFightId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("KarateSystem.Models.TourCompetitor", "RedCompetitor")
                         .WithMany("RedFights")
                         .HasForeignKey("RedCompetitorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("KarateSystem.Models.TourCatKumite", "TourCatKumite")
                         .WithMany("Fights")
@@ -515,8 +503,6 @@ namespace KarateSystem.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("BlueCompetitor");
-
-                    b.Navigation("NextFight");
 
                     b.Navigation("RedCompetitor");
 

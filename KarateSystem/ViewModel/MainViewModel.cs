@@ -18,7 +18,7 @@ namespace KarateSystem.ViewModel
         private string _caption;
         private IconChar _icon;
         public bool IsAdmin => User?.UserRole == "Admin";
-        public bool IsService => User?.UserRole == "Obsluga" || User?.UserRole == "Admin";
+        public bool IsService => User?.UserRole == "Obsługa" || User?.UserRole == "Admin";
 
 
         private readonly CompetitorsViewModel _competitorsViewModel;
@@ -28,6 +28,7 @@ namespace KarateSystem.ViewModel
         private readonly TournamentViewModel _tournamentViewModel;
         private readonly HomeViewModel _homeViewModel;
         private readonly KataKumiteViewModel _kataKumiteViewModel;
+        private readonly ResultAnalysisViewModel _resultAnalysisViewModel;
 
         private readonly IUserRepository _userRepository;
         private readonly IServiceProvider _serviceProvider;
@@ -97,6 +98,7 @@ namespace KarateSystem.ViewModel
         public ICommand ShowTournamentViewCommand { get; }
         public ICommand ShowKataKumiteViewCommand { get; }
         public ICommand ShowSettingsViewCommand { get; }
+        public ICommand ShowResultAnalysisViewCommand { get; }
         public ICommand LogoutCommand { get; }
         #endregion
         public MainViewModel(CompetitorsViewModel competitorsViewModel,
@@ -106,6 +108,7 @@ namespace KarateSystem.ViewModel
             TournamentViewModel tournamentViewModel,
             HomeViewModel homeViewModel,
             KataKumiteViewModel kataKumiteViewModel,
+            ResultAnalysisViewModel resultAnalysisViewModel,
             IUserRepository userRepository,
             IServiceProvider serviceProvider)
         {
@@ -118,6 +121,7 @@ namespace KarateSystem.ViewModel
             _homeViewModel = homeViewModel;
             _kataKumiteViewModel = kataKumiteViewModel;
             _serviceProvider = serviceProvider;
+            _resultAnalysisViewModel = resultAnalysisViewModel;
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowCompetitorViewCommand = new ViewModelCommand(ExecuteShowCompetitorViewCommand);
@@ -127,6 +131,7 @@ namespace KarateSystem.ViewModel
             ShowKataKumiteViewCommand = new ViewModelCommand(ExecuteShowKataKumiteViewCommand);
             ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
             LogoutCommand = new ViewModelCommand(ExecuteLogoutCommand);
+            ShowResultAnalysisViewCommand = new ViewModelCommand(ExecuteShowResultAnalysisViewCommand);
 
             LoadCurrentUserData();
             ExecuteShowHomeViewCommand(null);
@@ -211,6 +216,12 @@ namespace KarateSystem.ViewModel
         {
             CurrentChildView = _settingsViewModel;
             Caption = "Ustawienia";
+            Icon = IconChar.Cog;
+        }
+        private void ExecuteShowResultAnalysisViewCommand(object obj)
+        {
+            CurrentChildView = _resultAnalysisViewModel;
+            Caption = "Wyniki i analiza";
             Icon = IconChar.Cog;
         }
     }
