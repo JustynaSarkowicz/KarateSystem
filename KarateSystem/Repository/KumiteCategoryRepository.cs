@@ -16,7 +16,6 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public event EventHandler KumiteCatChanged;
         public KumiteCategoryRepository(ApplicationDbContext context, IMapper mapper)
         {
             _dbContext = context;
@@ -36,8 +35,6 @@ namespace KarateSystem.Repository
             
             _dbContext.KumiteCategories.Add(kumiteCategory);
             await _dbContext.SaveChangesAsync();
-
-            KumiteCatChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<List<KumiteCategoryDto>> GetAllKumiteCategoryAsync()
@@ -69,7 +66,24 @@ namespace KarateSystem.Repository
 
             _dbContext.KumiteCategories.Update(existingKumiteCategory);
             await _dbContext.SaveChangesAsync();
-            KumiteCatChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public async Task DeleteKumiteCategoryAsync(int kumiteCatId)
+        {
+            var existingKumiteCategory = await _dbContext.KumiteCategories
+                .FirstOrDefaultAsync(c => c.KumiteCatId == kumiteCatId);
+
+            if (existingKumiteCategory == null)
+                throw new Exception("Nie znaleziono kategorii kumite do usunięcia.");
+
+            var isUsed = await _dbContext.TourCatKumites
+                .AnyAsync(tc => tc.KumiteCatId == kumiteCatId);
+
+            if (isUsed)
+                throw new Exception("Nie można usunąć kategorii kumite, ponieważ jest używana w turnieju.");
+
+            _dbContext.KumiteCategories.Remove(existingKumiteCategory);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

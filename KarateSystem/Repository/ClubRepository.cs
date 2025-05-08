@@ -16,7 +16,6 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public event EventHandler ClubsChanged;
 
         public ClubRepository(ApplicationDbContext context, IMapper mapper)
         {
@@ -51,8 +50,6 @@ namespace KarateSystem.Repository
 
             _mapper.Map(clubDto, existingClub);
             await _dbContext.SaveChangesAsync();
-
-            ClubsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task AddClubAsync(ClubDto clubDto)
@@ -68,8 +65,24 @@ namespace KarateSystem.Repository
 
             _dbContext.Clubs.Add(newClub);
             await _dbContext.SaveChangesAsync();
+        }
+        public async Task DeleteClubAsync(int clubId)
+        {
+            var existingClub = await _dbContext.Clubs
+                .Include(c => c.Competitors)
+                .FirstOrDefaultAsync(c => c.ClubId == clubId);
 
-            ClubsChanged?.Invoke(this, EventArgs.Empty);
+            if (existingClub == null)
+                throw new Exception("Nie znaleziono klubu do usunięcia.");
+
+            var isClubInUseComp = await _dbContext.Competitors
+                .AnyAsync(c => c.CompClubId == clubId);
+
+            if (isClubInUseComp)
+                throw new Exception("Nie można usunąć klubu, ponieważ są przypisani do niego zawodnicy.");
+
+            _dbContext.Clubs.Remove(existingClub);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

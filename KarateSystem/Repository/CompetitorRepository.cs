@@ -12,7 +12,6 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public event EventHandler CompChanged;
 
         public CompetitorRepository(ApplicationDbContext context, IMapper mapper)
         {
@@ -35,8 +34,6 @@ namespace KarateSystem.Repository
 
             _dbContext.Competitors.Add(newComp);
             await _dbContext.SaveChangesAsync();
-
-            CompChanged?.Invoke(this, EventArgs.Empty);
         }
         public async Task<List<CompetitorDto>> GetAllCompetitorsAsync()
         {
@@ -74,7 +71,24 @@ namespace KarateSystem.Repository
             
             _dbContext.Competitors.Update(existingComp);
             await _dbContext.SaveChangesAsync();
-            CompChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public async Task DeleteCompAsync(int id)
+        {
+            var existingComp = await _dbContext.Competitors
+                .FirstOrDefaultAsync(c => c.CompId == id);
+
+            if (existingComp == null)
+                throw new Exception("Nie znaleziono zawodnika do usunięcia.");
+
+            var isUsed = await _dbContext.TourCompetitors
+                .AnyAsync(tc => tc.CompId == id);
+
+            if (isUsed)
+                throw new Exception("Nie można usunąć zawodnika, ponieważ jest przypisany do zawodów.");
+
+            _dbContext.Competitors.Remove(existingComp);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -261,7 +261,7 @@
                     <!-- Action Buttons -->
                     <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button x:Name="btnSaveCatKata"
-                                Width="70"
+                                Width="60"
                                 Command="{Binding UpdateKataCategoryCommand}"                            
                                 Content="Zapisz"
                                 Margin="0,0,3,0"
@@ -274,7 +274,7 @@
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnCancelCatKata"
-                                Width="70"
+                                Width="60"
                                 Command="{Binding CancelKataCategoryCommand}"                            
                                 Content="Anuluj"
                                 Margin="0,0,3,0"
@@ -286,7 +286,7 @@
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnEditCatKata"
-                                Width="70"
+                                Width="60"
                                 Command="{Binding EditKataCategoryCommand}"                            
                                 Content="Edytuj"
                                 Margin="0,0,3,0"
@@ -298,7 +298,7 @@
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnAddNewCatKata"
-                                Width="70"
+                                Width="60"
                                 Command="{Binding AddKataCategoryCommand}"                            
                                 Content="Dodaj"
                                 Margin="0,0,3,0"
@@ -308,6 +308,18 @@
                                 BorderThickness="0"
                                 Foreground="White"
                                 IsEnabled="{Binding IsAddingNewCatKata}"
+                                Style="{StaticResource contentButton}"/>
+
+                        <Button x:Name="btnDeleteCatKata"
+                                Width="60"
+                                Command="{Binding DeleteKataCategoryCommand}"                            
+                                Content="Usuń"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
                                 Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Grid>
@@ -539,7 +551,7 @@
                     <!-- Action Buttons -->
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button x:Name="btnSaveCatKumite"
-                                Width="70"
+                                Width="60"
                                 Command="{Binding UpdateKumiteCategoryCommand}"                            
                                 Content="Zapisz"
                                 Margin="0,0,3,0"
@@ -552,7 +564,7 @@
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnCancelCatKumite"
-                                Width="70"
+                                Width="60"
                                 Command="{Binding CancelKumiteCategoryCommand}"                            
                                 Content="Anuluj"
                                 Margin="0,0,3,0"
@@ -564,7 +576,7 @@
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnEditCatKumite"
-                                Width="70"
+                                Width="60"
                                 Command="{Binding EditKumiteCategoryCommand}"                            
                                 Content="Edytuj"
                                 Margin="0,0,3,0"
@@ -576,7 +588,7 @@
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnAddNewCatKumite"
-                                Width="70"
+                                Width="60"
                                 Command="{Binding AddKumiteCategoryCommand}"                            
                                 Content="Dodaj"
                                 Margin="0,0,3,0"
@@ -586,6 +598,18 @@
                                 BorderThickness="0"
                                 Foreground="White"
                                 IsEnabled="{Binding IsAddingNewCatKumite}"
+                                Style="{StaticResource contentButton}"/>
+                        
+                        <Button x:Name="btnDeleteCatKumite"
+                                Width="60"
+                                Command="{Binding DeleteKumiteCategoryCommand}"                            
+                                Content="Usuń"
+                                Margin="0,0,3,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
                                 Style="{StaticResource contentButton}"/>
                     </StackPanel>
                 </Grid>

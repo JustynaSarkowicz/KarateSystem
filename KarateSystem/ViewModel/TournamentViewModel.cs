@@ -443,13 +443,6 @@ namespace KarateSystem.ViewModel
             SetCompAutomaticCatKumite = new ViewModelCommand(ExecuteSetCompAutomaticCatKumiteCommand, CanSetCompAutomatic);
             SetFights = new ViewModelCommand(ExecuteSetFightsCommand);
 
-            WeakEventManager<IKataCategoryRepository, EventArgs>
-            .AddHandler(_kataCategoryRepository, nameof(IKataCategoryRepository.KataCatChanged), OnKataCatChanged);
-            WeakEventManager<IKumiteCategoryRepository, EventArgs>
-            .AddHandler(_kumiteCategoryRepository, nameof(IKumiteCategoryRepository.KumiteCatChanged), OnKumiteCatChanged);
-            WeakEventManager<IMatRepository, EventArgs>
-            .AddHandler(_matRepository, nameof(IMatRepository.MatsChanged), OnMatChanged);
-
             _ = LoadAsync();
         }
 
@@ -469,33 +462,6 @@ namespace KarateSystem.ViewModel
                 TourCatKatas = new ObservableCollection<TourCatKataDto>(),
                 TourCatKumites = new ObservableCollection<TourCatKumiteDto>()
             };
-        }
-
-        private async void OnKataCatChanged(object sender, EventArgs e)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-
-                KataCategories = new ObservableCollection<KataCategoryDto>(
-                    await _kataCategoryRepository.GetAllKataCategoryAsync());
-            });
-        }
-        private async void OnKumiteCatChanged(object sender, EventArgs e)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-
-                KumiteCategories = new ObservableCollection<KumiteCategoryDto>(
-                    await _kumiteCategoryRepository.GetAllKumiteCategoryAsync());
-            });
-        }
-        private async void OnMatChanged(object sender, EventArgs e)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                Mats = new ObservableCollection<MatDto>(
-                    await _matRepository.GetAllMatAsync());
-            });
         }
 
         #region FirstTab

@@ -274,32 +274,32 @@
                                 VerticalAlignment="Top"
                                 HorizontalAlignment="Center">
                         <Button x:Name="btnSaveCompetitor"
-                                        Width="80"
-                                        Command="{Binding UpdateCompCommand}"                            
-                                        Content="Zapisz"
-                                        Margin="0,0,5,0"
-                                        FontSize="12"
-                                        FontFamily="Montserrat"
-                                        Cursor="Hand"
-                                        BorderThickness="0"
-                                        Foreground="White"
-                                        
-                                        IsEnabled="{Binding IsEditingExisting}"
-                                        Style="{StaticResource contentButton}"/>
+                                Width="70"
+                                Command="{Binding UpdateCompCommand}"                            
+                                Content="Zapisz"
+                                Margin="0,0,5,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                IsEnabled="{Binding IsEditingExisting}"
+                                Style="{StaticResource contentButton}"/>
+                        
                         <Button x:Name="btnCancelCompetitor"
-                                        Width="80"
-                                        Command="{Binding CancelCompCommand}"                            
-                                        Content="Anuluj"
-                                        Margin="0,0,5,0"
-                                        FontSize="12"
-                                        FontFamily="Montserrat"
-                                        Cursor="Hand"
-                                        BorderThickness="0"
-                                        Foreground="White"
-                                        Style="{StaticResource contentButton}"/>
+                                Width="70"
+                                Command="{Binding CancelCompCommand}"                            
+                                Content="Anuluj"
+                                Margin="0,0,5,0"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnEditCompetitor"
-                                Width="80"
+                                Width="70"
                                 Command="{Binding EditCompCommand}"                            
                                 Content="Edytuj"
                                 Margin="0,0,5,0"
@@ -311,7 +311,7 @@
                                 Style="{StaticResource contentButton}"/>
 
                         <Button x:Name="btnAddNewCompetitor"
-                                Width="80"
+                                Width="70"
                                 Command="{Binding AddCompCommand}"                            
                                 Content="Dodaj"
                                 Margin="0,0,5,0"
@@ -321,6 +321,17 @@
                                 BorderThickness="0"
                                 Foreground="White"
                                 IsEnabled="{Binding IsAddingNew}"
+                                Style="{StaticResource contentButton}"/>
+                        
+                        <Button x:Name="btnDeleteCompetitor"
+                                Width="70"
+                                Command="{Binding DeleteCompCommand}"                            
+                                Content="Usuń"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
                                 Style="{StaticResource contentButton}"/>
                     </StackPanel>
                     <Grid Grid.Column="2"

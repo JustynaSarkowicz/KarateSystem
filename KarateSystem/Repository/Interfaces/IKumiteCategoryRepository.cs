@@ -12,6 +12,6 @@ namespace KarateSystem.Repository.Interfaces
         Task<List<KumiteCategoryDto>> GetAllKumiteCategoryAsync();
         Task UpdateKumiteCategoryAsync(KumiteCategoryDto kumiteCategory);
         Task AddKumiteCategoryAsync(KumiteCategoryDto kumiteCategory);
-        event EventHandler KumiteCatChanged;
+        Task DeleteKumiteCategoryAsync(int kumiteCatId);
     }
 }

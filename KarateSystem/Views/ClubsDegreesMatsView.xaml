@@ -190,12 +190,25 @@
                             Command="{Binding AddClubCommand}"                            
                             Content="Dodaj"
                             FontSize="12"
+                            Margin="0,0,0,5"
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
                             VerticalAlignment="Bottom"
                             IsEnabled="{Binding IsAddingNewClub}"
+                            Style="{StaticResource contentButton}"/>
+
+                    <Button x:Name="btnDeleteClub"
+                            Width="80"
+                            Command="{Binding DeleteClubCommand}"                            
+                            Content="Usuń"
+                            Margin="0"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
                             Style="{StaticResource contentButton}"/>
                 </StackPanel>
             </Grid>
@@ -371,8 +384,7 @@
                             BorderThickness="0"
                             Foreground="White"
                             IsEnabled="{Binding IsEditingExistingDegree}"
-                            Style="{StaticResource contentButton}">
-                    </Button>
+                            Style="{StaticResource contentButton}"/>
 
                     <Button x:Name="btnCancelDegree"
                             Width="80"
@@ -384,8 +396,7 @@
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
-                            Style="{StaticResource contentButton}">
-                    </Button>
+                            Style="{StaticResource contentButton}"/>
 
                     <Button x:Name="btnEditDegree"
                             Width="80"
@@ -397,22 +408,33 @@
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
-                            Style="{StaticResource contentButton}">
-                    </Button>
+                            Style="{StaticResource contentButton}"/>
 
                     <Button x:Name="btnAddNewDegree"
                             Width="80"
                             Command="{Binding AddDegreeCommand}"                            
                             Content="Dodaj"
-                            Margin="0,0,3,0"
+                            Margin="0,0,0,5"
                             FontSize="12"
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
                             IsEnabled="{Binding IsAddingNewDegree}"
-                            Style="{StaticResource contentButton}">
-                    </Button>
+                            Style="{StaticResource contentButton}"/>
+
+                    <Button x:Name="btnDeleteDegree"
+                            Width="80"
+                            Command="{Binding DeleteDegreeCommand}"                            
+                            Content="Usuń"
+                            Margin="0"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
+                            Style="{StaticResource contentButton}"/>
+
                 </StackPanel>
 
                 <StackPanel Grid.Column="3"
@@ -462,11 +484,24 @@
                             Command="{Binding AddMatCommand}"                            
                             Content="Dodaj"
                             FontSize="12"
+                            Margin="0,0,0,5"
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             BorderThickness="0"
                             Foreground="White"
                             IsEnabled="{Binding IsAddingNewMat}"
+                            Style="{StaticResource contentButton}"/>
+
+                    <Button x:Name="btnDeleteMat"
+                            Width="80"
+                            Command="{Binding DeleteMatCommand}"                            
+                            Content="Usuń"
+                            Margin="0"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            BorderThickness="0"
+                            Foreground="White"
                             Style="{StaticResource contentButton}"/>
                 </StackPanel>
             </Grid>

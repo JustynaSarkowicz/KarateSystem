@@ -17,7 +17,6 @@ namespace KarateSystem.Repository
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ICatKataDegreeRepository _catKataDegreeRepository;
-        public event EventHandler KataCatChanged;
 
         public KataCategoryRepository(ApplicationDbContext context, IMapper mapper, ICatKataDegreeRepository catKataDegreeRepository)
         {
@@ -46,8 +45,6 @@ namespace KarateSystem.Repository
             
             _dbContext.KataCategories.Add(kataCategory);
             await _dbContext.SaveChangesAsync();
-
-            KataCatChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<List<KataCategoryDto>> GetAllKataCategoryAsync()
@@ -96,8 +93,30 @@ namespace KarateSystem.Repository
             }
 
             await _dbContext.SaveChangesAsync();
+        }
 
-            KataCatChanged?.Invoke(this, EventArgs.Empty);
+        public async Task DeleteKataCategoryAsync(int kataCatId)
+        {
+            var existingKataCategory = await _dbContext.KataCategories
+                .FirstOrDefaultAsync(k => k.KataCatId == kataCatId);
+
+            if (existingKataCategory == null)
+                throw new Exception("Nie znaleziono kategorii kata.");
+
+            var isUsed = await _dbContext.TourCatKatas
+                .AnyAsync(k => k.KataCatId == kataCatId);
+
+            if (isUsed)
+                throw new Exception("Nie można usunąć kategorii kata, ponieważ jest używana w zawodach.");
+
+            var relatedDegrees = await _dbContext.CatKataDegrees
+                .Where(d => d.KataCatId == kataCatId)
+                .ToListAsync();
+
+            _dbContext.CatKataDegrees.RemoveRange(relatedDegrees);
+
+            _dbContext.KataCategories.Remove(existingKataCategory);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

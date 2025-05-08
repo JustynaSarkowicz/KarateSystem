@@ -43,6 +43,7 @@ namespace KarateSystem.ViewModel
         public ICommand UpdateCompCommand { get; }
         public ICommand AddCompCommand { get; }
         public ICommand FilterCommand { get; }
+        public ICommand DeleteCompCommand { get; }
         #endregion
 
         #region Properties
@@ -178,11 +179,7 @@ namespace KarateSystem.ViewModel
             UpdateCompCommand = new ViewModelCommand(ExecuteUpdateCompCommand, CanCancelCompetitor);
             AddCompCommand = new ViewModelCommand(ExecuteAddCompCommand);
             FilterCommand = new ViewModelCommand(ExecuteFilter);
-
-            WeakEventManager<IDegreeRepository, EventArgs>
-            .AddHandler(_degreeRepository, nameof(IDegreeRepository.DegreesChanged), OnDegreesChanged);
-            WeakEventManager<IClubRepository, EventArgs>
-                .AddHandler(_clubRepository, nameof(IClubRepository.ClubsChanged), OnClubsChanged);
+            DeleteCompCommand = new ViewModelCommand(ExecuteDeleteCompCommand, CanEditCompetitor);
 
             LoadAsync();
         }
@@ -206,25 +203,6 @@ namespace KarateSystem.ViewModel
                 TourCompetitors = new ObservableCollection<TourCompetitorDto>()
             };
         }
-
-        #region UpdateComboboxes
-        private async void OnDegreesChanged(object sender, EventArgs e)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                var degrees = await _degreeRepository.GetAllDegreeAsync();
-                Degrees = new ObservableCollection<DegreeDto>(degrees);
-            });
-        }
-        private async void OnClubsChanged(object sender, EventArgs e)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                var clubs = await _clubRepository.GetAllClubsAsync();
-                Clubs = new ObservableCollection<ClubDto>(clubs);
-            });
-        }
-        #endregion
         private void FilterComp()
         {
             Competitors = string.IsNullOrWhiteSpace(SearchTextComp)
@@ -337,6 +315,21 @@ namespace KarateSystem.ViewModel
             catch (Exception ex)
             {
                 MessageBox.Show($"Wystąpił błąd podczas dodawania zawodnika: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void ExecuteDeleteCompCommand(object obj)
+        {
+            try
+            {
+                if (SelectedCompetitor == null) return;
+                await _competitorRepository.DeleteCompAsync(SelectedCompetitor.CompId);
+                _allCompetitors = await _competitorRepository.GetAllCompetitorsAsync();
+                Competitors = new ObservableCollection<CompetitorDto>(_allCompetitors);
+                ExecuteCancelCompCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania zawodnika: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void OnFilterTypeChanged()

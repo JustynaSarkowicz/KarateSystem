@@ -50,10 +50,12 @@ namespace KarateSystem.ViewModel
         public ICommand CancelKataCategoryCommand { get; }
         public ICommand UpdateKataCategoryCommand { get; }
         public ICommand AddKataCategoryCommand { get; }
+        public ICommand DeleteKataCategoryCommand { get; }
         public ICommand EditKumiteCategoryCommand { get; }
         public ICommand CancelKumiteCategoryCommand { get; }
         public ICommand UpdateKumiteCategoryCommand { get; }
         public ICommand AddKumiteCategoryCommand { get; }
+        public ICommand DeleteKumiteCategoryCommand { get; }
         public ICommand AddDegreeCommand { get; }
         public ICommand RemoveDegreeCommand { get; }
         #endregion
@@ -218,6 +220,7 @@ namespace KarateSystem.ViewModel
             CancelKataCategoryCommand = new ViewModelCommand(ExecuteCancelKataCategoryCommand);
             UpdateKataCategoryCommand = new ViewModelCommand(ExecuteUpdateKataCategoryCommand, CanCancelKataCategory);
             AddKataCategoryCommand = new ViewModelCommand(ExecuteAddKataCategoryCommand);
+            DeleteKataCategoryCommand = new ViewModelCommand(ExecuteDeleteKataCategoryCommand, CanEditKataCategory);
 
             AddDegreeCommand = new ViewModelCommand(ExecuteAddDegreeCommand, CanAddDegree);
             RemoveDegreeCommand = new ViewModelCommand(ExecuteRemoveDegreeCommand, CanRemoveDegree);
@@ -226,9 +229,7 @@ namespace KarateSystem.ViewModel
             CancelKumiteCategoryCommand = new ViewModelCommand(ExecuteCancelKumiteCategoryCommand);
             UpdateKumiteCategoryCommand = new ViewModelCommand(ExecuteUpdateKumiteCategoryCommand, CanCancelKumiteCategory);
             AddKumiteCategoryCommand = new ViewModelCommand(ExecuteAddKumiteCategoryCommand);
-
-            WeakEventManager<IDegreeRepository, EventArgs>
-            .AddHandler(_degreeRepository, nameof(IDegreeRepository.DegreesChanged), OnDegreesChanged);
+            DeleteKumiteCategoryCommand = new ViewModelCommand(ExecuteDeleteKumiteCategoryCommand, CanEditKumiteCategory);
 
             LoadAsync();
         }
@@ -248,15 +249,6 @@ namespace KarateSystem.ViewModel
             {
                 CatKataDegrees = new ObservableCollection<CatKataDegreeDto>()
             };
-        }
-
-        private async void OnDegreesChanged(object sender, EventArgs e)
-        {
-            await Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                var degrees = await _degreeRepository.GetAllDegreeAsync();
-                Degrees = new ObservableCollection<DegreeDto>(degrees);
-            });
         }
 
         #region KataCategory
@@ -336,6 +328,21 @@ namespace KarateSystem.ViewModel
             catch(Exception ex)
             {
                 MessageBox.Show($"Wystąpił błąd podczas aktualizacji kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void ExecuteDeleteKataCategoryCommand(object obj)
+        {
+            try
+            {
+                if (SelectedKataCategory == null) return;
+                await _kataCategoryRepository.DeleteKataCategoryAsync(SelectedKataCategory.KataCatId);
+                _allKataCategories = await _kataCategoryRepository.GetAllKataCategoryAsync();
+                KataCategories = new ObservableCollection<KataCategoryDto>(_allKataCategories);
+                ExecuteCancelKataCategoryCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania kategorii kata: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private bool IsKataCatValid(KataCategoryDto kataCategoryDto)
@@ -430,7 +437,21 @@ namespace KarateSystem.ViewModel
                 MessageBox.Show($"Wystąpił błąd podczas aktualizacji kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        private async void ExecuteDeleteKumiteCategoryCommand(object obj)
+        {
+            try
+            {
+                if (SelectedKumiteCategory == null) return;
+                await _kumiteCategoryRepository.DeleteKumiteCategoryAsync(SelectedKumiteCategory.KumiteCatId);
+                _allKumiteCategories = await _kumiteCategoryRepository.GetAllKumiteCategoryAsync();
+                KumiteCategories = new ObservableCollection<KumiteCategoryDto>(_allKumiteCategories);
+                ExecuteCancelKumiteCategoryCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania kategorii kumite: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private bool IsKumiteCatValid(KumiteCategoryDto kumiteCategoryDto)
         {
             if (string.IsNullOrWhiteSpace(kumiteCategoryDto.KumiteCatName) ||

@@ -42,14 +42,17 @@ namespace KarateSystem.ViewModel
         public ICommand UpdateClubCommand { get; }
         public ICommand AddClubCommand { get; }
         public ICommand CancelClubCommand { get; }
+        public ICommand DeleteClubCommand { get; }
         public ICommand EditMatCommand { get; }
         public ICommand UpdateMatCommand { get; }
         public ICommand AddMatCommand { get; }
         public ICommand CancelMatCommand { get; }
+        public ICommand DeleteMatCommand { get; }
         public ICommand EditDegreeCommand { get; }
         public ICommand UpdateDegreeCommand { get; }
         public ICommand AddDegreeCommand { get; }
         public ICommand CancelDegreeCommand { get; }
+        public ICommand DeleteDegreeCommand { get; }
         #endregion
 
         #region Properties
@@ -179,16 +182,19 @@ namespace KarateSystem.ViewModel
             UpdateClubCommand = new ViewModelCommand(ExecuteUpdateClubCommand, CanCancelClubEdit);
             AddClubCommand = new ViewModelCommand(ExecuteAddClubCommand);
             CancelClubCommand = new ViewModelCommand(ExecuteCancelClubCommand);
+            DeleteClubCommand = new ViewModelCommand(ExecuteDeleteClubCommand, CanCancelClubEdit);
 
             EditMatCommand = new ViewModelCommand(ExecuteEditMatCommand, CanEditMat);
             UpdateMatCommand = new ViewModelCommand(ExecuteUpdateMatCommand, CanCancelMatEdit);
             AddMatCommand = new ViewModelCommand(ExecuteAddMatCommand);
             CancelMatCommand = new ViewModelCommand(ExecuteCancelMatCommand);
+            DeleteMatCommand = new ViewModelCommand(ExecuteDeleteMatCommand, CanCancelMatEdit);
 
             EditDegreeCommand = new ViewModelCommand(ExecuteEditDegreeCommand, CanEditDegree);
             UpdateDegreeCommand = new ViewModelCommand(ExecuteUpdateDegreeCommand, CanCancelDegreeEdit);
             AddDegreeCommand = new ViewModelCommand(ExecuteAddDegreeCommand);
             CancelDegreeCommand = new ViewModelCommand(ExecuteCancelDegreeCommand);
+            DeleteDegreeCommand = new ViewModelCommand(ExevuteDeleteDegreeCommand, CanCancelDegreeEdit);
 
             _ = LoadAsync();
         }
@@ -266,6 +272,20 @@ namespace KarateSystem.ViewModel
                 MessageBox.Show($"Wystąpił błąd podczas dodawania klubu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private async void ExecuteDeleteClubCommand(object obj)
+        {
+            try
+            {
+                if (SelectedClub == null) return;
+                await _clubRepository.DeleteClubAsync(SelectedClub.ClubId);
+                Clubs = new ObservableCollection<ClubDto>(await _clubRepository.GetAllClubsAsync());
+                ExecuteCancelClubCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania klubu: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void ExecuteCancelClubCommand(object obj)
         {
@@ -332,6 +352,20 @@ namespace KarateSystem.ViewModel
             catch (Exception ex)
             {
                 MessageBox.Show($"Wystąpił błąd podczas dodawania maty: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private async void ExecuteDeleteMatCommand(object obj)
+        {
+            try
+            {
+                if (SelectedMat == null) return;
+                await _matRepository.DeleteMatAsync(SelectedMat.MatId);
+                Mats = new ObservableCollection<MatDto>(await _matRepository.GetAllMatAsync());
+                ExecuteCancelMatCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania maty: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void ExecuteCancelMatCommand(object obj)
@@ -401,6 +435,21 @@ namespace KarateSystem.ViewModel
             catch(Exception ex)
             {
                 MessageBox.Show($"Wystąpił błąd podczas dodawania stopnia: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void ExevuteDeleteDegreeCommand(object obj)
+        {
+            try
+            {
+                if (SelectedDegree == null) return;
+                await _degreeRepository.DeleteDegreeAsync(SelectedDegree.DegreeId);
+                Degrees = new ObservableCollection<DegreeDto>(await _degreeRepository.GetAllDegreeAsync());
+                ExecuteCancelDegreeCommand(obj);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Wystąpił błąd podczas usuwania stopnia: {ex.Message}", "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

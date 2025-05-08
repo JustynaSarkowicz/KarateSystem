@@ -13,6 +13,6 @@ public interface IClubRepository
     Task<ClubDto> GetClubAsync(int clubId);
     Task UpdateClubAsync(ClubDto clubDto);
     Task AddClubAsync(ClubDto clubDto);
-    event EventHandler ClubsChanged;
+    Task DeleteClubAsync(int clubId);
 }
 

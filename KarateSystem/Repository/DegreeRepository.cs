@@ -16,7 +16,6 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public event EventHandler DegreesChanged;
 
         public DegreeRepository(ApplicationDbContext context, IMapper mapper)
         {
@@ -37,7 +36,6 @@ namespace KarateSystem.Repository
 
             _dbContext.Degrees.Add(degree);
             await _dbContext.SaveChangesAsync();
-            DegreesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<List<DegreeDto>> GetAllDegreeAsync()
@@ -62,7 +60,27 @@ namespace KarateSystem.Repository
 
             _mapper.Map(degreeDto, existingDegree);
             await _dbContext.SaveChangesAsync();
-            DegreesChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public async Task DeleteDegreeAsync(int degreeId)
+        {
+            var existingDegree = await _dbContext.Degrees
+                .FirstOrDefaultAsync(u => u.DegreeId == degreeId);
+
+            if (existingDegree == null)
+                throw new Exception("Nie znaleziono stopnia do usunięcia.");
+
+            var isDegreeInUseComp = await _dbContext.Competitors
+                .AnyAsync(u => u.CompDegreeId == degreeId);
+
+            var isDegreeInUseCatKata = await _dbContext.CatKataDegrees
+                .AnyAsync(u => u.DegreeId == degreeId);
+
+            if (isDegreeInUseComp || isDegreeInUseCatKata)
+                throw new Exception("Nie można usunąć stopnia, ponieważ jest używany przez zawodników lub kategorie kata.");
+
+            _dbContext.Degrees.Remove(existingDegree);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

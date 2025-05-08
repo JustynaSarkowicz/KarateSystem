@@ -16,7 +16,6 @@ namespace KarateSystem.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
-        public event EventHandler MatsChanged;
 
         public MatRepository(ApplicationDbContext context, IMapper mapper)
         {
@@ -37,7 +36,6 @@ namespace KarateSystem.Repository
 
             _dbContext.Mats.Add(newMat);
             await _dbContext.SaveChangesAsync();
-            MatsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task<List<MatDto>> GetAllMatAsync()
@@ -61,7 +59,26 @@ namespace KarateSystem.Repository
 
             _mapper.Map(matDto, existingMat);
             await _dbContext.SaveChangesAsync();
-            MatsChanged?.Invoke(this, EventArgs.Empty);
         }
+        public async Task DeleteMatAsync(int matId)
+        {
+            var mat = await _dbContext.Mats
+                .FirstOrDefaultAsync(m => m.MatId == matId);
+
+            if (mat == null)
+                throw new Exception("Nie znaleziono maty.");
+
+            var isMatInUseCatKata = await _dbContext.TourCatKatas
+                .AnyAsync(c => c.MatId == matId); 
+            var isMatInUseCatKumite = await _dbContext.TourCatKumites
+                .AnyAsync(c => c.MatId == matId); 
+
+            if (isMatInUseCatKata || isMatInUseCatKumite)
+                throw new Exception("Nie można usunąć maty, ponieważ jest powiązana z kategoriami kata lub kumite.");
+
+            _dbContext.Mats.Remove(mat);
+            await _dbContext.SaveChangesAsync();
+        }
+
     }
 }
