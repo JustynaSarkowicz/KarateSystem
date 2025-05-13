@@ -48,6 +48,7 @@
                 <Button x:Name="btnCreatePdfTour"
                     Width="100"
                     Content="Drukuj wyniki"
+                        Command="{Binding GenerateResultsCommand}"
                     Margin="10,0,0,0"
                     FontSize="12"
                     FontFamily="Montserrat"

@@ -3,6 +3,7 @@ using KarateSystem.Models;
 using KarateSystem.Repository.Interfaces;
 using KarateSystem.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using MigraDoc.Rendering;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
@@ -10,10 +11,13 @@ using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using MigraDoc.DocumentObjectModel;
 
 namespace KarateSystem.ViewModel
 {
@@ -35,6 +39,7 @@ namespace KarateSystem.ViewModel
 
         private readonly ITournamentRepository _tournamentRepository;
         private readonly IResultStatsService _resultStatsService;
+        private readonly IPdfResultService _pdfResultService;
         #endregion
 
         #region Properties
@@ -174,15 +179,19 @@ namespace KarateSystem.ViewModel
 
         #region Commands
         public ICommand LoadStatisticsCommand { get; }
+        public ICommand GenerateResultsCommand { get; }
         #endregion
 
         public ResultAnalysisViewModel(ITournamentRepository tournamentRepository,
-            IResultStatsService resultStatsService)
+            IResultStatsService resultStatsService,
+            IPdfResultService pdfResultService)
         {
             _tournamentRepository = tournamentRepository;
             _resultStatsService = resultStatsService;
+            _pdfResultService = pdfResultService;
 
             LoadStatisticsCommand = new ViewModelCommand(async (_) => await LoadStatisticsAsync());
+            GenerateResultsCommand = new ViewModelCommand(async (_) => await ExecuteGenerateResultsCommand(_));
 
             _ = LoadAsync();
         }
@@ -207,6 +216,74 @@ namespace KarateSystem.ViewModel
             KatasPerCategoryPlot = await CreateCompetitorsPerKataCategoryChartAsync();
             KatasAverageScorePlot = await CreateKataScoreDistributionChartAsync();
         }
+
+        public async Task ExecuteGenerateResultsCommand(object obj)
+        {
+            if (SelectedTour == null)
+                return;
+
+            var kataResults = await _pdfResultService.GetKataResultsAsync(SelectedTour.TourId);
+            //var kumiteResults = await _pdfResultService.GetKumiteResultsAsync(SelectedTour.TourId);
+
+            var doc = new Document();
+            var section = doc.AddSection();
+
+            // Tytuł
+            var title = section.AddParagraph($"{SelectedTour.TourName}");
+            title.Format.Font.Size = 16;
+            title.Format.Font.Bold = true;
+            title.Format.SpaceAfter = "1cm";
+
+            // Kata
+            section.AddParagraph("Wyniki konkurencji Kata")
+                .Format.Font.Bold = true;
+
+            foreach (var group in kataResults.GroupBy(r => r.CategoryName))
+            {
+                section.AddParagraph(group.Key)
+                    .Format.SpaceBefore = "0.3cm";
+
+                foreach (var result in group.OrderBy(r => r.Place))
+                {
+                    section.AddParagraph($"{result.Place}. {result.FullName} / {result.ClubName}")
+                        .Format.LeftIndent = "0.5cm";
+                }
+            }
+
+            section.AddParagraph().AddLineBreak();
+
+            // Kumite
+            //section.AddParagraph("Wyniki konkurencji Kumite")
+            //    .Format.Font.Bold = true;
+
+            //foreach (var group in kumiteResults.GroupBy(r => r.CategoryName))
+            //{
+            //    section.AddParagraph(group.Key)
+            //        .Format.SpaceBefore = "0.3cm";
+
+            //    foreach (var result in group.OrderBy(r => r.Place))
+            //    {
+            //        section.AddParagraph($"{result.Place}. {result.FullName} / {result.ClubName}")
+            //            .Format.LeftIndent = "0.5cm";
+            //    }
+            //}
+
+            // Zapis do pliku
+            var renderer = new PdfDocumentRenderer
+            {
+                Document = doc
+            };
+
+            renderer.RenderDocument();
+
+            string fileName = $"Wyniki_Turnieju_{SelectedTour.TourName}.pdf";
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            string fullPath = Path.Combine(desktopPath, fileName);
+
+            renderer.PdfDocument.Save(fullPath);
+            MessageBox.Show($"Wyniki zapisano jako PDF:\n{fullPath}", "Zapisano", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
 
         private async Task<PlotModel> CreateMedalsChartAsync()
         {

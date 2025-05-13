@@ -35,6 +35,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.3" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
+    <PackageReference Include="PDFsharp-MigraDoc-GDI" Version="6.1.1" />
   </ItemGroup>
 
   <ItemGroup>

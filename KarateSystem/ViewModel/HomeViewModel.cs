@@ -117,7 +117,7 @@ namespace KarateSystem.ViewModel
         public HomeViewModel(ITournamentRepository tournamentRepository)
         {
             _tournamentRepository = tournamentRepository;
-            LoadLastFinishedTournament();
+            //LoadLastFinishedTournament();
         }
 
         public async void LoadLastFinishedTournament()
