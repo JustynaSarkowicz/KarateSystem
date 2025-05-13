@@ -6,8 +6,152 @@
              xmlns:local="clr-namespace:KarateSystem.Views"
              xmlns:oxy="http://oxyplot.org/wpf"
              mc:Ignorable="d" 
-             d:DesignHeight="625" d:DesignWidth="1050">
-    <Grid>
-        
-    </Grid>
+             d:DesignHeight="2050" d:DesignWidth="1050">
+    <ScrollViewer Margin="0,0,0,0" Style="{StaticResource CustomScrollViewer}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                <TextBlock Text="Wybierz Turniej:"
+                       Foreground="White"
+                       FontFamily="Montserrat"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       VerticalAlignment="Center"
+                       Margin="0,0,20,0"/>
+
+                <ComboBox x:Name="cbTour"
+                      Width="350"
+                      Style="{StaticResource comboboxStyle}"
+                      Margin="10,0,0,0"
+                      ItemsSource="{Binding Tournaments}"
+                      DisplayMemberPath="TourName"
+                      SelectedItem="{Binding SelectedTour}"/>
+
+                <Button x:Name="btnSetTour"
+                    Width="70"
+                    Content="Wybierz"
+                    Margin="10,0,0,0"
+                    Command="{Binding LoadStatisticsCommand}"
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    Style="{StaticResource contentButton}"/>
+                
+                <Button x:Name="btnCreatePdfTour"
+                    Width="100"
+                    Content="Drukuj wyniki"
+                    Margin="10,0,0,0"
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    Style="{StaticResource contentButton}"/>
+
+            </StackPanel>
+            <Grid Grid.Row="1"
+                  Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="600"/>
+                    <RowDefinition Height="400"/>
+                    <RowDefinition Height="600"/>
+                    <RowDefinition Height="400"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Column="0"
+                      Grid.Row="0"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                    <oxy:PlotView Model="{Binding MedalsByClubPlot}" 
+                                  Height="600" 
+                                  Background="Transparent"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                </Grid>
+                <Grid Grid.Column="1"
+                      Grid.Row="0"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch">
+                    <oxy:PlotView Model="{Binding ClubParticipationPlot}" 
+                                  Height="600" 
+                                  Background="Transparent"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                </Grid>
+                <Grid Grid.Column="1"
+                      Grid.Row="1"
+                      Margin="0,0,10,0"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+                    <oxy:PlotView Model="{Binding FightDurationPlot}" 
+                                  Background="Transparent"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                </Grid>
+                <Grid Grid.Column="0"
+                      Grid.Row="1"
+                      Margin="0,0,10,0"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+                    <oxy:PlotView Model="{Binding AgeDistributionPlot}" 
+                                  Background="Transparent"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                </Grid>
+                <Grid Grid.Column="1"
+                      Grid.Row="2"
+                      Margin="0,0,10,0"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+                    <oxy:PlotView Model="{Binding FightsPerCategoryPlot}" 
+                                  Background="Transparent"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                </Grid>
+                <Grid Grid.Column="0"
+                      Grid.Row="2"
+                      Margin="0,0,10,0"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+                    <oxy:PlotView Model="{Binding KatasPerCategoryPlot}" 
+                                  Background="Transparent"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                </Grid>
+                <Grid Grid.Column="0"
+                      Grid.Row="3"
+                      Margin="0,0,10,0"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+                    <oxy:PlotView Model="{Binding GenderDistributionPlot}" 
+                                  Background="Transparent"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                </Grid>
+                <Grid Grid.Column="1"
+                      Grid.Row="3"
+                      Margin="0,0,10,0"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+                    <oxy:PlotView Model="{Binding KatasAverageScorePlot}" 
+                                  Background="Transparent"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

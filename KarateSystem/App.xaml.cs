@@ -52,6 +52,7 @@ namespace KarateSystem
             services.AddTransient<ITourCatKumiteRepository, TourCatKumiteRepository>();
             services.AddTransient<IKataRepository, KataRepository>();
             services.AddTransient<IFightRepository, FightRepository>();
+            services.AddTransient<IResultStatsService, ReusltStatsService>();
             services.AddTransient<CompetitorsViewModel>();
             services.AddTransient<ClubsDegreesMatsViewModel>();
             services.AddTransient<CategoryViewModel>();
