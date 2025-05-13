@@ -87,21 +87,24 @@ namespace KarateSystem.Repository
         {
             var status = Helper.StatusOptionsList.Where(opt => opt.DisplayName == "Zakończony").Select(opt => opt.Value).FirstOrDefault();
             var lastTour = await _dbContext.Tournaments
-                .Include(t => t.TourCatKatas)
-                    .ThenInclude(t => t.KataCategory)
-                .Include(t => t.TourCatKumites)
-                    .ThenInclude(t => t.KumiteCategory)
-                .Include(t => t.TourCatKumites)
-                    .ThenInclude(t => t.Fights)
-                .Include(t => t.TourCompetitors)
-                    .ThenInclude(t => t.Competitor)
-                    .ThenInclude(t => t.Club)
-                .Include(t => t.TourCompetitors)
-                    .ThenInclude(t => t.Kata)
-                .Where(t => t.Status == status)
-                .OrderByDescending(t => t.TourDate)
-                .FirstOrDefaultAsync();
-            if(lastTour == null)
+            .Where(t => t.Status == status)
+            .OrderByDescending(t => t.TourDate)
+            .Select(t => new TournamentDto
+            {
+                TourId = t.TourId,
+                TourName = t.TourName,
+                TourPlace = t.TourPlace,
+                TourDate = t.TourDate,
+                Status = t.Status,
+                CompetitorCount = t.TourCompetitors.Count,
+                KataCategoryCount = t.TourCatKatas.Count,
+                KumiteCategoryCount = t.TourCatKumites.Count,
+                KumiteCount = t.TourCatKumites.SelectMany(k => k.Fights).Count(),
+                KataCount = t.TourCompetitors.Count(c => c.TourCatKataId != null)
+            })
+            .FirstOrDefaultAsync();
+
+            if (lastTour == null)
             {
                 return null;
             }

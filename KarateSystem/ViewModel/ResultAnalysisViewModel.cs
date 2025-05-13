@@ -223,7 +223,7 @@ namespace KarateSystem.ViewModel
                 return;
 
             var kataResults = await _pdfResultService.GetKataResultsAsync(SelectedTour.TourId);
-            //var kumiteResults = await _pdfResultService.GetKumiteResultsAsync(SelectedTour.TourId);
+            var kumiteResults = await _pdfResultService.GetKumiteResultsAsync(SelectedTour.TourId);
 
             var doc = new Document();
             var section = doc.AddSection();
@@ -253,20 +253,20 @@ namespace KarateSystem.ViewModel
             section.AddParagraph().AddLineBreak();
 
             // Kumite
-            //section.AddParagraph("Wyniki konkurencji Kumite")
-            //    .Format.Font.Bold = true;
+            section.AddParagraph("Wyniki konkurencji Kumite")
+                .Format.Font.Bold = true;
 
-            //foreach (var group in kumiteResults.GroupBy(r => r.CategoryName))
-            //{
-            //    section.AddParagraph(group.Key)
-            //        .Format.SpaceBefore = "0.3cm";
+            foreach (var group in kumiteResults.GroupBy(r => r.CategoryName))
+            {
+                section.AddParagraph(group.Key)
+                    .Format.SpaceBefore = "0.3cm";
 
-            //    foreach (var result in group.OrderBy(r => r.Place))
-            //    {
-            //        section.AddParagraph($"{result.Place}. {result.FullName} / {result.ClubName}")
-            //            .Format.LeftIndent = "0.5cm";
-            //    }
-            //}
+                foreach (var result in group.OrderBy(r => r.Place))
+                {
+                    section.AddParagraph($"{result.Place}. {result.FullName} / {result.ClubName}")
+                        .Format.LeftIndent = "0.5cm";
+                }
+            }
 
             // Zapis do pliku
             var renderer = new PdfDocumentRenderer

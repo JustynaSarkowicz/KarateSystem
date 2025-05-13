@@ -10,5 +10,6 @@ namespace KarateSystem.Service.Interfaces
     public interface IPdfResultService
     {
         Task<List<KataResultDto>> GetKataResultsAsync(int tourId);
+        Task<List<KumiteResultDto>> GetKumiteResultsAsync(int tourId);
     }
 }

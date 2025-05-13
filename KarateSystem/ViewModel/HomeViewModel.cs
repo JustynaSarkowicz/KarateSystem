@@ -117,7 +117,7 @@ namespace KarateSystem.ViewModel
         public HomeViewModel(ITournamentRepository tournamentRepository)
         {
             _tournamentRepository = tournamentRepository;
-            //LoadLastFinishedTournament();
+            LoadLastFinishedTournament();
         }
 
         public async void LoadLastFinishedTournament()
@@ -131,11 +131,11 @@ namespace KarateSystem.ViewModel
                 TourDate = lastTournament.TourDate.ToString("dd.MM.yyyy");
                 TourStatus = Helper.StatusOptionsList.FirstOrDefault(x => x.Value == lastTournament.Status)?.DisplayName ?? "";
 
-                CompetitorCount = lastTournament.TourCompetitors.Count;
-                KataCategoryCount = lastTournament.TourCatKatas.Count;
-                KumiteCategoryCount = lastTournament.TourCatKumites.Count;
-                KumiteCount = lastTournament.TourCatKumites.Sum(t => t.Fights.Count);
-                KataCount = lastTournament.TourCompetitors.Where(t => t.KataId != null).Count();
+                CompetitorCount = lastTournament.CompetitorCount;
+                KataCategoryCount = lastTournament.KataCategoryCount;
+                KumiteCategoryCount = lastTournament.KumiteCategoryCount;
+                KumiteCount = lastTournament.KumiteCount;
+                KataCount = lastTournament.KataCount;
             }
             else
             {
