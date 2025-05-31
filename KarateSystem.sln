@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KarateSystem", "KarateSystem\KarateSystem.csproj", "{B7840019-2926-48E2-91B5-06B878016151}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{AD738A65-D033-4E54-BDB3-1BC3E81EB07B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{B7840019-2926-48E2-91B5-06B878016151}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7840019-2926-48E2-91B5-06B878016151}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7840019-2926-48E2-91B5-06B878016151}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD738A65-D033-4E54-BDB3-1BC3E81EB07B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD738A65-D033-4E54-BDB3-1BC3E81EB07B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD738A65-D033-4E54-BDB3-1BC3E81EB07B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD738A65-D033-4E54-BDB3-1BC3E81EB07B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68D8197B-F907-466A-A00C-0027B985D55C}
 	EndGlobalSection
 EndGlobal

@@ -39,6 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TestProject\TestProject.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\kanji_kan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
